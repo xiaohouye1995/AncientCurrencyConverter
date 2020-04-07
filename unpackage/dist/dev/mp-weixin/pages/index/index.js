@@ -162,175 +162,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   data: function data() {
     return {
-      coinImgFront: '',
-      coinImgBack: '',
-      isStatusText: '薛定谔的硬币',
-      bgCoverImg: '',
-      record: {} };
+      currencyList: [],
+      indexOne: 1,
+      indexTwo: 0,
+      moneyOne: 0,
+      moneyTwo: 0 };
 
   },
   onLoad: function onLoad() {
     uni.showShareMenu({
       withShareTicket: true });
 
-    uni.showModal({
-      title: '',
-      content: '抛硬币，并不是因为硬币能帮你决定什么，而是因为在硬币抛出的那一刻，答案便会出现在你心里。',
-      showCancel: false,
-      confirmText: '开始',
-      confirmColor: '#fd746c',
-      success: function success(res) {
-        if (res.confirm) {
-          console.log('用户点击确定');
-        } else if (res.cancel) {
-          console.log('用户点击取消');
-        }
-      } });
-
-  },
-  onShow: function onShow() {
-    this.getBgImg();
-    this.getCoinImg();
-    this.getCoinRecord();
-
-    this.getAudio();
-
-    this.record.result = '薛定谔的硬币';
-    this.isStatusText = '薛定谔的硬币';
+    this.getCurrencyList();
   },
   methods: {
-    // 获取背景图
-    getBgImg: function getBgImg() {
-      this.bgCoverImg = uni.getStorageSync('bgCoverImg') || 'bg_4';
-    },
-    // 获取硬币图片
-    getCoinImg: function getCoinImg() {
-      var name = uni.getStorageSync('coinName') || '2020shu';
-      this.coinImgFront = "http://q74m0xojb.bkt.clouddn.com/img/".concat(name, "_front.png");
-      this.coinImgBack = "http://q74m0xojb.bkt.clouddn.com/img/".concat(name, "_back.png");
-      // this.coinImgFront = `/static/img/${name}_front.png`
-      // this.coinImgBack = `/static/img/${name}_back.png`
-    },
-    // 获取硬币旋转音频
-    getAudio: function getAudio() {
-      var name = uni.getStorageSync('coinAuidoID') || 'filpCoin1';
-      // this.audioSrc = `http://q74m0xojb.bkt.clouddn.com/mp3/${name}.wav`;
-      // this.audioSrc = `/static/audio/${name}.wav`;
-      this.audioSrc = "/static/audio/".concat(name, ".mp3");
-    },
-    // 获取硬币记录
-    getCoinRecord: function getCoinRecord() {
-      var result = this.isStatusText;
-      var totalCount = uni.getStorageSync('recordTotalCount') || 0;
-      var facadeCount = uni.getStorageSync('recordFacadeCount') || 0;
-      var reverseCount = uni.getStorageSync('recordReverseCount') || 0;
-      var facadeProportion = totalCount <= 0 ? "0%" : Math.round(facadeCount / totalCount * 10000) / 100.00 + "%";
-      var reverseProportion = totalCount <= 0 ? "0%" : Math.round(reverseCount / totalCount * 10000) / 100.00 + "%";
-      // 彩蛋1号
-      if (totalCount === 520) {
-        var textList = [
-        '闲时与你立黄昏，灶前笑问粥可温',
-        '江湖走马，风也好，雨也罢',
-        '情不知所起一往而深',
-        '江湖风波险恶，多多保重',
-        '早知如此绊人心，何如当初莫相识',
-        '最好的都是即将发生的'];
+    // 获取货币列表
+    getCurrencyList: function getCurrencyList() {
+      this.currencyList = [{
+        name: '中国',
+        note: '元',
+        scale: 1 },
 
-        uni.showModal({
-          title: '',
-          content: '闲时与你立黄昏，灶前笑问粥可温',
-          showCancel: false,
-          confirmText: '喜欢你',
-          confirmColor: '#fd746c',
-          success: function success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定');
-              uni.navigateTo({
-                url: '/pages/easteregg/easteregg' });
+      {
+        name: '民国',
+        note: '大洋',
+        scale: 1500 },
 
-            } else if (res.cancel) {
-              console.log('用户点击取消');
-            }
-          } });
-
-      }
-      this.record = {
-        result: result,
-        totalCount: totalCount,
-        facadeCount: facadeCount,
-        reverseCount: reverseCount,
-        facadeProportion: facadeProportion,
-        reverseProportion: reverseProportion };
-
-    },
-    // 抛硬币
-    tossCoin: function tossCoin() {
-
-      this.loadAudio();
-
-
+      {
+        name: '清',
+        note: '银两',
+        scale: 3000 }];
 
 
     },
-    // 加载音频
-    loadAudio: function loadAudio() {var _this = this;
-      var innerAudioContext = uni.createInnerAudioContext();
-      innerAudioContext.autoplay = true;
-      innerAudioContext.src = this.audioSrc;
-      innerAudioContext.onPlay(function () {
-        console.log('开始播放');
-        _this.filpCoin();
-      });
-      innerAudioContext.onError(function (res) {
-        console.log(res.errMsg);
-        console.log(res.errCode);
-        _this.filpCoin();
-      });
+    bindPickerChangeOne: function bindPickerChangeOne(e) {
+      console.log('picker发送选择改变，携带值为', e.target.value);
+      this.indexOne = e.target.value;
+      this.conversionAmountOne();
     },
-    // 翻转硬币
-    filpCoin: function filpCoin() {var _this2 = this;
-      this.record.result = '量子力学中...';
-      this.isStatusText = '量子';
-      this.timerCoinFilp = setTimeout(function () {
-        var flipResult = Math.random();
-        var totalCount = _this2.record.totalCount + 1;
-        uni.setStorageSync('recordTotalCount', totalCount);
-        if (flipResult <= 0.5) {
-          _this2.isStatusText = '正面';
-          var count = _this2.record.facadeCount + 1;
-          uni.setStorageSync('recordFacadeCount', count);
-          console.log('这是', _this2.isStatusText);
-        } else {
-          _this2.isStatusText = '反面';
-          var _count = _this2.record.reverseCount + 1;
-          uni.setStorageSync('recordReverseCount', _count);
-          console.log('这是', _this2.isStatusText);
-        }
-        _this2.timerCoinRecord = setTimeout(function () {
-          _this2.getCoinRecord();
-        }, 1000);
-      }, 0);
+    bindPickerChangeTwo: function bindPickerChangeTwo(e) {
+      console.log('picker发送选择改变，携带值为', e.target.value);
+      this.indexTwo = e.target.value;
+      this.conversionAmountTwo();
     },
-    // 清除定时器 
-    clearTimerCoinFilp: function clearTimerCoinFilp() {
-      clearTimeout(this.timerCoinFilp);
-      this.timerCoinFilp = null;
-      console.log('timerCoinFilp', this.timerCoinFilp);
+    // 换算金额
+    conversionAmountOne: function conversionAmountOne(event) {
+      var money = event ? event.target.value : +this.moneyOne;
+      console.log('money', money);
+      var scaleOne = this.currencyList[this.indexOne].scale;
+      console.log('scaleOne', scaleOne);
+      var rmb = money * scaleOne;
+      console.log('rmb', rmb);
+      var scaleTwo = this.currencyList[this.indexTwo].scale;
+      console.log('scaleTwo', scaleTwo);
+      this.moneyTwo = (rmb / scaleTwo).toFixed(2);
+      console.log('moneyTwo', this.moneyTwo);
     },
-    clearTimerCoinRecord: function clearTimerCoinRecord() {
-      clearTimeout(this.timerCoinRecord);
-      this.timerCoinRecord = null;
-      console.log('timerCoinRecord', this.timerCoinRecord);
-    } },
-
-  onHide: function onHide() {
-    this.timerCoinFilp && this.clearTimerCoinFilp();
-    this.timerCoinRecord && this.clearTimerCoinRecord();
-  } };exports.default = _default;
+    conversionAmountTwo: function conversionAmountTwo(event) {
+      var money = event ? event.target.value : +this.moneyTwo;
+      console.log('money', money);
+      var scaleTwo = this.currencyList[this.indexTwo].scale;
+      console.log('scaleTwo', scaleTwo);
+      var rmb = scaleTwo * money;
+      console.log('rmb', rmb);
+      var scaleOne = this.currencyList[this.indexOne].scale;
+      console.log('scaleOne', scaleOne);
+      this.moneyOne = (rmb / scaleOne).toFixed(2);
+      console.log('moneyOne', this.moneyOne);
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

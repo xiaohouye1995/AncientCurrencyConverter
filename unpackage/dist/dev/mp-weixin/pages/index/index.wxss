@@ -24,191 +24,100 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-page {
-  height: 100%;
-}
-.content {
+.container {
   width: 100%;
   height: 100vh;
-  padding-top: 100rpx;
-  box-sizing: border-box;
-  background-color: #E8D0BB;
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-/* 3d旋转 */
-.coin {
+  font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f7f8fa;
+  color: #353535;
+  font-size: 14pt;
   position: relative;
-  width: 400rpx;
-  height: 400rpx;
-  margin: 0 auto;
-  -webkit-transform-style: preserve-3d;
-          transform-style: preserve-3d;
 }
-.coin-spin {
-  -webkit-animation: flipSpin 6s linear infinite;
-          animation: flipSpin 6s linear infinite;
+.iconfont {
+  font-size: 11pt;
+  color: #888;
 }
-.coin-facade {
-  -webkit-animation: flipFacade 1s ease-out forwards;
-          animation: flipFacade 1s ease-out forwards;
-}
-.coin-reverse {
-  -webkit-animation: flipReverse 1s ease-out forwards;
-          animation: flipReverse 1s ease-out forwards;
-}
-.coin-front,
-.coin-back {
-  position: absolute;
-  width: 400rpx;
-  height: 400rpx;
+.icon-money {
+  width: 80rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  color: #fff;
+  background: #ff5500;
   border-radius: 50%;
-  overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-          mask-image: radial-gradient(white, black);
+  font-size: 11pt;
 }
-.coin-front:after,
-  .coin-back:after {
-    content: "";
-    position: absolute;
-    left: -200rpx;
-    bottom: 100%;
-    display: block;
-    height: 266.66667rpx;
-    width: 800rpx;
-    background: #fff;
-    opacity: 0.3;
-    -webkit-animation: shine linear 3s infinite;
-            animation: shine linear 3s infinite;
+.note {
+  font-size: 11pt;
+  color: #888;
+  margin: 0 8rpx;
 }
-.coin-front {
-  -webkit-transform: translateZ(17px);
-          transform: translateZ(17px);
-}
-.coin-back {
-  -webkit-transform: translateZ(0);
-          transform: translateZ(0);
-}
-.coin-img-filp {
-  -webkit-transform: rotateY(180deg);
-          transform: rotateY(180deg);
-}
-.coin-middle {
-  width: 400rpx;
-  height: 400rpx;
-  -webkit-transform: translateZ(1px);
-          transform: translateZ(1px);
-  position: absolute;
-}
-.coin-img {
-  width: 400rpx;
-  height: 400rpx;
-}
-.coin-shadow {
-  position: absolute;
-  width: 400rpx;
-  height: 16px;
-  border-radius: 50%;
-  background: #000;
-  box-shadow: 0 0 80px 80px #000;
-  opacity: 0.125;
-  -webkit-transform: rotateX(90deg) translateZ(-440rpx) scale(0.5);
-          transform: rotateX(90deg) translateZ(-440rpx) scale(0.5);
-}
-.coin-result {
-  font-size: 18pt;
-  margin-top: 100rpx;
-  margin-bottom: 40rpx;
-}
-.coin-record {
+.panel-bg {
+  width: 100%;
+  height: 600rpx;
+  background-color: #00aaff;
   text-align: center;
-  color: #FFFFFF;
-  margin-bottom: 60rpx;
+  font-size: 20pt;
+  color: #fff;
 }
-.coin-record-text {
-  margin-bottom: 10rpx;
+.panel-bg-logo {
+  width: 200rpx;
+  height: 200rpx;
 }
-@-webkit-keyframes flipSpin {
-0% {
-    -webkit-transform: perspective(1000px) rotateY(0deg);
-            transform: perspective(1000px) rotateY(0deg);
+.panel {
+  position: absolute;
+  width: 90%;
+  top: 48%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -48%);
+          transform: translate(-50%, -48%);
+  background-color: #fff;
+  font-size: 17pt;
+  color: #353535;
+  border-radius: 12px;
+  box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
 }
-100% {
-    -webkit-transform: perspective(1000px) rotateY(360deg);
-            transform: perspective(1000px) rotateY(360deg);
+.panel-title {
+  padding: 10rpx;
+  background: #ffd500;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  color: #fff;
+  font-size: 13pt;
 }
+.panel-cell {
+  padding: 40rpx 20rpx;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 100%;
+  border-bottom: 1px dashed #ccc;
 }
-@keyframes flipSpin {
-0% {
-    -webkit-transform: perspective(1000px) rotateY(0deg);
-            transform: perspective(1000px) rotateY(0deg);
+.panel-cell:last-child {
+  border: none;
 }
-100% {
-    -webkit-transform: perspective(1000px) rotateY(360deg);
-            transform: perspective(1000px) rotateY(360deg);
+.panel-cell-hd {
+  width: 20%;
+  text-align: center;
 }
+.panel-cell-bd {
+  width: 50%;
+  padding: 0 12rpx;
 }
-@-webkit-keyframes flipFacade {
-from {
-    -webkit-transform: perspective(1000px) rotateY(0);
-            transform: perspective(1000px) rotateY(0);
+.panel-cell-ft {
+  text-align: right;
 }
-to {
-    -webkit-transform: perspective(1000px) rotateY(1800deg);
-            transform: perspective(1000px) rotateY(1800deg);
+.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 200rpx;
+  text-align: center;
 }
-}
-@keyframes flipFacade {
-from {
-    -webkit-transform: perspective(1000px) rotateY(0);
-            transform: perspective(1000px) rotateY(0);
-}
-to {
-    -webkit-transform: perspective(1000px) rotateY(1800deg);
-            transform: perspective(1000px) rotateY(1800deg);
-}
-}
-@-webkit-keyframes flipReverse {
-from {
-    -webkit-transform: perspective(1000px) rotateY(0);
-            transform: perspective(1000px) rotateY(0);
-}
-to {
-    -webkit-transform: perspective(1000px) rotateY(1980deg);
-            transform: perspective(1000px) rotateY(1980deg);
-}
-}
-@keyframes flipReverse {
-from {
-    -webkit-transform: perspective(1000px) rotateY(0);
-            transform: perspective(1000px) rotateY(0);
-}
-to {
-    -webkit-transform: perspective(1000px) rotateY(1980deg);
-            transform: perspective(1000px) rotateY(1980deg);
-}
-}
-@-webkit-keyframes shine {
-0%,
-  15% {
-    -webkit-transform: translateY(800rpx) rotate(-40deg);
-            transform: translateY(800rpx) rotate(-40deg);
-}
-50% {
-    -webkit-transform: translateY(-400rpx) rotate(-40deg);
-            transform: translateY(-400rpx) rotate(-40deg);
-}
-}
-@keyframes shine {
-0%,
-  15% {
-    -webkit-transform: translateY(800rpx) rotate(-40deg);
-            transform: translateY(800rpx) rotate(-40deg);
-}
-50% {
-    -webkit-transform: translateY(-400rpx) rotate(-40deg);
-            transform: translateY(-400rpx) rotate(-40deg);
-}
+.footer-text {
+  font-size: 13pt;
+  color: #888;
 }
 

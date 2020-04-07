@@ -3,63 +3,33 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "来抛硬币"
-			}
-		},
-		{
-			"path": "pages/setting/setting",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		},
-		{
-			"path": "pages/setting/coinskin",
-			"style": {
-				"navigationBarTitleText": "硬币中心"
-			}
-		},
-		{
-			"path": "pages/setting/coinaudio",
-			"style": {
-				"navigationBarTitleText": "音效中心"
-			}
-		},
-		{
-			"path": "pages/setting/bgCover",
-			"style": {
-				"navigationBarTitleText": "背景皮肤"
-			}
-		},
-		{
-			"path": "pages/easteregg/easteregg",
-			"style": {
-				"navigationBarTitleText": "彩蛋1号520"
+				"navigationBarTitleText": ""
 			}
 		}
 	],
-	"tabBar": {
-	    "color": "#7A7E83",
-	    "selectedColor": "#fd746c",
-	    "borderStyle": "black",
-	    "backgroundColor": "#ffffff",
-	    "list": [{
-	        "pagePath": "pages/index/index",
-	        "iconPath": "static/img/home.png",
-	        "selectedIconPath": "static/img/home_select.png",
-	        "text": "首页"
-	    }, {
-	        "pagePath": "pages/setting/setting",
-	        "iconPath": "static/img/passive.png",
-	        "selectedIconPath": "static/img/passive_select.png",
-	        "text": "设置"
-	    }]
-	},
+	// "tabBar": {
+	//     "color": "#7A7E83",
+	//     "selectedColor": "#fd746c",
+	//     "borderStyle": "black",
+	//     "backgroundColor": "#ffffff",
+	//     "list": [{
+	//         "pagePath": "pages/index/index",
+	//         "iconPath": "static/img/home.png",
+	//         "selectedIconPath": "static/img/home_select.png",
+	//         "text": "首页"
+	//     }, {
+	//         "pagePath": "pages/setting/setting",
+	//         "iconPath": "static/img/passive.png",
+	//         "selectedIconPath": "static/img/passive_select.png",
+	//         "text": "设置"
+	//     }]
+	// },
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
+		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "来抛硬币",
 		// #ifdef MP-WEIXIN
-		"navigationBarBackgroundColor": "#f8f8f8",
+		"navigationBarBackgroundColor": "#00aaff",
 		// #endif
-		"backgroundColor": "#f7f8fa"
+		"backgroundColor": "#00aaff"
 	}
 }

@@ -1,25 +1,44 @@
 <template>
-	<view v-if="bgCoverImg" class="content" :style="{'background-image': `url(http://q74m0xojb.bkt.clouddn.com/img/${bgCoverImg}.jpg)`}">
-		<view class="coin" :class="{'coin-spin':isStatusText === '薛定谔的硬币','coin-facade': isStatusText === '正面','coin-reverse': isStatusText === '反面'}">
-			<view class="coin-front">
-				<image class="coin-img" :src="coinImgFront"></image>
-			</view>
-			<view class="coin-middle" v-for="index in 16" :key="index" :style="'transform: translateZ(' + index + 'px)'">
-				<image class="coin-img coin-img-filp" :src="coinImgBack"></image>
-			</view>
-			<view class="coin-back">
-				<image class="coin-img coin-img-filp" :src="coinImgBack"></image>
-			</view>
-			<view class="coin-shadow"></view>
+	<view class="container">
+		<view class="panel-bg">
+			<image class="panel-bg-logo" src="../../static/img/coinlogo.png" mode="aspectFit"></image>
+			<view>中国古代货币换算器</view>
 		</view>
-		<view class="coin-record">
-			<view class="coin-result red">{{record.result}}</view>
-			<view class="coin-record-text">抛掷总次数：{{record.totalCount}}</view>
-			<view class="coin-record-text">正面次数：{{record.facadeCount}}, 占比：{{record.facadeProportion}}</view>
-			<view class="coin-record-text">反面次数：{{record.reverseCount}}, 占比：{{record.reverseProportion}}</view>
+		<view class="panel">
+			<view class="panel-title">货币换算</view>
+			<view class="panel-cell">
+				<view class="panel-cell-hd">
+					<view class="icon-money">{{currencyList[indexOne].name}}</view>
+				</view>
+				<view class="panel-cell-bd">
+					<picker @change="bindPickerChangeOne" :value="indexOne" range-key="name" :range="currencyList">
+						<text>{{currencyList[indexOne].name}}</text>
+						<text class="note">{{currencyList[indexOne].note}}</text>
+						<text class="iconfont icon-cc-chevron-right"></text>
+					</picker>
+				</view>
+				<view class="panel-cell-ft">
+					<input class="uni-input" :value="moneyOne" @input="conversionAmountOne" type="digit" placeholder="100" />
+				</view>
+			</view>
+			<view class="panel-cell">
+				<view class="panel-cell-hd">
+					<view class="icon-money">{{currencyList[indexTwo].name}}</view>
+				</view>
+				<view class="panel-cell-bd">
+					<picker @change="bindPickerChangeTwo" :value="indexTwo" range-key="name" :range="currencyList">
+						<text>{{currencyList[indexTwo].name}}</text>
+						<text class="note">{{currencyList[indexTwo].note}}</text>
+						<text class="iconfont icon-cc-chevron-right"></text>
+					</picker>
+				</view>
+				<view class="panel-cell-ft">
+					<input class="uni-input" :value="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="100" />
+				</view>
+			</view>
 		</view>
 		<view class="footer">
-			<button class="footer-btn" type="primary" style="background: #fd746c;" @tap="tossCoin()">抛硬币</button>
+			<text class="footer-text">— 算法规则 —</text>
 		</view>
 	</view>
 </template>
@@ -28,328 +47,182 @@
 	export default {
 		data() {
 			return {
-				coinImgFront: '',
-				coinImgBack: '',
-				isStatusText: '薛定谔的硬币',
-				bgCoverImg: '',
-				record: {}
+				currencyList: [],
+				indexOne: 1,
+				indexTwo: 0,
+				moneyOne: 0,
+				moneyTwo: 0
 			}
 		},
 		onLoad() {
 			uni.showShareMenu({
-			  withShareTicket: true
-			})
-			uni.showModal({
-				title: '',
-				content: '抛硬币，并不是因为硬币能帮你决定什么，而是因为在硬币抛出的那一刻，答案便会出现在你心里。',
-				showCancel: false,
-				confirmText: '开始',
-				confirmColor: '#fd746c',
-				success: function(res) {
-					if (res.confirm) {
-						console.log('用户点击确定');
-					} else if (res.cancel) {
-						console.log('用户点击取消');
-					}
-				}
+				withShareTicket: true
 			});
-		},
-		onShow() {
-			this.getBgImg();
-			this.getCoinImg();
-			this.getCoinRecord();
-			// #ifndef MP-ALIPAY
-			this.getAudio();
-			// #endif
-			this.record.result = '薛定谔的硬币';
-			this.isStatusText = '薛定谔的硬币';
+			this.getCurrencyList();
 		},
 		methods: {
-			// 获取背景图
-			getBgImg () {
-				this.bgCoverImg = uni.getStorageSync('bgCoverImg') || 'bg_4';
-			},
-			// 获取硬币图片
-			getCoinImg() {
-				let name = uni.getStorageSync('coinName') || '2020shu'
-				this.coinImgFront = `http://q74m0xojb.bkt.clouddn.com/img/${name}_front.png`
-				this.coinImgBack = `http://q74m0xojb.bkt.clouddn.com/img/${name}_back.png`
-				// this.coinImgFront = `/static/img/${name}_front.png`
-				// this.coinImgBack = `/static/img/${name}_back.png`
-			},
-			// 获取硬币旋转音频
-			getAudio() {
-				let name = uni.getStorageSync('coinAuidoID') || 'filpCoin1';
-				// this.audioSrc = `http://q74m0xojb.bkt.clouddn.com/mp3/${name}.wav`;
-				// this.audioSrc = `/static/audio/${name}.wav`;
-				this.audioSrc = `/static/audio/${name}.mp3`;
-			},
-			// 获取硬币记录
-			getCoinRecord() {
-				let result = this.isStatusText;
-				let totalCount = uni.getStorageSync('recordTotalCount') || 0;
-				let facadeCount = uni.getStorageSync('recordFacadeCount') || 0;
-				let reverseCount = uni.getStorageSync('recordReverseCount') || 0;
-				let facadeProportion = totalCount <= 0 ? "0%" : (Math.round(facadeCount / totalCount * 10000) / 100.00) + "%";
-				let reverseProportion = totalCount <= 0 ? "0%" : (Math.round(reverseCount / totalCount * 10000) / 100.00) + "%";
-				// 彩蛋1号
-				if (totalCount === 520) {
-					let textList = [
-						'闲时与你立黄昏，灶前笑问粥可温',
-						'江湖走马，风也好，雨也罢',
-						'情不知所起一往而深',
-						'江湖风波险恶，多多保重',
-						'早知如此绊人心，何如当初莫相识',
-						'最好的都是即将发生的'
-					]
-					uni.showModal({
-						title: '',
-						content: '闲时与你立黄昏，灶前笑问粥可温',
-						showCancel: false,
-						confirmText: '喜欢你',
-						confirmColor: '#fd746c',
-						success: function(res) {
-							if (res.confirm) {
-								console.log('用户点击确定');
-								uni.navigateTo({
-									url: '/pages/easteregg/easteregg'
-								});
-							} else if (res.cancel) {
-								console.log('用户点击取消');
-							}
-						}
-					});
-				}
-				this.record = {
-					result: result,
-					totalCount: totalCount,
-					facadeCount: facadeCount,
-					reverseCount: reverseCount,
-					facadeProportion: facadeProportion,
-					reverseProportion: reverseProportion
-				}
-			},
-			// 抛硬币
-			tossCoin() {
-				// #ifdef MP-WEIXIN
-				this.loadAudio()
-				// #endif
-				// #ifdef MP-ALIPAY
-				this.filpCoin();
-				// #endif 
-			},
-			// 加载音频
-			loadAudio() {
-				const innerAudioContext = uni.createInnerAudioContext();
-				innerAudioContext.autoplay = true;
-				innerAudioContext.src = this.audioSrc;
-				innerAudioContext.onPlay(() => {
-					console.log('开始播放');
-					this.filpCoin();
-				});
-				innerAudioContext.onError((res) => {
-					console.log(res.errMsg);
-					console.log(res.errCode);
-					this.filpCoin();
-				});
-			},
-			// 翻转硬币
-			filpCoin() {
-				this.record.result = '量子力学中...';
-				this.isStatusText = '量子';
-				this.timerCoinFilp = setTimeout(() => {
-					let flipResult = Math.random();
-					let totalCount = this.record.totalCount + 1
-					uni.setStorageSync('recordTotalCount', totalCount);
-					if (flipResult <= 0.5) {
-						this.isStatusText = '正面';
-						let count = this.record.facadeCount + 1
-						uni.setStorageSync('recordFacadeCount', count);
-						console.log('这是', this.isStatusText);
-					} else {
-						this.isStatusText = '反面';
-						let count = this.record.reverseCount + 1
-						uni.setStorageSync('recordReverseCount', count);
-						console.log('这是', this.isStatusText);
+			// 获取货币列表
+			getCurrencyList() {
+				this.currencyList = [{
+						name: '中国',
+						note: '元',
+						scale: 1
+					},
+					{
+						name: '民国',
+						note: '大洋',
+						scale: 1500
+					},
+					{
+						name: '清',
+						note: '银两',
+						scale: 3000
 					}
-					this.timerCoinRecord = setTimeout(() => {
-						this.getCoinRecord();
-					}, 1000);
-				}, 0);
+				]
 			},
-			// 清除定时器 
-			clearTimerCoinFilp() {
-				clearTimeout(this.timerCoinFilp);
-				this.timerCoinFilp = null;
-				console.log('timerCoinFilp', this.timerCoinFilp)
+			bindPickerChangeOne: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.indexOne = e.target.value
+				this.conversionAmountOne()
 			},
-			clearTimerCoinRecord() {
-				clearTimeout(this.timerCoinRecord);
-				this.timerCoinRecord = null;
-				console.log('timerCoinRecord', this.timerCoinRecord)
-			}
-		},
-		onHide: function() {
-			this.timerCoinFilp && this.clearTimerCoinFilp();
-			this.timerCoinRecord && this.clearTimerCoinRecord();
+			bindPickerChangeTwo: function(e) {
+				console.log('picker发送选择改变，携带值为', e.target.value)
+				this.indexTwo = e.target.value
+				this.conversionAmountTwo()
+			},
+			// 换算金额
+			conversionAmountOne: function(event) {
+				let money = event ? event.target.value : +this.moneyOne
+				console.log('money', money)
+				let scaleOne = this.currencyList[this.indexOne].scale
+				console.log('scaleOne', scaleOne)
+				let rmb = money * scaleOne
+				console.log('rmb', rmb)
+				let scaleTwo = this.currencyList[this.indexTwo].scale
+				console.log('scaleTwo', scaleTwo)
+				this.moneyTwo = (rmb / scaleTwo).toFixed(2)
+				console.log('moneyTwo', this.moneyTwo)
+			},
+			conversionAmountTwo: function(event) {
+				let money = event ? event.target.value : +this.moneyTwo
+				console.log('money', money)
+				let scaleTwo = this.currencyList[this.indexTwo].scale
+				console.log('scaleTwo', scaleTwo)
+				let rmb = scaleTwo * money
+				console.log('rmb', rmb)
+				let scaleOne = this.currencyList[this.indexOne].scale
+				console.log('scaleOne', scaleOne)
+				this.moneyOne = (rmb / scaleOne).toFixed(2)
+				console.log('moneyOne', this.moneyOne)
+			},
 		}
 	}
 </script>
 
 <style lang="scss">
-	page {
-		height: 100%;
-	}
-	.content {
+	.container {
 		width: 100%;
-		// height: 100%;
 		height: 100vh;
-		padding-top: 100rpx;
-		box-sizing: border-box;
-		background-color: #E8D0BB;
-		background-size: 100% 100%;
-		background-repeat: no-repeat;
-		background-attachment: fixed;
-	}
-
-	$coin-diameter: 400rpx; // 直径
-	$coin-thickness: 16px; // 厚度
-	$turn-time: 1s; // 转动时间
-
-	/* 3d旋转 */
-	.coin {
+		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
+		background-color: #f7f8fa;
+		color: #353535;
+		font-size: 14pt;
 		position: relative;
-		width: $coin-diameter;
-		height: $coin-diameter;
-		margin: 0 auto;
-		transform-style: preserve-3d;
 	}
 
-	.coin-spin {
-		animation: flipSpin 6s linear infinite;
+	.iconfont {
+		font-size: 11pt;
+		color: #888;
 	}
 
-	.coin-facade {
-		animation: flipFacade $turn-time ease-out forwards;
-	}
-
-	.coin-reverse {
-		animation: flipReverse $turn-time ease-out forwards;
-	}
-
-	.coin-front,
-	.coin-back {
-		position: absolute;
-		width: $coin-diameter;
-		height: $coin-diameter;
+	.icon-money {
+		width: 80rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		color: #fff;
+		background: #ff5500;
 		border-radius: 50%;
-		overflow: hidden;
-		mask-image: radial-gradient(white, black); // 解决因 animation 导致 border-radius 失效的问题
-
-		&:after {
-			content: "";
-			position: absolute;
-			left: -$coin-diameter/2;
-			bottom: 100%;
-			display: block;
-			height: $coin-diameter/1.5;
-			width: $coin-diameter*2;
-			background: #fff;
-			opacity: 0.3;
-			animation: shine linear 3s infinite;
-		}
+		font-size: 11pt;
 	}
-
-	.coin-front {
-		transform: translateZ(17px);
+	
+	.note {
+		font-size: 11pt;
+		color: #888;
+		margin: 0 8rpx;
 	}
-
-	.coin-back {
-		transform: translateZ(0);
-	}
-	.coin-img-filp {
-		transform: rotateY(180deg);
-	}
-
-	.coin-middle {
-		width: $coin-diameter;
-		height: $coin-diameter;
-		transform: translateZ(1px);
-		position: absolute;
-	}
-
-	.coin-img {
-		width: $coin-diameter;
-		height: $coin-diameter;
-	}
-
-	.coin-shadow {
-		position: absolute;
-		width: $coin-diameter;
-		height: $coin-thickness;
-		border-radius: 50%;
-		background: #000;
-		box-shadow: 0 0 $coin-thickness*5 $coin-thickness*5 #000;
-		opacity: 0.125;
-		transform: rotateX(90deg) translateZ(-$coin-diameter*1.1) scale(.5);
-	}
-
-	.coin-result {
-		font-size: 18pt;
-		margin-top: 100rpx;
-		margin-bottom: 40rpx;
-	}
-
-	.coin-record {
+	
+	.panel-bg {
+		width: 100%;
+		height: 600rpx;
+		background-color: #00aaff;
 		text-align: center;
-		color: #FFFFFF;
-		margin-bottom: 60rpx;
+		font-size: 20pt;
+		color: #fff;
 	}
 
-	.coin-record-text {
-		margin-bottom: 10rpx;
+	.panel-bg-logo {
+		width: 200rpx;
+		height: 200rpx;
 	}
 
-
-	@keyframes flipSpin {
-		0% {
-			transform: perspective(1000px) rotateY(0deg);
-		}
-
-		100% {
-			transform: perspective(1000px) rotateY(360deg);
-		}
+	.panel {
+		position: absolute;
+		width: 90%;
+		top: 48%;
+		left: 50%;
+		transform: translate(-50%, -48%);
+		background-color: #fff;
+		font-size: 17pt;
+		color: #353535;
+		border-radius: 12px;
+		box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
 	}
 
-	@keyframes flipFacade {
-		from {
-			transform: perspective(1000px) rotateY(0);
-		}
-
-		to {
-			transform: perspective(1000px) rotateY(1800deg);
-		}
+	.panel-title {
+		padding: 10rpx;
+		background: #ffd500;
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
+		color: #fff;
+		font-size: 13pt;
 	}
 
-	@keyframes flipReverse {
-		from {
-			transform: perspective(1000px) rotateY(0);
-		}
-
-		to {
-			transform: perspective(1000px) rotateY(1980deg);
-		}
+	.panel-cell {
+		padding: 40rpx 20rpx;
+		box-sizing: border-box;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		border-bottom: 1px dashed #ccc;
 	}
 
-	@keyframes shine {
+	.panel-cell:last-child {
+		border: none;
+	}
 
-		0%,
-		15% {
-			transform: translateY($coin-diameter*2) rotate(-40deg);
-		}
+	.panel-cell-hd {
+		width: 20%;
+		text-align: center;
+	}
 
-		50% {
-			transform: translateY(-$coin-diameter) rotate(-40deg);
-		}
+	.panel-cell-bd {
+		width: 50%;
+		padding: 0 12rpx;
+	}
+
+	.panel-cell-ft {
+		text-align: right;
+	}
+
+	.footer {
+		width: 100%;
+		position: absolute;
+		bottom: 200rpx;
+		text-align: center;
+	}
+
+	.footer-text {
+		font-size: 13pt;
+		color: #888;
 	}
 </style>
