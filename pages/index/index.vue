@@ -3,6 +3,7 @@
 		<view class="panel-bg">
 			<image class="panel-bg-logo" src="../../static/img/coinlogo.png" mode="aspectFit"></image>
 			<view>中国古代货币换算器</view>
+			<view class="panel-bg-text">天下熙熙皆为利来，天下攘攘皆为利往</view>
 		</view>
 		<view class="panel">
 			<view class="panel-title">货币换算</view>
@@ -38,7 +39,7 @@
 			</view>
 		</view>
 		<view class="footer">
-			<text class="footer-text">— 算法规则 —</text>
+			<text class="footer-text" @tap="toExplain()">— 算法规则 —</text>
 		</view>
 	</view>
 </template>
@@ -80,41 +81,36 @@
 					}
 				]
 			},
+			// 切换货币
 			bindPickerChangeOne: function(e) {
-				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexOne = e.target.value
 				this.conversionAmountOne()
 			},
 			bindPickerChangeTwo: function(e) {
-				console.log('picker发送选择改变，携带值为', e.target.value)
 				this.indexTwo = e.target.value
 				this.conversionAmountTwo()
 			},
 			// 换算金额
 			conversionAmountOne: function(event) {
 				let money = event ? event.target.value : +this.moneyOne
-				console.log('money', money)
 				let scaleOne = this.currencyList[this.indexOne].scale
-				console.log('scaleOne', scaleOne)
 				let rmb = money * scaleOne
-				console.log('rmb', rmb)
 				let scaleTwo = this.currencyList[this.indexTwo].scale
-				console.log('scaleTwo', scaleTwo)
 				this.moneyTwo = (rmb / scaleTwo).toFixed(2)
-				console.log('moneyTwo', this.moneyTwo)
 			},
 			conversionAmountTwo: function(event) {
 				let money = event ? event.target.value : +this.moneyTwo
-				console.log('money', money)
 				let scaleTwo = this.currencyList[this.indexTwo].scale
-				console.log('scaleTwo', scaleTwo)
 				let rmb = scaleTwo * money
-				console.log('rmb', rmb)
 				let scaleOne = this.currencyList[this.indexOne].scale
-				console.log('scaleOne', scaleOne)
 				this.moneyOne = (rmb / scaleOne).toFixed(2)
-				console.log('moneyOne', this.moneyOne)
 			},
+			// 前往算法说明
+			toExplain () {
+				uni.navigateTo({
+					url: '/pages/index/explain'
+				});
+			}
 		}
 	}
 </script>
@@ -129,7 +125,7 @@
 		font-size: 14pt;
 		position: relative;
 	}
-
+	
 	.iconfont {
 		font-size: 11pt;
 		color: #888;
@@ -153,7 +149,7 @@
 	
 	.panel-bg {
 		width: 100%;
-		height: 600rpx;
+		height: 500rpx;
 		background-color: #00aaff;
 		text-align: center;
 		font-size: 20pt;
@@ -164,13 +160,18 @@
 		width: 200rpx;
 		height: 200rpx;
 	}
+	
+	.panel-bg-text {
+		margin-top: 20rpx;
+		font-size: 11pt;
+	}
 
 	.panel {
 		position: absolute;
 		width: 90%;
-		top: 48%;
+		top: 600rpx;
 		left: 50%;
-		transform: translate(-50%, -48%);
+		transform: translate(-50%, -50%);
 		background-color: #fff;
 		font-size: 17pt;
 		color: #353535;

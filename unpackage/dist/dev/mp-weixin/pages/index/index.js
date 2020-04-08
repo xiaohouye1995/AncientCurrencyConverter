@@ -181,6 +181,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 var _default =
 {
   data: function data() {
@@ -218,40 +219,35 @@ var _default =
 
 
     },
+    // 切换货币
     bindPickerChangeOne: function bindPickerChangeOne(e) {
-      console.log('picker发送选择改变，携带值为', e.target.value);
       this.indexOne = e.target.value;
       this.conversionAmountOne();
     },
     bindPickerChangeTwo: function bindPickerChangeTwo(e) {
-      console.log('picker发送选择改变，携带值为', e.target.value);
       this.indexTwo = e.target.value;
       this.conversionAmountTwo();
     },
     // 换算金额
     conversionAmountOne: function conversionAmountOne(event) {
       var money = event ? event.target.value : +this.moneyOne;
-      console.log('money', money);
       var scaleOne = this.currencyList[this.indexOne].scale;
-      console.log('scaleOne', scaleOne);
       var rmb = money * scaleOne;
-      console.log('rmb', rmb);
       var scaleTwo = this.currencyList[this.indexTwo].scale;
-      console.log('scaleTwo', scaleTwo);
       this.moneyTwo = (rmb / scaleTwo).toFixed(2);
-      console.log('moneyTwo', this.moneyTwo);
     },
     conversionAmountTwo: function conversionAmountTwo(event) {
       var money = event ? event.target.value : +this.moneyTwo;
-      console.log('money', money);
       var scaleTwo = this.currencyList[this.indexTwo].scale;
-      console.log('scaleTwo', scaleTwo);
       var rmb = scaleTwo * money;
-      console.log('rmb', rmb);
       var scaleOne = this.currencyList[this.indexOne].scale;
-      console.log('scaleOne', scaleOne);
       this.moneyOne = (rmb / scaleOne).toFixed(2);
-      console.log('moneyOne', this.moneyOne);
+    },
+    // 前往算法说明
+    toExplain: function toExplain() {
+      uni.navigateTo({
+        url: '/pages/index/explain' });
+
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

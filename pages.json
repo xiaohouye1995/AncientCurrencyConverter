@@ -5,6 +5,12 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path": "pages/index/explain",
+			"style": {
+				"navigationBarTitleText": "算法说明"
+			}
 		}
 	],
 	// "tabBar": {

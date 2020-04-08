@@ -24,15 +24,43 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.btn-feedback {
-  margin: 0;
-  padding: 0;
-  background: none;
+.container {
   width: 100%;
-  text-align: left;
-  border: none;
+  font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #00aaff;
+  color: #353535;
+  font-size: 13pt;
+  position: relative;
+  box-sizing: border-box;
 }
-.btn-feedback:after {
-  border: none;
+.right {
+  text-align: right;
+}
+.panel {
+  color: #fff;
+  background: #00aaff;
+}
+.panel-title {
+  text-align: center;
+  font-size: 20pt;
+}
+.article {
+  background: #fff;
+  margin: 0 30rpx;
+  padding: 20rpx 40rpx;
+  border-radius: 12px;
+}
+.article-title {
+  font-size: 18pt;
+  font-weight: 600;
+}
+.part {
+  margin: 40rpx;
+}
+.part-img {
+  width: 100%;
+}
+.blod {
+  font-weight: 600;
 }
 
