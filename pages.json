@@ -34,8 +34,8 @@
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "来抛硬币",
 		// #ifdef MP-WEIXIN
-		"navigationBarBackgroundColor": "#00aaff",
+		"navigationBarBackgroundColor": "#2E294E",
 		// #endif
-		"backgroundColor": "#00aaff"
+		"backgroundColor": "#2E294E"
 	}
 }

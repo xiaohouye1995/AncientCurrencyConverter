@@ -39,7 +39,7 @@
 			</view>
 		</view>
 		<view class="footer">
-			<text class="footer-text" @tap="toExplain()">— 算法规则 —</text>
+			<text class="footer-text" @tap="toExplain()">— 算法说明 —</text>
 		</view>
 	</view>
 </template>
@@ -120,7 +120,8 @@
 		width: 100%;
 		height: 100vh;
 		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-		background-color: #f7f8fa;
+		background-color: #2E294E;
+		// background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		color: #353535;
 		font-size: 14pt;
 		position: relative;
@@ -132,13 +133,16 @@
 	}
 
 	.icon-money {
-		width: 80rpx;
-		height: 80rpx;
-		line-height: 80rpx;
+		width: 100rpx;
+		height: 100rpx;
+		line-height: 100rpx;
 		color: #fff;
-		background: #ff5500;
+		// background: #ff5500;
+		// background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
+		// background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
+		background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
 		border-radius: 50%;
-		font-size: 11pt;
+		font-size: 14pt;
 	}
 	
 	.note {
@@ -150,7 +154,8 @@
 	.panel-bg {
 		width: 100%;
 		height: 500rpx;
-		background-color: #00aaff;
+		// background-color: #2E294E;
+		// background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 		text-align: center;
 		font-size: 20pt;
 		color: #fff;
@@ -180,8 +185,9 @@
 	}
 
 	.panel-title {
-		padding: 10rpx;
-		background: #ffd500;
+		padding: 20rpx;
+		// background: #ffd500;
+		background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
 		border-top-left-radius: 12px;
 		border-top-right-radius: 12px;
 		color: #fff;
@@ -224,6 +230,7 @@
 
 	.footer-text {
 		font-size: 13pt;
-		color: #888;
+		// color: #888;
+		color: #fff;
 	}
 </style>

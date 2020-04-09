@@ -28,7 +28,7 @@
   width: 100%;
   height: 100vh;
   font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f7f8fa;
+  background-color: #2E294E;
   color: #353535;
   font-size: 14pt;
   position: relative;
@@ -38,13 +38,14 @@
   color: #888;
 }
 .icon-money {
-  width: 80rpx;
-  height: 80rpx;
-  line-height: 80rpx;
+  width: 100rpx;
+  height: 100rpx;
+  line-height: 100rpx;
   color: #fff;
-  background: #ff5500;
+  background-image: -webkit-linear-gradient(315deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+  background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
   border-radius: 50%;
-  font-size: 11pt;
+  font-size: 14pt;
 }
 .note {
   font-size: 11pt;
@@ -54,7 +55,6 @@
 .panel-bg {
   width: 100%;
   height: 500rpx;
-  background-color: #00aaff;
   text-align: center;
   font-size: 20pt;
   color: #fff;
@@ -81,8 +81,9 @@
   box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
 }
 .panel-title {
-  padding: 10rpx;
-  background: #ffd500;
+  padding: 20rpx;
+  background-image: -webkit-linear-gradient(330deg, #f6d365 0%, #fda085 100%);
+  background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   color: #fff;
@@ -122,6 +123,6 @@
 }
 .footer-text {
   font-size: 13pt;
-  color: #888;
+  color: #fff;
 }
 
