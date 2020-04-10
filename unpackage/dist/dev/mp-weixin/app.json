@@ -6,12 +6,13 @@
   "subPackages": [],
   "window": {
     "navigationBarTextStyle": "white",
-    "navigationBarTitleText": "来抛硬币",
-    "navigationBarBackgroundColor": "#2E294E",
-    "backgroundColor": "#2E294E"
+    "navigationBarTitleText": "古代银钱换算器",
+    "navigationBarBackgroundColor": "#22202e",
+    "backgroundColor": "#22202e"
   },
   "uniStatistics": {
     "enable": false
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap27.json"
 }

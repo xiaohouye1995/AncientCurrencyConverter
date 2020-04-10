@@ -11,8 +11,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",
-	"appid": "wx4bae1d4717cdd885",
-	"projectname": "tossCoin",
+	"appid": "wx5f8f090664d3b630",
+	"projectname": "AncientCurrencyConverter",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

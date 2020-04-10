@@ -28,7 +28,7 @@
   width: 100%;
   height: 100vh;
   font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #2E294E;
+  background-color: #22202e;
   color: #353535;
   font-size: 13pt;
   position: relative;
@@ -52,7 +52,10 @@
 }
 .part.data-v-287dcab0 {
   margin: 40rpx 0;
-  word-wrap: break-word;
+  word-break: break-all;
+}
+.remark.data-v-287dcab0 {
+  color: #888;
 }
 .part-img.data-v-287dcab0 {
   width: 100%;
@@ -62,15 +65,17 @@
 }
 .container.data-v-287dcab0  .uni-collapse {
   color: #353535;
-  background-color: #2E294E;
+  background-color: transparent;
   border-radius: 12px;
 }
-.container.data-v-287dcab0  .uni-collapse .uni-collapse-cell--hide {
-    height: 200rpx;
-}
 .container.data-v-287dcab0  .uni-collapse .uni-collapse-cell {
-    background-image: -webkit-linear-gradient(330deg, #f6d365 0%, #fda085 100%);
-    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    background: #463659;
+    background-image: -webkit-linear-gradient(315deg, #463659 0%, #22202e 100%);
+    background-image: linear-gradient(-225deg, #463659 0%, #22202e 100%);
+    background-image: -webkit-linear-gradient(left, #f9d423 0%, #ff4e50 100%);
+    background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
+    background-image: -webkit-linear-gradient(110deg, #fc6076 0%, #ff9a44 100%);
+    background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
     color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
@@ -82,10 +87,13 @@
     font-weight: 600;
 }
 .container.data-v-287dcab0  .uni-collapse .uni-collapse-cell__title-text {
-    font-size: 17pt;
+    font-size: 14pt;
 }
 .container.data-v-287dcab0  .uni-collapse .uni-collapse-cell__title:active {
     background-color: transparent;
+}
+.container.data-v-287dcab0  .uni-collapse .uni-icons {
+    color: #fff !important;
 }
 .container.data-v-287dcab0  .uni-collapse .uni-collapse-cell__wrapper {
     padding: 0 40rpx;

@@ -2,13 +2,14 @@
 	<view class="container">
 		<view class="panel-bg">
 			<image class="panel-bg-logo" src="../../static/img/coinlogo.png" mode="aspectFit"></image>
-			<view>中国古代货币换算器</view>
+			<view>古代银钱换算器</view>
 			<view class="panel-bg-text">天下熙熙皆为利来，天下攘攘皆为利往</view>
 		</view>
 		<view class="panel">
-			<view class="panel-title">货币换算</view>
+			<view class="panel-title">银钱换算</view>
 			<view class="panel-cell">
 				<view class="panel-cell-hd">
+					<!-- 之后替换为该朝代流通货币图片 -->
 					<view class="icon-money">{{currencyList[indexOne].name}}</view>
 				</view>
 				<view class="panel-cell-bd">
@@ -38,6 +39,7 @@
 				</view>
 			</view>
 		</view>
+		<!-- 后面加上朝代介绍，底层人员收入 -->
 		<view class="footer">
 			<text class="footer-text" @tap="toExplain()">— 算法说明 —</text>
 		</view>
@@ -120,8 +122,8 @@
 		width: 100%;
 		height: 100vh;
 		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-		background-color: #2E294E;
-		// background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background-color: #22202e;
+		background-color: #f7f8fa;
 		color: #353535;
 		font-size: 14pt;
 		position: relative;
@@ -137,10 +139,7 @@
 		height: 100rpx;
 		line-height: 100rpx;
 		color: #fff;
-		// background: #ff5500;
-		// background-image: linear-gradient(-60deg, #ff5858 0%, #f09819 100%);
-		// background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
-		background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+		background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
 		border-radius: 50%;
 		font-size: 14pt;
 	}
@@ -154,8 +153,7 @@
 	.panel-bg {
 		width: 100%;
 		height: 500rpx;
-		// background-color: #2E294E;
-		// background-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background-color: #22202e;
 		text-align: center;
 		font-size: 20pt;
 		color: #fff;
@@ -186,12 +184,11 @@
 
 	.panel-title {
 		padding: 20rpx;
-		// background: #ffd500;
-		background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+		background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
 		border-top-left-radius: 12px;
 		border-top-right-radius: 12px;
 		color: #fff;
-		font-size: 13pt;
+		font-size: 14pt;
 	}
 
 	.panel-cell {
@@ -230,7 +227,7 @@
 
 	.footer-text {
 		font-size: 13pt;
-		// color: #888;
 		color: #fff;
+		color: #888;
 	}
 </style>

@@ -1,5 +1,5 @@
 {
-    "name" : "tossCoin",
+    "name" : "AncientCurrencyConverter",
     "appid" : "__UNI__9C7B11E",
     "description" : "",
     "versionName" : "1.0.0",
@@ -58,7 +58,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx4bae1d4717cdd885",
+        "appid" : "wx5f8f090664d3b630",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
