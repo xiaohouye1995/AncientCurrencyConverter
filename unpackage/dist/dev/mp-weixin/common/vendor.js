@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1681,6 +1681,17 @@ function normalizeComponent (
   }
 }
 
+
+/***/ }),
+
+/***/ 17:
+/*!********************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/CurrencyList.json ***!
+  \********************************************************************************/
+/*! exports provided: data, default */
+/***/ (function(module) {
+
+module.exports = {"data":[{"name":"中国","htmlsrc":"china","epoch":"2019","note":"人民币(元)","scale":1},{"name":"民国","htmlsrc":"minguo","epoch":"民国七年","note":"银元(元)","scale":1325.3},{"name":"清","htmlsrc":"qing","epoch":"乾隆二年","note":"白银(两)","scale":137.5},{"name":"明","htmlsrc":"ming","epoch":"万历三十六年","note":"铜钱(文)","scale":2.4},{"name":"元","htmlsrc":"yuan","epoch":"至顺元年","note":"中统钞(贯)","scale":110},{"name":"南宋","htmlsrc":"nansong","epoch":"靖康二年","note":"会子(文)","scale":2.2},{"name":"北宋","htmlsrc":"beisong","epoch":"英宗时期","note":"铜钱(文)","scale":0.58},{"name":"唐","htmlsrc":"tang","epoch":"盛唐时期","note":"铜钱(文)","scale":2.03},{"name":"东汉","htmlsrc":"donghan","epoch":"汉光武帝","note":"五铢钱(文)","scale":2.2},{"name":"西汉","htmlsrc":"xihan","epoch":"汉武帝","note":"五铢钱(文)","scale":1.1}]};
 
 /***/ }),
 
@@ -7216,7 +7227,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7237,14 +7248,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7320,7 +7331,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7756,7 +7767,7 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 46:
+/***/ 47:
 /*!********************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/uni-icons/icons.js ***!
   \********************************************************************************/
@@ -7859,6 +7870,863 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   'closefill': "\uE589",
   'sound': "\uE590",
   'scan': "\uE612" };exports.default = _default;
+
+/***/ }),
+
+/***/ 61:
+/*!*********************************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/MpHtmlParser.js ***!
+  \*********************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          将 html 解析为适用于小程序 rich-text 的 DOM 结构
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          github：https://github.com/jin-yufeng/Parser
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          docs：https://jin-yufeng.github.io/Parser
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          author：JinYufeng
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          update：2020/04/13
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */
+var cfg = __webpack_require__(/*! ./config.js */ 62),
+blankChar = cfg.blankChar,
+CssHandler = __webpack_require__(/*! ./CssHandler.js */ 63),_wx$getSystemInfoSync =
+
+
+
+wx.getSystemInfoSync(),screenWidth = _wx$getSystemInfoSync.screenWidth,system = _wx$getSystemInfoSync.system;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var emoji; // emoji 补丁包 https://jin-yufeng.github.io/Parser/#/instructions?id=emoji
+var MpHtmlParser = /*#__PURE__*/function () {"use strict";
+  function MpHtmlParser(data) {var _this = this;var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};_classCallCheck(this, MpHtmlParser);_defineProperty(this, "getName",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function (val) {return _this.xml ? val : val.toLowerCase();});_defineProperty(this, "isClose",
+
+
+
+
+
+
+
+
+    function () {return _this.data[_this.i] == '>' || _this.data[_this.i] == '/' && _this.data[_this.i + 1] == '>';});_defineProperty(this, "section",
+    function () {return _this.data.substring(_this.start, _this.i);});_defineProperty(this, "siblings",
+    function () {return _this.STACK.length ? _this.STACK[_this.STACK.length - 1].children : _this.DOM;});this.attrs = {};this.compress = options.compress;this.CssHandler = new CssHandler(options.tagStyle, screenWidth);this.data = data;this.domain = options.domain;this.DOM = [];this.i = this.start = this.audioNum = this.imgNum = this.videoNum = 0;this.protocol = this.domain && this.domain.includes('://') ? this.domain.split('://')[0] : '';this.state = this.Text;this.STACK = [];this.useAnchor = options.useAnchor;this.xml = options.xml;}_createClass(MpHtmlParser, [{ key: "parse", value: function parse() {if (emoji) this.data = emoji.parseEmoji(this.data);for (var c; c = this.data[this.i]; this.i++) {this.state(c);}if (this.state == this.Text) this.setText();while (this.STACK.length) {this.popNode(this.STACK.pop());}if (this.DOM.length) {this.DOM[0].PoweredBy = 'Parser';if (this.title) this.DOM[0].title = this.title;}return this.DOM;} // 设置属性
+  }, { key: "setAttr", value: function setAttr() {var name = this.getName(this.attrName);if (cfg.trustAttrs[name]) {if (!this.attrVal) {if (cfg.boolAttrs[name]) this.attrs[name] = 'T';} else if (name == 'src') this.attrs[name] = this.getUrl(this.attrVal.replace(/&amp;/g, '&'));else this.attrs[name] = this.attrVal;}this.attrVal = '';while (blankChar[this.data[this.i]]) {this.i++;}if (this.isClose()) this.setNode();else {this.start = this.i;this.state = this.AttrName;}} // 设置文本节点
+  }, { key: "setText", value: function setText() {var back,text = this.section();if (!text) return;text = cfg.onText && cfg.onText(text, function () {return back = true;}) || text;if (back) {this.data = this.data.substr(0, this.start) + text + this.data.substr(this.i);var _j = this.start + text.length;for (this.i = this.start; this.i < _j; this.i++) {this.state(this.data[this.i]);}return;}if (!this.pre) {// 合并空白符
+        var tmp = [];for (var _i = text.length, c; c = text[--_i];) {if (!blankChar[c] || !blankChar[tmp[0]] && (c = ' ')) tmp.unshift(c);}text = tmp.join('');if (text == ' ') return;} // 处理实体
+      var siblings = this.siblings(),i = -1,j,en;while (1) {if ((i = text.indexOf('&', i + 1)) == -1) break;if ((j = text.indexOf(';', i + 2)) == -1) break;if (text[i + 1] == '#') {en = parseInt((text[i + 2] == 'x' ? '0' : '') + text.substring(i + 2, j));if (!isNaN(en)) text = text.substr(0, i) + String.fromCharCode(en) + text.substring(j + 1);} else {en = text.substring(i + 1, j);if (en == 'nbsp') text = text.substr(0, i) + '\xA0' + text.substr(j + 1); // 解决 &nbsp; 失效
+          else if (en != 'lt' && en != 'gt' && en != 'amp' && en != 'ensp' && en != 'emsp' && en != 'quot' && en != 'apos') {i && siblings.push({ type: 'text', text: text.substr(0, i) });siblings.push({ type: 'text', text: "&".concat(en, ";"), en: 1 });text = text.substr(j + 1);i = -1;}}}text && siblings.push({ type: 'text', text: text });} // 设置元素节点
+  }, { key: "setNode", value: function setNode() {var node = { name: this.tagName.toLowerCase(), attrs: this.attrs },close = cfg.selfClosingTags[node.name] || this.xml && this.data[this.i] == '/';this.attrs = {};if (!cfg.ignoreTags[node.name]) {this.matchAttr(node);if (!close) {node.children = [];if (node.name == 'pre' && cfg.highlight) {this.remove(node);this.pre = node.pre = true;}this.siblings().push(node);this.STACK.push(node);} else if (!cfg.filter || cfg.filter(node, this) != false) this.siblings().push(node);} else {if (!close) this.remove(node);else if (node.name == 'source') {var parent = this.STACK[this.STACK.length - 1],attrs = node.attrs;if (parent && attrs.src) if (parent.name == 'video' || parent.name == 'audio') parent.attrs.source.push(attrs.src);else {var i,media = attrs.media;if (parent.name == 'picture' && !parent.attrs.src && !(attrs.src.indexOf('.webp') && system.includes('iOS')) && (!media || media.includes('px') && ((i = media.indexOf('min-width')) != -1 && (i = media.indexOf(':', i + 8)) != -1 && screenWidth > parseInt(media.substr(i + 1)) || (i = media.indexOf('max-width')) != -1 && (i = media.indexOf(':', i + 8)) != -1 && screenWidth < parseInt(media.substr(i + 1))))) parent.attrs.src = attrs.src;}} else if (node.name == 'base' && !this.domain) this.domain = node.attrs.href;}if (this.data[this.i] == '/') this.i++;this.start = this.i + 1;this.state = this.Text;} // 移除标签
+  }, { key: "remove", value: function remove(node) {var name = node.name,j = this.i;while (1) {if ((this.i = this.data.indexOf('</', this.i + 1)) == -1) {if (name == 'pre' || name == 'svg') this.i = j;else this.i = this.data.length;return;}this.start = this.i += 2;while (!blankChar[this.data[this.i]] && !this.isClose()) {this.i++;}if (this.getName(this.section()) == name) {// 代码块高亮
+          if (name == 'pre') {this.data = this.data.substr(0, j + 1) + cfg.highlight(this.data.substring(j + 1, this.i - 5), node.attrs) + this.data.substr(this.i - 5);return this.i = j;} else if (name == 'style') this.CssHandler.getStyle(this.data.substring(j + 1, this.i - 7));else if (name == 'title') this.title = this.data.substring(j + 1, this.i - 7);if ((this.i = this.data.indexOf('>', this.i)) == -1) this.i = this.data.length; // 处理 svg
+          if (name == 'svg') {var src = this.data.substring(j, this.i + 1);if (!node.attrs.xmlns) src = ' xmlns="http://www.w3.org/2000/svg"' + src;var i = j;while (this.data[j] != '<') {j--;}src = this.data.substring(j, i) + src;var parent = this.STACK[this.STACK.length - 1];if (node.attrs.width == '100%' && parent && (parent.attrs.style || '').includes('inline')) parent.attrs.style = 'width:300px;max-width:100%;' + parent.attrs.style;this.siblings().push({ name: 'img', attrs: { src: 'data:image/svg+xml;utf8,' + src.replace(/#/g, '%23'), ignore: 'T' } });}return;}}} // 处理属性
+  }, { key: "matchAttr", value: function matchAttr(node) {var attrs = node.attrs,style = this.CssHandler.match(node.name, attrs, node) + (attrs.style || ''),styleObj = {};if (attrs.id) {if (this.compress & 1) attrs.id = void 0;else if (this.useAnchor) this.bubble();}if (this.compress & 2 && attrs.class) attrs.class = void 0;switch (node.name) {case 'img':if (attrs['data-src']) {attrs.src = attrs.src || attrs['data-src'];attrs['data-src'] = void 0;}if (attrs.src && !attrs.ignore) {if (this.bubble()) attrs.i = (this.imgNum++).toString();else attrs.ignore = 'T';}break;case 'a':case 'ad':this.bubble();break;case 'font':if (attrs.color) {styleObj['color'] = attrs.color;attrs.color = void 0;}if (attrs.face) {styleObj['font-family'] = attrs.face;attrs.face = void 0;}if (attrs.size) {var size = parseInt(attrs.size);if (size < 1) size = 1;else if (size > 7) size = 7;var map = ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'];styleObj['font-size'] = map[size - 1];attrs.size = void 0;}break;case 'video':case 'audio':if (!attrs.id) attrs.id = node.name + ++this["".concat(node.name, "Num")];else this["".concat(node.name, "Num")]++;if (node.name == 'video') {if (attrs.width) {style = "width:".concat(parseFloat(attrs.width) + (attrs.width.includes('%') ? '%' : 'px'), ";").concat(style);attrs.width = void 0;}if (attrs.height) {style = "height:".concat(parseFloat(attrs.height) + (attrs.height.includes('%') ? '%' : 'px'), ";").concat(style);attrs.height = void 0;}if (this.videoNum > 3) node.lazyLoad = true;}attrs.source = [];if (attrs.src) attrs.source.push(attrs.src);if (!attrs.controls && !attrs.autoplay) console.warn("\u5B58\u5728\u6CA1\u6709 controls \u5C5E\u6027\u7684 ".concat(node.name, " \u6807\u7B7E\uFF0C\u53EF\u80FD\u5BFC\u81F4\u65E0\u6CD5\u64AD\u653E"), node);this.bubble();break;case 'td':case 'th':if (attrs.colspan || attrs.rowspan) for (var k = this.STACK.length, item; item = this.STACK[--k];) {if (item.name == 'table') {item.c = void 0;break;}}}if (attrs.align) {styleObj['text-align'] = attrs.align;attrs.align = void 0;} // 压缩 style
+      var styles = style.replace(/&quot;/g, '"').replace(/&amp;/g, '&').split(';');style = '';for (var i = 0, len = styles.length; i < len; i++) {var info = styles[i].split(':');if (info.length < 2) continue;var _key = info[0].trim().toLowerCase(),_value = info.slice(1).join(':').trim();if (_value.includes('-webkit') || _value.includes('-moz') || _value.includes('-ms') || _value.includes('-o') || _value.includes('safe')) style += ";".concat(_key, ":").concat(_value);else if (!styleObj[_key] || _value.includes('import') || !styleObj[_key].includes('import')) styleObj[_key] = _value;}if (node.name == 'img' && parseInt(styleObj.width || attrs.width) > screenWidth) styleObj.height = 'auto';for (var key in styleObj) {var value = styleObj[key];if (key.includes('flex') || key == 'order' || key == 'self-align') node.c = 1; // 填充链接
+        if (value.includes('url')) {var j = value.indexOf('(');if (j++ != -1) {while (value[j] == '"' || value[j] == "'" || blankChar[value[j]]) {j++;}value = value.substr(0, j) + this.getUrl(value.substr(j));}} // 转换 rpx
+        else if (value.includes('rpx')) value = value.replace(/[0-9.]+\s*rpx/g, function ($) {return parseFloat($) * screenWidth / 750 + 'px';});else if (key == 'white-space' && value.includes('pre')) this.pre = node.pre = true;style += ";".concat(key, ":").concat(value);}style = style.substr(1);if (style) attrs.style = style;} // 节点出栈处理
+  }, { key: "popNode", value: function popNode(node) {// 空白符处理
+      if (node.pre) {node.pre = this.pre = void 0;for (var i = this.STACK.length; i--;) {if (this.STACK[i].pre) this.pre = true;}}if (node.name == 'head' || cfg.filter && cfg.filter(node, this) == false) return this.siblings().pop();var attrs = node.attrs; // 替换一些标签名
+      if (node.name == 'picture') {node.name = 'img';if (!attrs.src && (node.children[0] || '').name == 'img') attrs.src = node.children[0].attrs.src;if (attrs.src && !attrs.ignore) attrs.i = (this.imgNum++).toString();return node.children = void 0;}if (cfg.blockTags[node.name]) node.name = 'div';else if (!cfg.trustTags[node.name]) node.name = 'span'; // 处理列表
+      if (node.c) {if (node.name == 'ul') {var floor = 1;for (var _i2 = this.STACK.length; _i2--;) {if (this.STACK[_i2].name == 'ul') floor++;}if (floor != 1) for (var _i3 = node.children.length; _i3--;) {node.children[_i3].floor = floor;}} else if (node.name == 'ol') {for (var _i4 = 0, num = 1, child; child = node.children[_i4++];) {if (child.name == 'li') {child.type = 'ol';child.num = function (num, type) {if (type == 'a') return String.fromCharCode(97 + (num - 1) % 26);if (type == 'A') return String.fromCharCode(65 + (num - 1) % 26);if (type == 'i' || type == 'I') {num = (num - 1) % 99 + 1;var one = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'],ten = ['X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC'],res = (ten[Math.floor(num / 10) - 1] || '') + (one[num % 10 - 1] || '');if (type == 'i') return res.toLowerCase();return res;}return num;}(num++, attrs.type) + '.';}}}} // 处理表格的边框
+      if (node.name == 'table') {var padding = attrs.cellpadding,spacing = attrs.cellspacing,border = attrs.border;if (node.c) {this.bubble();if (!padding) padding = 2;if (!spacing) spacing = 2;}if (border) attrs.style = "border:".concat(border, "px solid gray;").concat(attrs.style || '');if (spacing) attrs.style = "border-spacing:".concat(spacing, "px;").concat(attrs.style || '');if (border || padding) (function f(ns) {for (var i = 0, n; n = ns[i]; i++) {if (n.name == 'th' || n.name == 'td') {if (border) n.attrs.style = "border:".concat(border, "px solid gray;").concat(n.attrs.style);if (padding) n.attrs.style = "padding:".concat(padding, "px;").concat(n.attrs.style);} else f(n.children || []);}})(node.children);}this.CssHandler.pop && this.CssHandler.pop(node); // 自动压缩
+      if (node.name == 'div' && !Object.keys(attrs).length) {var siblings = this.siblings();if (node.children.length == 1 && node.children[0].name == 'div') siblings[siblings.length - 1] = node.children[0];}} // 工具函数
+  }, { key: "bubble", value: function bubble() {for (var i = this.STACK.length, item; item = this.STACK[--i];) {if (cfg.richOnlyTags[item.name]) {if (item.name == 'table' && !Object.hasOwnProperty.call(item, 'c')) item.c = 1;return false;}item.c = 1;}return true;} }, { key: "getUrl", value: function getUrl(url) {if (url[0] == '/') {if (url[1] == '/') url = this.protocol + ':' + url;else if (this.domain) url = this.domain + url;} else if (this.domain && url.indexOf('data:') != 0 && !url.includes('://')) url = this.domain + '/' + url;return url;} }, { key: "Text", // 状态机
+    value: function Text(c) {if (c == '<') {var next = this.data[this.i + 1],isLetter = function isLetter(c) {return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';};if (isLetter(next)) {this.setText();this.start = this.i + 1;this.state = this.TagName;} else if (next == '/') {this.setText();if (isLetter(this.data[++this.i + 1])) {this.start = this.i + 1;this.state = this.EndTag;} else this.Comment();} else if (next == '!') {this.setText();this.Comment();}}
+    } }, { key: "Comment", value: function Comment()
+    {
+      var key;
+      if (this.data.substring(this.i + 2, this.i + 4) == '--') key = '-->';else
+      if (this.data.substring(this.i + 2, this.i + 9) == '[CDATA[') key = ']]>';else
+      key = '>';
+      if ((this.i = this.data.indexOf(key, this.i + 2)) == -1) this.i = this.data.length;else
+      this.i += key.length - 1;
+      this.start = this.i + 1;
+      this.state = this.Text;
+    } }, { key: "TagName", value: function TagName(
+    c) {
+      if (blankChar[c]) {
+        this.tagName = this.section();
+        while (blankChar[this.data[this.i]]) {this.i++;}
+        if (this.isClose()) this.setNode();else
+        {
+          this.start = this.i;
+          this.state = this.AttrName;
+        }
+      } else if (this.isClose()) {
+        this.tagName = this.section();
+        this.setNode();
+      }
+    } }, { key: "AttrName", value: function AttrName(
+    c) {
+      var blank = blankChar[c];
+      if (blank) {
+        this.attrName = this.section();
+        c = this.data[this.i];
+      }
+      if (c == '=') {
+        if (!blank) this.attrName = this.section();
+        while (blankChar[this.data[++this.i]]) {;}
+        this.start = this.i--;
+        this.state = this.AttrValue;
+      } else if (blank) this.setAttr();else
+      if (this.isClose()) {
+        this.attrName = this.section();
+        this.setAttr();
+      }
+    } }, { key: "AttrValue", value: function AttrValue(
+    c) {
+      if (c == '"' || c == "'") {
+        this.start++;
+        if ((this.i = this.data.indexOf(c, this.i + 1)) == -1) return this.i = this.data.length;
+        this.attrVal = this.section();
+        this.i++;
+      } else {
+        for (; !blankChar[this.data[this.i]] && !this.isClose(); this.i++) {;}
+        this.attrVal = this.section();
+      }
+      this.setAttr();
+    } }, { key: "EndTag", value: function EndTag(
+    c) {
+      if (blankChar[c] || c == '>' || c == '/') {
+        var name = this.getName(this.section());
+        for (var i = this.STACK.length; i--;) {
+          if (this.STACK[i].name == name) break;}
+        if (i != -1) {
+          var node;
+          while ((node = this.STACK.pop()).name != name) {;}
+          this.popNode(node);
+        } else if (name == 'p' || name == 'br')
+        this.siblings().push({
+          name: name,
+          attrs: {} });
+
+        this.i = this.data.indexOf('>', this.i);
+        this.start = this.i + 1;
+        if (this.i == -1) this.i = this.data.length;else
+        this.state = this.Text;
+      }
+    } }]);return MpHtmlParser;}();
+
+module.exports = MpHtmlParser;
+
+/***/ }),
+
+/***/ 62:
+/*!***************************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/config.js ***!
+  \***************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* 配置文件 */
+
+var canIUse = wx.canIUse('editor'); // 高基础库标识，用于兼容
+
+module.exports = {
+  // 过滤器函数
+  filter: null,
+  // 代码高亮函数
+  highlight: null,
+  // 文本处理函数
+  onText: null,
+  blankChar: makeMap(' ,\xA0,\t,\r,\n,\f'),
+  // 块级标签，将被转为 div
+  blockTags: makeMap('address,article,aside,body,caption,center,cite,footer,header,html,nav,section' + (
+
+  canIUse ? '' :
+
+  ',pre')),
+  // 将被移除的标签
+  ignoreTags: makeMap(
+  'area,base,basefont,canvas,command,frame,input,isindex,keygen,link,map,meta,param,script,source,style,svg,textarea,title,track,use,wbr' + (
+
+  canIUse ? ',rp' : '') +
+
+
+  ',embed,iframe'),
+
+
+  // 只能被 rich-text 显示的标签
+  richOnlyTags: makeMap('a,colgroup,fieldset,legend,picture,table' + (
+
+  canIUse ? ',bdi,bdo,caption,rt,ruby' : '')),
+
+
+  // 自闭合的标签
+  selfClosingTags: makeMap(
+  'area,base,basefont,br,col,circle,ellipse,embed,frame,hr,img,input,isindex,keygen,line,link,meta,param,path,polygon,rect,source,track,use,wbr'),
+
+  // 信任的属性
+  trustAttrs: makeMap(
+  'align,alt,app-id,author,autoplay,border,cellpadding,cellspacing,class,color,colspan,controls,data-src,dir,face,height,href,id,ignore,loop,media,muted,name,path,poster,rowspan,size,span,src,start,style,type,unit-id,width,xmlns'),
+
+  // bool 型的属性
+  boolAttrs: makeMap('autoplay,controls,ignore,loop,muted'),
+  // 信任的标签
+  trustTags: makeMap(
+  'a,abbr,ad,audio,b,blockquote,br,code,col,colgroup,dd,del,dl,dt,div,em,fieldset,h1,h2,h3,h4,h5,h6,hr,i,img,ins,label,legend,li,ol,p,q,source,span,strong,sub,sup,table,tbody,td,tfoot,th,thead,tr,title,ul,video' + (
+
+  canIUse ? ',bdi,bdo,caption,pre,rt,ruby' : '')),
+
+
+
+
+
+  // 默认的标签样式
+  userAgentStyles: {
+    address: 'font-style:italic',
+    big: 'display:inline;font-size:1.2em',
+    blockquote: 'background-color:#f6f6f6;border-left:3px solid #dbdbdb;color:#6c6c6c;padding:5px 0 5px 10px',
+    caption: 'display:table-caption;text-align:center',
+    center: 'text-align:center',
+    cite: 'font-style:italic',
+    dd: 'margin-left:40px',
+    img: 'max-width:100%',
+    mark: 'background-color:yellow',
+    picture: 'max-width:100%',
+    pre: 'font-family:monospace;white-space:pre;overflow:scroll',
+    s: 'text-decoration:line-through',
+    small: 'display:inline;font-size:0.8em',
+    u: 'text-decoration:underline' } };
+
+
+
+function makeMap(str) {
+  var map = {},
+  list = str.split(',');
+  for (var i = list.length; i--;) {
+    map[list[i]] = true;}
+  return map;
+}
+
+/***/ }),
+
+/***/ 63:
+/*!*******************************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/CssHandler.js ***!
+  \*******************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}function _defineProperties(target, props) {for (var i = 0; i < props.length; i++) {var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);}}function _createClass(Constructor, protoProps, staticProps) {if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;} /*
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          解析和匹配 Css 的选择器
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          github：https://github.com/jin-yufeng/Parser
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          docs：https://jin-yufeng.github.io/Parser
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          author：JinYufeng
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          update：2020/03/15
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        */
+var cfg = __webpack_require__(/*! ./config.js */ 62);var
+CssHandler = /*#__PURE__*/function () {"use strict";
+  function CssHandler(tagStyle) {var _this = this;_classCallCheck(this, CssHandler);_defineProperty(this, "getStyle",
+
+
+
+
+
+    function (data) {return _this.styles = new CssParser(data, _this.styles).parse();});var styles = Object.assign({}, cfg.userAgentStyles);for (var item in tagStyle) {styles[item] = (styles[item] ? styles[item] + ';' : '') + tagStyle[item];}this.styles = styles;}_createClass(CssHandler, [{ key: "match", value: function match(
+    name, attrs) {
+      var tmp,matched = (tmp = this.styles[name]) ? tmp + ';' : '';
+      if (attrs.class) {
+        var items = attrs.class.split(' ');
+        for (var i = 0, item; item = items[i]; i++) {
+          if (tmp = this.styles['.' + item])
+          matched += tmp + ';';}
+      }
+      if (tmp = this.styles['#' + attrs.id])
+      matched += tmp + ';';
+      return matched;
+    } }]);return CssHandler;}();
+
+module.exports = CssHandler;var
+CssParser = /*#__PURE__*/function () {"use strict";
+  function CssParser(data, init) {var _this2 = this;_classCallCheck(this, CssParser);_defineProperty(this, "section",
+
+
+
+
+
+
+
+
+
+
+
+
+    function () {return _this2.data.substring(_this2.start, _this2.i);});_defineProperty(this, "isLetter",
+    function (c) {return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';});this.data = data;this.floor = 0;this.i = 0;this.list = [];this.res = init;this.state = this.Space;}_createClass(CssParser, [{ key: "parse", value: function parse() {for (var c; c = this.data[this.i]; this.i++) {this.state(c);}return this.res;} }, { key: "Space",
+    // 状态机
+    value: function Space(c) {
+      if (c == '.' || c == '#' || this.isLetter(c)) {
+        this.start = this.i;
+        this.state = this.Name;
+      } else if (c == '/' && this.data[this.i + 1] == '*')
+      this.Comment();else
+      if (!cfg.blankChar[c] && c != ';')
+      this.state = this.Ignore;
+    } }, { key: "Comment", value: function Comment()
+    {
+      this.i = this.data.indexOf('*/', this.i) + 1;
+      if (!this.i) this.i = this.data.length;
+      this.state = this.Space;
+    } }, { key: "Ignore", value: function Ignore(
+    c) {
+      if (c == '{') this.floor++;else
+      if (c == '}' && ! --this.floor) this.state = this.Space;
+    } }, { key: "Name", value: function Name(
+    c) {
+      if (cfg.blankChar[c]) {
+        this.list.push(this.section());
+        this.state = this.NameSpace;
+      } else if (c == '{') {
+        this.list.push(this.section());
+        this.Content();
+      } else if (c == ',') {
+        this.list.push(this.section());
+        this.Comma();
+      } else if (!this.isLetter(c) && (c < '0' || c > '9') && c != '-' && c != '_')
+      this.state = this.Ignore;
+    } }, { key: "NameSpace", value: function NameSpace(
+    c) {
+      if (c == '{') this.Content();else
+      if (c == ',') this.Comma();else
+      if (!cfg.blankChar[c]) this.state = this.Ignore;
+    } }, { key: "Comma", value: function Comma()
+    {
+      while (cfg.blankChar[this.data[++this.i]]) {;}
+      if (this.data[this.i] == '{') this.Content();else
+      {
+        this.start = this.i--;
+        this.state = this.Name;
+      }
+    } }, { key: "Content", value: function Content()
+    {
+      this.start = ++this.i;
+      if ((this.i = this.data.indexOf('}', this.i)) == -1) this.i = this.data.length;
+      var content = this.section();
+      for (var i = 0, item; item = this.list[i++];) {
+        if (this.res[item]) this.res[item] += ';' + content;else
+        this.res[item] = content;}
+      this.list = [];
+      this.state = this.Space;
+    } }]);return CssParser;}();
+
+/***/ }),
+
+/***/ 77:
+/*!***********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/douzi.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong style=\"font-size: 20px;\">\u53E4\u4EE3\u4E00\u4E24\u94F6\u5B50\u5230\u5E95\u5408\u591A\u5C11\u4EBA\u6C11\u5E01\uFF1F</strong><br/>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    \u4F5C\u8005\uFF1A\u8C46\u5B50\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"margin-top: 0px; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u7C7B\u95EE\u9898\u5728\u5F88\u591A\u5730\u65B9\u770B\u5230\u591A\u6B21\uFF0C\u95EE\u9898\u4E0B\u591A\u6570\u56DE\u7B54\uFF0C\u8981\u4E48\u6298\u5408\u7C73\u4EF7\uFF0C\u8981\u4E48\u6298\u5408\u8D2D\u4E70\u529B\uFF0C\u8981\u4E48\u5C31\u7EA0\u7ED3\u9965\u8352\u5E74\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u4E4B\u524D\u53C8\u6709\u95EE\u6C11\u56FD\u65F6\u671F\u4E00\u4E2A\u5927\u6D0B\u5927\u6982\u7B49\u4E8E\u73B0\u5728\u7684\u591A\u5C11\u94B1\uFF0C\u5E95\u4E0B\u7684\u56DE\u7B54\u4E5F\u662F\u6E05\u4E00\u8272\u7684\u6821\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u80B2\u90E8\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u53BF\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u804C\u5DE5\u591A\u5C11\u94B1\u3002\u6211\u8BF4\u8FC7\uFF0C\u7528\u52A8\u8361\u4E0D\u5B9A\u7684\u7C73\u4EF7\u6765\u8861\u91CF\u94F6\u5B50\u7684\u4EF7\u503C\uFF0C\u6700\u540E\u5F97\u51FA\u7684\u7ED3\u8BBA\u662F\u8352\u8C2C\u7684\uFF0C\u4F60\u66F4\u4E0D\u80FD\u4EE5\u53E4\u4EE3\u8D2D\u7F6E\u623F\u4EA7\u3001\u7530\u5730\u7684\u82B1\u9500\u6765\u5BF9\u6BD4\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u53EF\u8131\u79BB\u7FA4\u4F17\uFF0C\u53EA\u53C2\u7167\u4E0A\u5C42\u6536\u5165\u6765\u5B9A\u593A\uFF0C\u5426\u5219\u7ED3\u8BBA\u4E00\u5B9A\u6781\u5176\u8352\u8C2C\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8981\u8BF4\u4E00\u4E24\u94F6\u5B50\u3001\u4E00\u4E2A\u94F6\u5143\uFF0C\u5408\u73B0\u5728\u591A\u5C11\u94B1\uFF0C\u6709\u4E2A\u975E\u5E38\u7B80\u5355\u7C97\u66B4\uFF0C\u4F46\u662F\u975E\u5E38\u51C6\u786E\u3001\u975E\u5E38\u6709\u6548\u7684\u65B9\u5F0F\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u94F6\u4E24\u3001\u6587\u94B1\u3001\u5E03\u5E1B\u3001\u94F6\u5143\uFF09=\u73B0\u5982\u4ECA\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u4EBA\u6C11\u5E01\uFF09</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u6E05\u534E\u5916\u6559\u72C4\u767B\u8FC8\u8C03\u67E5\u4E86\u5317\u4EAC\u6700\u666E\u901A\u5C45\u6C11\u7684\u6536\u5165\u3002\u5176\u4E2D\uFF0C1918\u5E74\uFF0C\u5317\u4EAC\u5C45\u6C11\u6700\u5E95\u5C42\u7684\u6536\u5165\u662F1.66\u94F6\u5143/\u6708\uFF0C\u5373\u6BCF\u4E2A\u6708\u624D\u5F97\u4E00\u5757\u516D\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6700\u666E\u901A\u6700\u5E95\u5C42\u7684\u5458\u5DE5\uFF0C\u6709\u4F4F\u5904\uFF0C\u4F46\u751F\u6D3B\u5341\u5206\u8270\u96BE\uFF0C\u6708\u5165\u4E00\u5757\u516D\u89D2\uFF0C\u53731.6\u5143\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6BB5\u516C\u9986\u4E2D\u7684\u4F63\u4EBA\u3001\u5728\u5DE5\u5730\u5E72\u6D3B\u7684\u5DE5\u4EBA\u3001\u996D\u5E97\u7684\u4F19\u8BA1\uFF0C\u6708\u5165\u7EA6\u54082\u4E2A\u5927\u6D0B\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u90A3\u4E48\uFF0C\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u53EF\u4EE5\u5F97\u51FA\u7ED3\u8BBA\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u6C11\u56FD\u521D\u5E74\uFF0C2\u4E2A\u5927\u6D0B\u7EA6\u7B49\u4E8E\u73B0\u5982\u4ECA\u76843000\u5143\uFF0C\u53731\u4E2A\u5927\u6D0B\u7B49\u4E8E\u73B0\u5728\u76841500\u5143\u3002</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u65E2\u4E0D\u662F\u7C73\u4EF7\u6298\u5408\u51FA\u6765\u7684300\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u662F\u8089\u4EF7\u6298\u5408\u51FA\u6765\u7684800\u5143\u4EBA\u6C11\u5E01\u3002\u56E0\u4E3A\u4ECE\u4E0A\u4E16\u7EAA\u672B\u671F\u5F00\u59CB\uFF0C\u519C\u4E1A\u8FDB\u5165\u673A\u68B0\u5316\uFF0C\u53C8\u62E5\u6709\u5316\u80A5\u7B49\u8D44\u6599\uFF0C\u4EF7\u503C\u53EF\u79F0\u4F4E\u5EC9\uFF0C\u4EA9\u4EA7\u5341\u500D\u4E8E\u53E4\u4EE3\uFF0C\u53C8\u4E0D\u4F3C\u53E4\u4EE3\u7C73\u4EF7\u817E\u8E0A\u3002\u5404\u79CD\u8089\u79BD\u3001\u8089\u732A\u517B\u6B96\uFF0C\u5728\u53E4\u4EE3\u4E5F\u4E0D\u80FD\u4E0E\u73B0\u5982\u4ECA\u7684\u62E5\u6709\u91CF\u5BF9\u6BD4\u3002\u5176\u4ED6\u8BF8\u5982\u80FD\u4E70\u9A74\u4F46\u4E70\u4E0D\u8D77\u7CAE\uFF0C\u80FD\u76D6\u5C4B\u4F46\u5403\u4E0D\u8D77\u8089\u7684\u4E8B\uFF0C\u5B9E\u5728\u592A\u591A\uFF0C\u4E0D\u4E00\u4E00\u5217\u4E3E\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u56E0\u6B64\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\uFF08\u90A3\u5565\u4EBA\u53E3\uFF09\u7684\u6536\u5165\u624D\u662F\u9760\u8C31\u7684\uFF0C\u4E5F\u80FD\u56DE\u5934\u8FC7\u6765\u68C0\u6D4B\u5F53\u65F6\u67D0\u6837\u4E1C\u897F\u7684\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u7528\u5177\u4F53\u7684\u67D0\u6837\u4E1C\u897F\u53BB\u68C0\u6D4B\u5E95\u5C42\u6708\u5165\u3002\u4E8E\u662F\uFF0C\u4F60\u56DE\u5934\u518D\u53BB\u68C0\u6D4B\uFF0C\u53D1\u73B0\u5728\u6C11\u56FD\u521D\u671F\uFF0C2\u4E2A\u5927\u6D0B\u80FD\u7F6E\u529E\u4E00\u684C\u4E0A\u7B49\u5A5A\u5BB4\u3002\u800C\u73B0\u5982\u4ECA\uFF0C\u666E\u901A\u5A5A\u5BB4\u9152\u5E2D\u4E00\u4E24\u5343\uFF0C\u9AD8\u7EA7\u5A5A\u5BB4\u4E00\u684C3000\u5DE6\u53F3\u3002\u518D\u9A8C\u6C11\u56FD\u521D\u5E74\uFF0C800\u94F6\u5143\u4E70\u5317\u4EAC\u4E00\u5957\u623F\uFF0C\u5219\u54082017\u5E74\u7684\u4EBA\u6C11\u5E01120\u4E07\uFF0C\u5E76\u4E0D\u4FBF\u5B9C\uFF0C\u4F46\u548C\u73B0\u5982\u4ECA\u7684\u623F\u4EF7\u76F8\u6BD4\uFF0C\u771F\u662F\u4FBF\u5B9C\u5230\u59E5\u59E5\u5BB6\u4E86\u3002\u7531\u6B64\u63A8\u800C\u5E7F\u4E4B\uFF0C\u8D27\u5E01\u672A\u66FE\u52A8\u8361\u8FC7\u76841925\u5E74\u4E4B\u524D\u7684\u6C11\u56FD\uFF0C1\u5757\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1930\u5E74\u76848\u4E2A\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1980\u5E74\u768415\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1990\u5E74\u768450\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2000\u5E74\u7684350\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2010\u5E74\u7684900\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2017\u5E74\u76841500\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \uFF08\u5168\u90E8\u6839\u636E\u5E95\u5C42\u5458\u5DE5\u6E29\u9971\u5DE5\u8D44\u6362\u7B97\uFF09\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6709\u4EBA\u95EE\uFF0C\u4E09\u56DB\u5341\u5E74\u6765\uFF0C\u6211\u56FD\u901A\u8D27\u81A8\u80C0\u4E86\u591A\u5C11\u500D\u3002\u7B54\u6848\u5F88\u660E\u663E\u4E86\uFF0C\u662F100\u500D\u30021980\u5E74\u7684\u4E00\u5757\u94B1\uFF0C\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u4E00\u767E\u5757\u94B1\u3002\u8FD9\u4ECE\u4FA7\u9762\u8BC1\u660E\u4E86\u8D5A\u4E86\u94B1\u5B58\u94F6\u884C\u5230\u5E95\u8D2C\u4E0D\u8D2C\u503C\uFF0C\u56FD\u5BB6\u5370\u53D1\u8D27\u5E01\uFF0C\u5230\u5E95\u5BF9\u4F60\u4EE5\u524D\u5B58\u7684\u94B1\uFF0C\u7A00\u91CA\u5230\u4F55\u79CD\u7A0B\u5EA6\uFF1F\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u90FD\u662F\u6839\u636E\u6700\u5E95\u5C42\u7684\u5DE5\u4EBA\u3001\u53BF\u6C11\u7684\u6708\u5165\u800C\u7B97\u51FA\u6765\u7684\uFF0C\u800C\u6708\u5165\u662F\u5F53\u65F6\u6C11\u4EF7\u7684\u76F4\u63A5\u53CD\u5E94\u3002\u5230\u73B0\u5728\uFF0C\u5E95\u5C42\u5DE5\u4EBA\u3001\u5FAD\u5F79\u3001\u4EC6\u4ECE\u3001\u670D\u52A1\u5458\uFF0C\u4E5F\u5360\u636E\u4EBA\u53E3\u7684\u7EDD\u5927\u591A\u6570\u3002\u7531\u6B64\uFF0C\u6211\u4EEC\u8FD8\u53EF\u4EE5\u770B\u53E4\u4EE3\u4EFB\u4F55\u65F6\u671F\u7684\u901A\u884C\u8D27\u5E01\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u591A\u5C11\u4EBA\u6C11\u5E01\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6211\u66FE\u5199\u8FC7\u4E00\u7BC7\u56DE\u7B54\uFF0C\u4E13\u95E8\u5C31\u662F\u5BF9\u6BD4\u94F6\u4E24\u4E0E\u4EBA\u6C11\u5E01\uFF0C\u8B6C\u5982\u6E05\u4EE3\u67D0\u4E9B\u65F6\u671F\uFF0C\u53BF\u6C11\u5C0F\u5DE5\uFF0C\u6708\u94B1\u4E00\u4E24\u56DB\u94B1\uFF0C\u53C8\u6709\u624D\u5F97\u516B\u94B1\u7684\uFF0C\u800C\u4EAC\u57CE\u3001\u4E3B\u8981\u57CE\u5E02\u4EC6\u5F79\u3001\u6742\u5DE5\u3001\u670D\u52A1\u4EBA\u5458\uFF0C\u6708\u94B1\u4E8C\u4E24\u3002\u300A\u7EA2\u697C\u68A6\u300B\u91CC\u5F97\u529B\u4E2B\u9B1F\uFF0C\u4E5F\u662F\u8FD9\u4E2A\u6536\u5165\u3002\u53EF\u4EE5\u770B\u51FA\uFF0C\u660E\u6E05\u65F6\u671F\u7684\u4E00\u4E24\u94F6\u5B50\uFF0C\u5927\u7565\u7B49\u4E8E\u73B0\u5982\u4ECA\u591A\u6570\u5E95\u5C42\u4EBA\u6C11\u534A\u6708\u7684\u6536\u5165\u3002<span style=\"font-weight: 600;\">\u53E4\u4EBA\u6708\u5165\u4E8C\u4E24\u94F6\u5B50\uFF0C\u7B49\u4E8E1980\u5E74\u768430\u5757\u94B1\uFF0C2000\u5E74\u7684700\u5757\u94B1\uFF0C2017\u5E74\u76843000\u5757\u94B1\u3002</span>\u800C\u6C11\u95F4\u5E38\u7528\u6587\u94B1\u7ED3\u7B97\uFF0C\u4E00\u5343\u6587\u6298\u5408\u4E00\u4E24\u94F6\u5B50\uFF0C\u540E\u6587\u94B1\u8D2C\u503C\uFF0C\u4E00\u4E24\u94F6\u5B50\u5151\u4E00\u5343\u4E03\u516B\u767E\u6587\u90FD\u6709\uFF0C\u6C11\u95F4\u5DE5\u4F5C\u4EBA\u7FA4\u6536\u5165\u4E5F\u4E0A\u6DA8\uFF0C\u4F46\u5374\u662F\u771F\u7684\u4E0A\u6DA8\u5417\uFF1F\u4F9D\u7136\u8981\u6839\u636E\u5E95\u5C42\u6708\u5165\u6765\u786E\u5B9A\u7269\u4EF7\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u6839\u636E\u67D0\u79CD\u4E1C\u897F\u4EF7\u683C\u6765\u786E\u5B9A\u6536\u5165\u591A\u5C11\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF0C\u5EB7\u7199\u5E74\u95F4\uFF0C\u8089\u4EF7\u7EF4\u6301\u5728\u4E09\u5206\u94B1\uFF0C\u5373\u4E00\u65A4\uFF08590\u514B\uFF090.03\u4E24\u767D\u94F6\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\u6708\u5165\u6362\u7B97\uFF0C\u8FD9\u5C31\u662F\u4E00\u65A4\u732A\u808938\u5757\u94B1\uFF0C\u73B0\u5728\u624D\u5341\u6765\u5757\uFF0C\u800C\u66F4\u5E95\u5C42\u7684\u6751\u6C11\uFF0C\u6708\u5165\u7B49\u4E8E\u73B0\u5982\u4ECA\u76841200\u5757\u5DE6\u53F3\u3002\u4F60\u77AC\u95F4\u5C31\u80FD\u660E\u767D\u53E4\u4EBA\u4E00\u5E74\u5230\u5934\u5403\u56DE\u8089\u591A\u4E0D\u5BB9\u6613\uFF0C\u4E3A\u5565\u90FD\u820D\u4E0D\u5F97\u4E70\u8089\u3002\u800C\u5207\u5207\u4E0D\u53EF\u6839\u636E\u4E00\u65A4\u732A\u8089\u4E09\u5206\u94F6\u94B1\u6765\u6362\u7B97\u6210\u73B0\u5728\u7684\u8089\u4EF7\uFF0C\u518D\u63A8\u51FA\u5F53\u65F6\u4EBA\u7684\u6536\u5165\u6C34\u5E73\u6298\u5408\u73B0\u5982\u4ECA\u591A\u5C11\u4EBA\u6C11\u5E01\uFF0C\u8FD9\u662F\u975E\u5E38\u8352\u8C2C\u7684\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u76D0\u5728\u53E4\u4EE3\u5236\u4F5C\u3001\u8FD0\u8F93\u90FD\u6BD4\u73B0\u5728\u8D39\u52B2\uFF0C\u6BCF\u65A4\u4E94\u5206\u94B1\uFF0C\u4E5F\u5C31\u662F0.05\u4E24\uFF0C\u54082017\u5E74\u768475\u5757\u94B1\u3002\u8FD9\u79CD\u72B6\u51B5\u4E00\u76F4\u6301\u7EED\u5230\u6C11\u56FD\u521D\u5E74\uFF0C\u8FD9\u65F6\u518D\u770B\u300A\u9ED4\u5DDD\u6EC7\u65C5\u884C\u8BB0\u300B\uFF0C\u4F60\u5C31\u80FD\u660E\u767D\u4E3A\u5565\u5404\u5730\u8D2B\u82E6\u767E\u59D3\u6839\u672C\u5C31\u5403\u4E0D\u4E0A\u76D0\uFF0C\u6700\u591A\u53EA\u662F\u6CBE\u7740\u4E00\u70B9\u70B9\u5927\u76D0\u7C92\u5C1D\u4E00\u4E9B\u6ECB\u5473\u7684\u539F\u56E0\u4E86\u3002\u800C\u4F60\uFF0C\u7EDD\u4E0D\u53EF\u6839\u636E\u5F53\u65F6\u7684\u98DF\u76D0\u4EF7\u683C\uFF0C\u53CD\u63A8\u51FA\u5151\u7387\u3002\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u5E95\u5C42\u4E61\u91CE\u767E\u59D3\uFF0C\u65E5\u5165\u4E00\u767E\u6587\uFF0C\u6708\u5165\u4E09\u5343\u6587\uFF083\u8D2F\uFF09\uFF0C\u7B49\u4E8E2000\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E00\u6587\u5408\u73B0\u5728\u7684\u516D\u3001\u4E03\u6BDB\u94B1\uFF0C\u4E5F\u662F\u5982\u6B64\u63A8\u5BFC\u3002\u4E0A\u5C42\u5B98\u5458\u4E09\u5206\u4E4B\u4E00\u53D1\u94B1\uFF0C\u4E09\u5206\u4E4B\u4E8C\u53D1\u4E1C\u897F\uFF0C\u4E5F\u662F\u65E0\u5948\u4E4B\u4E3E\u3002\u5317\u5B8B\u5F85\u9047\u4E2D\u7B49\u7684\u5F53\u5175\u7684\uFF0C\u5E73\u5747\u4E00\u5929\u80FD\u62FF130\u6587\uFF0C\u5230\u5357\u5B8B\u4E00\u5929\u80FD\u62FF500\u591A\u6587\uFF0C\u4E0D\u662F\u5DE5\u8D44\u6DA8\u4E86\uFF0C\u662F\u94B1\u6BDB\u4E86\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u57CE\u91CC\u5C0F\u5403\uFF0C\u6BCF\u4EFD15\u6587\uFF0C\u4E5F\u5C31\u662F\u73B0\u5728\u768415\u5757\u94B1\u5DE6\u53F3\uFF0C\u8FD9\u662F\u9E21\u6742\u6C64\u7684\u4EF7\u683C\u3002\u800C\u852C\u83DC\u9020\u9F51\uFF0C\u6BCF\u789710\u6587\u3002\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <img src=\"https://pic2.zhimg.com/80/v2-b1fff09d1be1bba3f518acbcb807b4bd_720w.jpg\" class=\"content_image lazy\"/>\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u603B\u4E4B\uFF0C\u57FA\u4E8E\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u8054\u7CFB\u73B0\u5982\u4ECA\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u6765\u8BA4\u77E5\u53E4\u4EE3\uFF0C\u751A\u81F3\u8FD1\u4EE3\u7CAE\u98DF\u3001\u8089\u7C7B\u3001\u5403\u7A7F\u3001\u4F4F\u5BBF\u3001\u623F\u4EA7\u3001\u5A5A\u4E27\u3001\u96C7\u4F63\u7B49\u6240\u6709\u4EBA\u4EEC\u6240\u9700\u8D2D\u4E70\u3001\u51FA\u5356\u7269\u54C1\u7684\u4EF7\u683C\uFF0C\u624D\u662F\u6700\u5408\u7406\u7684\u3002\u5982\u6B64\u8BA1\u7B97\uFF0C\u5219\u8352\u5E74\u7CAE\u98DF\u4EF7\u683C\u7684\u817E\u8E0A\u3001\u6602\u8D35\uFF0C\u5219\u7ACB\u5373\u663E\u73B0\u3002\u767E\u59D3\u4E00\u5E74\u5230\u5934\u820D\u4E0D\u5F97\u5403\u4E00\u56DE\u8089\u7684\u5FC3\u6001\uFF0C\u4E5F\u80FD\u7ACB\u5373\u4F53\u4F1A\u5230\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"color: #888;\">\u6CE8\uFF1A\u7B97\u6CD5\u5F15\u7528\u81EA\u77E5\u4E4E\u7528\u6237 @\u8C46\u5B50\uFF0C\u94FE\u63A5\u5730\u5740\uFF1Ahttps://zhuanlan.zhihu.com/p/32089267</span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 78:
+/*!********************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json sync ^\.\/.*\.js$ ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./douzi.js": 77,
+	"./minguo.js": 79,
+	"./qing.js": 80
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 78;
+
+/***/ }),
+
+/***/ 79:
+/*!************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/minguo.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 20px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\">\u4E2D\u534E\u6C11\u56FD</span></strong></span><span style=\"font-size: 18px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u516C\u51431912-1949\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em; text-align: center;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E5%9C%B0%E5%9B%BE.png\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">1911\u5E74\u8F9B\u4EA5\u9769\u547D\u7206\u53D1\u540E\uFF0C\u9769\u547D\u515A\u5728\u5357\u4EAC\u5EFA\u7ACB\u4E34\u65F6\u653F\u5E9C\uFF0C\u5404\u7701\u4EE3\u8868\u63A8\u4E3E\u5B59\u4E2D\u5C71\u4E3A\u4E34\u65F6\u5927\u603B\u7EDF\u30021912\u5E74\u5143\u6708\u6C11\u56FD\u6B63\u5F0F\u5EFA\u7ACB\uFF0C \u8881\u4E16\u51EF\u4E3A\u9996\u4EFB\u6C11\u56FD\u5927\u603B\u7EDF\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E4%BA%94%E8%89%B2%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u4E94\u8272\u65D71912-1928</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E9%9D%92%E5%A4%A9%E7%99%BD%E6%97%A5%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u9752\u5929\u767D\u65E5\u65D71929-1949</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><span style=\"font-size: 16px; font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A</span><span style=\"font-size: 18px; font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\">\u94F6\u5143&nbsp;</span></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD8%E5%B9%B4%E9%93%B6%E5%85%83.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD8\u5E74\u94F6\u5143</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u5317\u6D0B\u653F\u5E9C\u4E8E1914\u5E74\u63A8\u51FA\u300A\u56FD\u5E01\u6761\u4F8B\u300B\uFF0C\u786E\u7ACB\u94F6\u672C\u4F4D\u8D27\u5E01\u5236\u5EA6\uFF0C\u5B9A\u56FD\u5E01\u201C\u58F9\u5706\u201D\u91CD\u5E93\u5E73\u4E03\u94B1\u4E8C\u5206\uFF0C\u542B\u7EAF\u94F6\u516B\u6210\u4E5D\uFF0C\u5373\u516D\u94B1\u56DB\u5206\uFF0C\uFF0823.9024808\u514B\uFF09\uFF0C\u7EA6\u7B49\u540C\u4E8E\u94F6\u5706\u58F9\u679A\uFF0C\u53C8\u5B9A\u5341\u5206\u4E4B\u4E00\u5143\u4E3A\u4E00\u89D2\uFF0C\u5341\u5206\u4E4B\u4E00\u89D2\u4E3A\u4E00\u5206\u3002\u56FD\u5E01\u7684\u58F9\u5706\u88AB\u94F8\u6210\u516B\u6210\u4E5D\u94F6\u3001\u4E00\u6210\u4E00\u94DC\u7684\u786C\u5E01\uFF0C\u4E0A\u6709\u8881\u4E16\u51EF\u5934\u50CF\uFF0C\u4FD7\u79F0\u201C\u8881\u5927\u5934\u201D\uFF1B\u5E76\u63A8\u51FA\u4EE5\u94F6\u94F8\u9020\u7684\u8F85\u5E01\u3002\u8881\u5927\u5934\u51FA\u73B0\u540E\uFF0C\u9010\u6E10\u53D6\u4EE3\u201C\u9F99\u6D0B\u201D\u3001\u201C\u9E70\u6D0B\u201D\u7B49\u65E7\u6709\u5916\u56FD\u94F6\u5706\uFF0C\u5728\u5168\u4E2D\u56FD\u6D41\u901A\u3002\u5341\u4E2A\u201C\u8881\u5927\u5934\u201D\u539A\u4E00\u5BF8\uFF0C\u662F\u4E3A\u201C\u5934\u5BF8\u201D\u4E4B\u8BED\u6E90\u3002</span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 80:
+/*!**********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/qing.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u5927\u6E05</strong></span><span style=\"font-size: 18px;\"></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431636-1912\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9C%B0%E5%9B%BE.png\" width=\"250\"/></span>\n</p>\n<p>\n    <br/>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6700\u540E\u4E00\u4E2A\u5C01\u5EFA\u738B\u671D\uFF0C\u5171\u4F20\u5341\u4E8C\u5E1D&nbsp; \uFF0C\u7EDF\u6CBB\u8005\u4E3A\u6EE1\u6D32\u7231\u65B0\u89C9\u7F57\u6C0F\u3002\u4ECE\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u8D77\uFF0C\u603B\u8BA1296\u5E74\u3002\u4ECE\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u6E05\u8D77\uFF0C\u56FD\u795A276\u5E74\u3002\u4ECE\u6E05\u5175\u5165\u5173\uFF0C\u5EFA\u7ACB\u5168\u56FD\u6027\u653F\u6743\u7B97\u8D77\u4E3A268\u5E74\u30021616\u5E74\uFF0C\u5EFA\u5DDE\u5973\u771F\u9996\u9886\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u3002 1636\u5E74\uFF0C\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u5927\u6E05\uFF0C\u5B9A\u90FD\u5317\u4EAC\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9B%BD%E6%97%97.png\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u5927\u6E05\u56FD\u65D7\u9EC4\u5E95\u84DD\u9F99\u620F\u7EA2\u73E0\u56FE1889-1912</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E5%85%89%E7%BB%AA%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpeg\" width=\"250\"/>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u5149\u7EEA\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%9B%B4%E9%9A%B6%E5%8D%81%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4EE3\u76F4\u96B6\u5341\u4E24</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E4%BA%94%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E94\u4E24<br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%A2%8E%E9%93%B6.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u788E\u94F6</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%B9%BE%E9%9A%86%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E7E\u9686\u901A\u5B9D</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u8D27\u5E01\u5927\u4F53\u4E0A\u91C7\u767D\u94F6\u4E0E\u94DC\u94B1\u5E76\u7528\u7684\u94F6\u94DC\u53CC\u672C\u4F4D\u5236\uFF0C\u5927\u6570\u7528\u94F6\uFF0C\u5C0F\u6570\u7528\u94B1\uFF0C\u4F46\u94F6\u7684\u5730\u4F4D\u66F4\u89C1\u91CD\u8981\u3002\u5176\u5F62\u5F0F\u5927\u4F53\u53EF\u5206\u4E3A\u56DB\u79CD\uFF1A\u7B2C\u4E00\u662F\u5143\u5B9D\uFF0C\u901A\u79F0\u5B9D\u94F6\uFF0C\u56E0\u5176\u4E3A\u9A6C\u8E44\u5F62\uFF0C\u4E5F\u79F0\u9A6C\u8E44\u94F6\uFF0C\u5176\u91CD\u4E94\u5341\u4E24\uFF1B\u7B2C\u4E8C\u79CD\u53EB\u4E2D\u952D\u6216\u5C0F\u5143\u5B9D\uFF0C\u591A\u9524\u5F62\uFF0C\u4E5F\u6709\u9A6C\u8E44\u5F62\uFF0C\u91CD\u7EA6\u5341\u4E24\uFF1B\u7B2C\u4E09\u79CD\u662F\u5C0F\u951E\u3001\u951E\u5B50\u6216\u79F0\u5C0F\u952D\uFF0C\u591A\u4E3A\u9992\u5934\u72B6\uFF0C\u91CD\u4E00\u3001\u4E8C\u4E24\u5230\u4E09\u3001\u4E94\u4E24\uFF1B\u7B2C\u56DB\u79CD\u662F\u788E\u94F6\uFF0C\u5373\u6563\u788E\u7684\u94F6\u5B50\uFF0C\u91CD\u91CF\u4E0D\u5230\u4E00\u4E24\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002</span>\n</p>\n<p>\n    <br/>\n</p>";
 
 /***/ })
 

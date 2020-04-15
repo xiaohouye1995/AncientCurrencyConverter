@@ -3,6 +3,7 @@
   "backgroundColor": "#22202e",
   "usingComponents": {
     "uni-collapse": "/components/uni-collapse/uni-collapse",
-    "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item"
+    "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item",
+    "jyf-parser": "/components/jyf-parser/jyf-parser"
   }
 }
