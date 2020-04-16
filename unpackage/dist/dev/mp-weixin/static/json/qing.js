@@ -1,14 +1,14 @@
 module.exports = `<p>
-    <span style="font-size: 20px;"><strong>大清</strong></span><span style="font-size: 18px;"></span>
+    <span style="font-size: 20px;"><strong>清朝</strong></span><span style="font-size: 18px;"></span>
 </p>
 <p>
-    <span style="font-size: 18px;">公元1636-1912年</span>
+    <span style="font-size: 18px;">公元1636年-1912年</span>
 </p>
 <p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9C%B0%E5%9B%BE.png" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
 </p>
 <p>
     <br/>
@@ -20,7 +20,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9B%BD%E6%97%97.png" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9B%BD%E6%97%97.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(165, 165, 165); font-size: 18px;">大清国旗黄底蓝龙戏红珠图1889-1912</span>
@@ -35,7 +35,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E5%85%89%E7%BB%AA%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpeg" width="250"/>
+    <img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E5%85%89%E7%BB%AA%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg" width="250"/>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(165, 165, 165); font-size: 18px;">清光绪五十两银锭</span>
@@ -73,8 +73,23 @@ module.exports = `<p>
 <p>
     <span style="font-size: 18px;"><br/></span>
 </p>
+<p style="text-align: center;">
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
+</p>
+<p style="text-align: center;">
+    <span style="color: rgb(127, 127, 127); font-size: 16px;">中国历代铜钱</span><span style="font-size: 18px;"><br/></span>
+</p>
 <p>
-    <span style="font-size: 18px;">一枚铜制铸币（方孔钱）为一文，一千文用绳子从中间的孔里穿起来，称为一贯或一吊。</span>
+    <span style="color: rgb(127, 127, 127); font-size: 16px;"><br/></span>
+</p>
+<p>
+    <span style="font-size: 18px;">一枚铜制铸币（方孔钱）为一文，一千文用绳子从中间的孔里穿起来，称为一贯或一吊。金、银、钱（文）间比价各朝代都有不同，但大体上为1两黄金=10两白银=10贯=10000文。</span>
+</p>
+<p style="line-height: 1.5em;">
+    <span style="color: rgb(165, 165, 165); font-size: 18px;"><br/></span>
+</p>
+<p style="line-height: 1.5em;">
+    <span style="font-family: 微软雅黑, &quot;Microsoft YaHei&quot;; font-size: 18px;">注：乾隆二年，京城，白银一两价800文。来源：《中国历代物价问题考述》p.12<br/></span>
 </p>
 <p>
     <br/>

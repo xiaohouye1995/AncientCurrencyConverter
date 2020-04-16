@@ -1,0 +1,72 @@
+{
+	"data": [{
+			"name": "中国",
+			"htmlsrc": "china",
+			"epoch": "2019",
+			"note": "人民币(元)",
+			"scale": 1
+		},
+		{
+			"name": "民国",
+			"htmlsrc": "minguo",
+			"epoch": "民国七年",
+			"note": "银元(元)",
+			"scale": 1325.3
+		}, {
+			"name": "清",
+			"htmlsrc": "qing",
+			"epoch": "乾隆二年",
+			"note": "白银(两)",
+			"scale": 137.5
+		},
+		{
+			"name": "明",
+			"htmlsrc": "ming",
+			"epoch": "万历三十六年",
+			"note": "铜钱(文)",
+			"scale": 2.4
+		},
+		{
+			"name": "元",
+			"htmlsrc": "yuan",
+			"epoch": "至顺元年",
+			"note": "中统钞(贯)",
+			"scale": 110
+		},
+		{
+			"name": "南宋",
+			"htmlsrc": "nansong",
+			"epoch": "靖康二年",
+			"note": "会子(文)",
+			"scale": 2.2
+		},
+		{
+			"name": "北宋",
+			"htmlsrc": "beisong",
+			"epoch": "英宗时期",
+			"note": "铜钱(文)",
+			"scale": 0.58
+		},
+		{
+			"name": "唐",
+			"htmlsrc": "tang",
+			"epoch": "盛唐时期",
+			"note": "铜钱(文)",
+			"scale": 2.03
+		},
+		{
+			"name": "东汉",
+			"htmlsrc": "donghan",
+			"epoch": "汉光武帝",
+			"note": "五铢钱(文)",
+			"scale": 2.2
+		},
+		{
+			"name": "西汉",
+			"htmlsrc": "xihan",
+			"epoch": "汉武帝",
+			"note": "五铢钱(文)",
+			"scale": 1.1
+		}
+	]
+}

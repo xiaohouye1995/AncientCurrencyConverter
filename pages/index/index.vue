@@ -26,7 +26,7 @@
 					</picker>
 				</view>
 				<view class="panel-cell-ft">
-					<input class="uni-input" :value="moneyOne" @input="conversionAmountOne" type="digit" placeholder="0" />
+					<input class="uni-input" :class="{minsize:moneyOne.length > 9}" :value="moneyOne" @input="conversionAmountOne" type="digit" placeholder="0" />
 				</view>
 			</view>
 			<view class="panel-cell">
@@ -41,12 +41,15 @@
 					</picker>
 				</view>
 				<view class="panel-cell-ft">
-					<input class="uni-input" :value="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="100" />
+					<input class="uni-input" :class="{minsize:moneyTwo.length > 9}" :value="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="100" />
 				</view>
 			</view>
 		</view>
+		<!-- <view class="">
+			<button open-type='contact' class="btn-feedback">意见反馈</button>
+		</view> -->
 		<view class="panel" v-show="show">
-			<view class="panel-cell">
+			<view class="panel-cell article">
 				<jyf-parser ref="article" use-cache></jyf-parser>
 			</view>
 		</view>
@@ -135,11 +138,12 @@
 		height: 100vh;
 		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
 		background-color: #22202e;
-		// background-color: #f7f8fa;
 		color: #353535;
 		font-size: 14pt;
 		position: relative;
 		overflow: auto;
+		padding: 0 40rpx;
+		box-sizing: border-box;
 	}
 	
 	.iconfont {
@@ -160,6 +164,20 @@
 		background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
 		border-radius: 50%;
 		font-size: 14pt;
+		text-align: center;
+	}
+	
+	.btn-feedback {
+		margin: 0;
+		padding: 0;
+		background: none;
+		// width: 100%;
+		text-align: center;
+		border: none;
+		color: #fff;
+	}
+	.btn-feedback:after {  
+	    border: none;	
 	}
 	
 	.note {
@@ -170,9 +188,8 @@
 	
 	.panel-bg {
 		width: 100%;
-		height: 500rpx;
 		height: 200px;
-		background-color: #22202e;
+		// background-color: #22202e;
 		text-align: center;
 		font-size: 20pt;
 		color: #fff;
@@ -189,13 +206,7 @@
 	}
 
 	.panel {
-		// position: absolute;
-		width: 90%;
-		margin: 0 auto;
 		margin-bottom: 20px;
-		// top: 600rpx;
-		// left: 50%;
-		// transform: translate(-50%, -50%);
 		background-color: #fff;
 		font-size: 13pt;
 		color: #353535;
@@ -218,41 +229,29 @@
 		padding: 40rpx 20rpx;
 		box-sizing: border-box;
 		display: flex;
-		justify-content: space-between;
 		align-items: center;
-		width: 100%;
 		border-bottom: 1px dashed #ccc;
+	}
+	
+	.article {
+		padding: 40rpx 30rpx;
 	}
 
 	.panel-cell:last-child {
 		border: none;
 	}
 
-	.panel-cell-hd {
-		width: 20%;
-		text-align: center;
-	}
-
 	.panel-cell-bd {
-		width: 60%;
-		padding: 0 12rpx;
+		margin: 0 12rpx;
 	}
 
 	.panel-cell-ft {
-		width: 20%;
+		width: 150rpx;
+		flex-grow: 1;
 		text-align: right;
 	}
-
-	.footer {
-		width: 100%;
-		position: absolute;
-		bottom: 200rpx;
-		text-align: center;
-	}
-
-	.footer-text {
-		font-size: 13pt;
-		color: #fff;
-		color: #888;
+	
+	.minsize {
+		font-size: 11pt;
 	}
 </style>

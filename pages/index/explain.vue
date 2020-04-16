@@ -3,22 +3,18 @@
 		<!-- 手风琴效果 -->
 		<uni-collapse>
 			<uni-collapse-item title="算法公式" open>
-				<view class="part">
-					底层工人、百姓勉强维持温饱的月入（银两、文钱、布帛、银元）= 现如今底层工人、百姓勉强维持温饱的月入（人民币）
-				</view>
+				<text>底层工人、百姓勉强维持温饱的月入（银两、文钱、布帛、银元）= 现如今底层工人、百姓勉强维持温饱的月入（人民币）</text>
 			</uni-collapse-item>
 			<uni-collapse-item title="各朝代月收入对照表" open>
-				<image class="part-img" src="../../static/img/table.png" mode="widthFix"></image>
-				<view>
-					<text class="remask">
-						ps: 王朝末期或战乱时，货币起伏波动较大，所以在选用朝代基础价格时，会选用朝代中较为稳定的时期。
-						引用资料：
-						王蕾：《二十世纪以来中国物价史研究述评》
-						黄冕堂：《中国历代物价问题考述》(齐鲁书社，2008)
-					</text>
-				</view>
+				<image class="table-img" src="../../static/img/table.png" mode="widthFix"></image>
+				<text class="remask">
+					ps: 王朝末期或战乱时，货币起伏波动较大，所以在选用朝代基础价格时，会选用朝代中较为稳定的时期。
+					引用资料：
+					王蕾：《二十世纪以来中国物价史研究述评》
+					黄冕堂：《中国历代物价问题考述》(齐鲁书社，2008)
+				</text>
 			</uni-collapse-item>
-			<uni-collapse-item title="算法出处">
+			<uni-collapse-item title="算法出处" open>
 				<jyf-parser ref="article" use-cache></jyf-parser>
 			</uni-collapse-item>
 		</uni-collapse>
@@ -69,7 +65,8 @@
 		padding: 40rpx;
 		overflow: auto;
 	}
-	.part-img {
+
+	.table-img {
 		width: 100%;
 	}
 
@@ -77,7 +74,7 @@
 		color: #353535;
 		background-color: transparent;
 		border-radius: 12px;
-		
+
 		.uni-collapse-cell {
 			background: #463659;
 			background-image: linear-gradient(-225deg, #463659 0%, #22202e 100%);

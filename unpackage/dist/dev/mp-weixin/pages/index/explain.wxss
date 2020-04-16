@@ -36,7 +36,7 @@
   padding: 40rpx;
   overflow: auto;
 }
-.part-img.data-v-287dcab0 {
+.table-img.data-v-287dcab0 {
   width: 100%;
 }
 .container.data-v-287dcab0  .uni-collapse {
