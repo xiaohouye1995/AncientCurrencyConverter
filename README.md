@@ -12,10 +12,10 @@
 
 
 ## DEMO
-![预览1](https://github.com/zhouxiaoyu1994/tossCoin/blob/master/readme_img/预览1.jpg)
+![预览1](https://github.com/zhouxiaoyu1994/AncientCurrencyConverter/blob/master/readme_img/%E9%A2%84%E8%A7%881.jpg)
 
 ### 微信小程序码
-![小程序码](https://github.com/zhouxiaoyu1994/tossCoin/blob/master/readme_img/微信小程序码.jpg)
+![小程序码](https://github.com/zhouxiaoyu1994/AncientCurrencyConverter/blob/master/readme_img/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81.jpg)
 
 ## 运行平台
 微信小程序、支付宝小程序、H5、ios、安卓
@@ -32,8 +32,6 @@
 - 图片压缩picdiet https://www.picdiet.com/zh-cn
 
 ## 功能需求
-- [ ] 清空数据
-- [ ] 报警监控(二期)
 - [x] 意见反馈
 - [ ] 彩蛋 （等待你的发现~~）
 - [x] 转发分享
@@ -46,6 +44,7 @@
 - [ ] 多列选择器，朝代-时期
 - [ ] 暗黑模式
 - [ ] 更多-货币换算列表
+- [ ] 转uniCloud
 
 ## 更新日志
 
