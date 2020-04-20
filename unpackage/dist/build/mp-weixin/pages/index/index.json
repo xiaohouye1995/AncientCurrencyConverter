@@ -1,6 +1,6 @@
 {
   "navigationBarTitleText": "",
-  "backgroundColor": "#22202e",
+  "backgroundColor": "#2c2933",
   "usingComponents": {
     "jyf-parser": "/components/jyf-parser/jyf-parser"
   }

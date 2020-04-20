@@ -7,12 +7,12 @@
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "古代银钱换算器",
-    "navigationBarBackgroundColor": "#22202e",
-    "backgroundColor": "#22202e"
+    "navigationBarBackgroundColor": "#2c2933",
+    "backgroundColor": "#2c2933"
   },
   "uniStatistics": {
     "enable": false
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap62.json"
+  "sitemapLocation": "sitemap90.json"
 }

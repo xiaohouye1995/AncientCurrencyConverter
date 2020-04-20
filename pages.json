@@ -4,14 +4,14 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "",
-				"backgroundColor": "#22202e"	
+				"backgroundColor": "#2c2933"	
 			}
 		},
 		{
 			"path": "pages/index/explain",
 			"style": {
-				"navigationBarTitleText": "算法说明",
-				"backgroundColor": "#22202e"
+				"navigationBarTitleText": "",
+				"backgroundColor": "#2c2933"
 			}
 		}
 	],
@@ -37,9 +37,10 @@
 		"navigationBarTitleText": "古代银钱换算器",
 		// #ifdef MP-WEIXIN
 		// "navigationBarBackgroundColor": "#2E294E",
-		"navigationBarBackgroundColor": "#22202e",
+		// "navigationBarBackgroundColor": "#22202e",
+		"navigationBarBackgroundColor": "#2c2933",
 		// #endif
 		// "backgroundColor": "#2E294E"
-		"backgroundColor": "#22202e"
+		"backgroundColor": "#2c2933"
 	}
 }

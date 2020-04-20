@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "算法说明",
-  "backgroundColor": "#22202e",
+  "navigationBarTitleText": "",
+  "backgroundColor": "#2c2933",
   "usingComponents": {
     "uni-collapse": "/components/uni-collapse/uni-collapse",
     "uni-collapse-item": "/components/uni-collapse-item/uni-collapse-item",

@@ -5,7 +5,7 @@
 			<view>古代银钱换算器</view>
 			<view class="panel-bg-text">天下熙熙皆为利来，天下攘攘皆为利往</view>
 		</view>
-		<view class="panel">
+		<view class="panel" style="margin-top: -30px;">
 			<view class="panel-title">
 				<text>银钱换算</text>
 				<view @tap="toExplain()">
@@ -16,7 +16,7 @@
 			<view class="panel-cell">
 				<view class="panel-cell-hd">
 					<!-- 之后替换为该朝代流通货币图片 -->
-					<view class="icon-money">{{currencyList[indexOne].name}}</view>
+					<view class="panel-cell-logo">{{currencyList[indexOne].name}}</view>
 				</view>
 				<view class="panel-cell-bd">
 					<picker @change="bindPickerChangeOne" :value="indexOne" range-key="name" :range="currencyList">
@@ -26,12 +26,12 @@
 					</picker>
 				</view>
 				<view class="panel-cell-ft">
-					<input class="uni-input" :class="{minsize:moneyOne.length > 9}" :value="moneyOne" @input="conversionAmountOne" type="digit" placeholder="0" />
+					<input class="uni-input" :class="{minsize:moneyOne.length > 9}" v-model="moneyOne" @input="conversionAmountOne" type="digit" placeholder="0" />
 				</view>
 			</view>
 			<view class="panel-cell">
 				<view class="panel-cell-hd">
-					<view class="icon-money">{{currencyList[indexTwo].name}}</view>
+					<view class="panel-cell-logo">{{currencyList[indexTwo].name}}</view>
 				</view>
 				<view class="panel-cell-bd">
 					<picker @change="bindPickerChangeTwo" :value="indexTwo" range-key="name" :range="currencyList">
@@ -41,17 +41,18 @@
 					</picker>
 				</view>
 				<view class="panel-cell-ft">
-					<input class="uni-input" :class="{minsize:moneyTwo.length > 9}" :value="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="100" />
+					<input class="uni-input" :class="{minsize:moneyTwo.length > 9}" v-model="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="0" />
 				</view>
 			</view>
 		</view>
-		<!-- <view class="">
-			<button open-type='contact' class="btn-feedback">意见反馈</button>
-		</view> -->
 		<view class="panel" v-show="show">
 			<view class="panel-cell article">
 				<jyf-parser ref="article" use-cache></jyf-parser>
 			</view>
+		</view>
+		<view class="panel-link">
+			<button class="btn-feedback" open-type='contact'>意见反馈</button>
+			<text class="iconfont icon-fankuijianyi"></text>
 		</view>
 	</view>
 </template>
@@ -68,8 +69,8 @@
 				currencyList: [],
 				indexOne: 1,
 				indexTwo: 0,
-				moneyOne: 0,
-				moneyTwo: 0,
+				moneyOne: '',
+				moneyTwo: '',
 				show: true
 			}
 		},
@@ -133,18 +134,6 @@
 </script>
 
 <style lang="scss">
-	.container {
-		width: 100%;
-		height: 100vh;
-		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-		background-color: #22202e;
-		color: #353535;
-		font-size: 14pt;
-		position: relative;
-		overflow: auto;
-		padding: 0 40rpx;
-		box-sizing: border-box;
-	}
 	
 	.iconfont {
 		font-size: 11pt;
@@ -155,8 +144,8 @@
 		font-size: 14pt;
 		color: #fff;
 	}
-
-	.icon-money {
+	
+	.panel-cell-logo {
 		width: 100rpx;
 		height: 100rpx;
 		line-height: 100rpx;
@@ -167,45 +156,15 @@
 		text-align: center;
 	}
 	
-	.btn-feedback {
-		margin: 0;
-		padding: 0;
-		background: none;
-		// width: 100%;
-		text-align: center;
-		border: none;
-		color: #fff;
-	}
-	.btn-feedback:after {  
-	    border: none;	
-	}
-	
 	.note {
 		font-size: 11pt;
 		color: #888;
 		margin: 0 8rpx;
 	}
-	
-	.panel-bg {
-		width: 100%;
-		height: 200px;
-		// background-color: #22202e;
-		text-align: center;
-		font-size: 20pt;
-		color: #fff;
-	}
-
-	.panel-bg-logo {
-		width: 200rpx;
-		height: 200rpx;
-	}
-	
-	.panel-bg-text {
-		margin-top: 20rpx;
-		font-size: 11pt;
-	}
 
 	.panel {
+		width: 90%;
+		margin: 0 auto;
 		margin-bottom: 20px;
 		background-color: #fff;
 		font-size: 13pt;
@@ -223,6 +182,7 @@
 		font-size: 14pt;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 	}
 
 	.panel-cell {

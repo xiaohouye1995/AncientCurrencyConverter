@@ -1,5 +1,10 @@
 <template>
 	<view class="container">
+		<view class="panel-bg">
+			<image class="panel-bg-logo" src="../../static/img/coinlogo.png" mode="aspectFit"></image>
+			<view>算法说明</view>
+			<view class="panel-bg-text">五千年来谁著史，八千里外觅封侯</view>
+		</view>
 		<!-- 手风琴效果 -->
 		<uni-collapse>
 			<uni-collapse-item title="算法公式" open>
@@ -18,6 +23,10 @@
 				<jyf-parser ref="article" use-cache></jyf-parser>
 			</uni-collapse-item>
 		</uni-collapse>
+		<view class="panel-link">
+			<button class="btn-feedback" open-type='contact'>意见反馈</button>
+			<text class="iconfont icon-fankuijianyi"></text>
+		</view>
 	</view>
 </template>
 
@@ -50,22 +59,7 @@
 </script>
 
 <style lang="scss" scoped>
-	.container {
-		width: 100%;
-		height: 100vh;
-		font-family: PingFang SC, 'Helvetica Neue', Arial, sans-serif;
-		// background-color: #2E294E;
-		// background-color: #392850;
-		background-color: #22202e;
-		// background-color: #f7f8fa;
-		color: #353535;
-		font-size: 13pt;
-		position: relative;
-		box-sizing: border-box;
-		padding: 40rpx;
-		overflow: auto;
-	}
-
+	
 	.table-img {
 		width: 100%;
 	}
@@ -74,16 +68,15 @@
 		color: #353535;
 		background-color: transparent;
 		border-radius: 12px;
-
+		width: 90%;
+		margin: 0 auto;
+		margin-top: -30px;
 		.uni-collapse-cell {
-			background: #463659;
-			background-image: linear-gradient(-225deg, #463659 0%, #22202e 100%);
-			background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
 			background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
 			color: #fff;
 			border-radius: 12px;
 			box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
-			margin: 40rpx 0;
+			margin-bottom: 20px;
 			border: none;
 		}
 
