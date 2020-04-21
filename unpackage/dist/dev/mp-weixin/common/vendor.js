@@ -7787,9 +7787,10 @@ var map = {
 	"./minguo.js": 23,
 	"./nansong.js": 24,
 	"./qing.js": 25,
-	"./tang.js": 26,
-	"./xihan.js": 27,
-	"./yuan.js": 28
+	"./table.js": 26,
+	"./tang.js": 27,
+	"./xihan.js": 28,
+	"./yuan.js": 29
 };
 
 
@@ -7885,6 +7886,16 @@ module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u6E05\u671D
 
 /***/ }),
 /* 26 */
+/*!***********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/table.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"text-align: center;\">\n    <strong><span style=\"font-size: 16px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/table.jpg\"/></span></strong>\n</p>\n<p>\n    <strong><span style=\"font-size: 16px;\">PS\uFF1A</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 16px;\">\u738B\u671D\u672B\u671F\u6216\u6218\u4E71\u65F6\uFF0C\u8D27\u5E01\u8D77\u4F0F\u6CE2\u52A8\u8F83\u5927\uFF0C\u6240\u4EE5\u5728\u9009\u7528\u671D\u4EE3\u57FA\u7840\u4EF7\u683C\u65F6\uFF0C\u4F1A\u9009\u7528\u671D\u4EE3\u4E2D\u8F83\u4E3A\u7A33\u5B9A\u7684\u65F6\u671F\u3002</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u5F15\u7528\u8D44\u6599\uFF1A</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u738B\u857E\uFF1A\u300A\u4E8C\u5341\u4E16\u7EAA\u4EE5\u6765\u4E2D\u56FD\u7269\u4EF7\u53F2\u7814\u7A76\u8FF0\u8BC4\u300B</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u9EC4\u5195\u5802\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300B(\u9F50\u9C81\u4E66\u793E\uFF0C2008)</span>\n</p>";
+
+/***/ }),
+/* 27 */
 /*!**********************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/tang.js ***!
   \**********************************************************************/
@@ -7894,7 +7905,7 @@ module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u6E05\u671D
 module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong><span style=\"font-size: 18px;\">\u5510\u671D</span></strong>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u516C\u5143618\u5E74-907\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u671D\u662F\u7EE7\u968B\u671D\u4E4B\u540E\u7684\u5927\u4E00\u7EDF\u4E2D\u539F\u738B\u671D\uFF0C\u5171\u5386\u4E8C\u5341\u4E00\u5E1D\uFF0C\u4EAB\u56FD\u4E8C\u767E\u516B\u5341\u4E5D\u5E74\u3002617\u5E74\u5510\u9AD8\u7956\u674E\u6E0A\u4E8E\u664B\u9633\u8D77\u5175\uFF0C\u6B21\u5E74\u79F0\u5E1D\u5EFA\u7ACB\u5510\u671D\uFF0C\u4EE5\u957F\u5B89\u4E3A\u4EAC\u5E08\u3002</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u94DC\u94B1\u3001\u5E1B</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E5%BC%80%E5%85%83%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5510\u5F00\u5143\u901A\u5B9D</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u6B66\u5FB7\u56DB\u5E74\uFF08621\u5E74\uFF09\u4E03\u6708\uFF0C\u201C\u5E9F\u4E94\u94E2\u94B1\uFF0C\u884C\u5F00\u5143\u901A\u5B9D\u94B1\uFF0C\u5F84\u516B\u5206\uFF0C\u91CD\u4E8C\u94E2\u56DB\u7D6B\uFF0C\u79EF\u5341\u6587\u91CD\u4E00\u4E24\uFF0C\u4E00\u5343\u6587\u91CD\u516D\u65A4\u56DB\u4E24\u201D\uFF0C\u786E\u7ACB\u56FD\u5BB6\u94F8\u5E01\u7684\u6CD5\u5E01\u5730\u4F4D\u3002\u4E0E\u6B64\u540C\u65F6\uFF0C\u53C8\u7EE7\u627F\u9B4F\u664B\u5357\u5317\u671D\u65F6\u671F\u4EE5\u7EE2\u5E1B\u4E3A\u8D27\u5E01\u7684\u4F20\u7EDF\uFF0C\u5B9E\u884C\u201C\u94B1\u5E1B\u517C\u884C\u201D\u7684\u8D27\u5E01\u5236\u5EA6\u2014\u2014\u94B1\u5373\u94DC\u94B1\uFF0C\u5E1B\u5219\u662F\u4E1D\u7EC7\u54C1\u7684\u603B\u79F0\uFF0C\u5305\u62EC\u9526\u3001\u7EE3\u3001\u7EEB\u3001\u7F57\u3001\u7EE2\u3001\u7D41\u3001\u7EEE\u3001\u7F23\u3001\u4337\u7B49\uFF0C\u5B9E\u9645\u4E0A\u662F\u4E00\u79CD\u4EE5\u5B9E\u7269\u8D27\u5E01\u548C\u91D1\u5C5E\u8D27\u5E01\u517C\u800C\u884C\u4E4B\u7684\u591A\u5143\u7684\u8D27\u5E01\u5236\u5EA6\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u968B\u5510\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF76250\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u590F\u4FAF\u9633\u7B97\u7ECF\u300B\u5377\u4E0B<br/></span>\n</p>";
 
 /***/ }),
-/* 27 */
+/* 28 */
 /*!***********************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/xihan.js ***!
   \***********************************************************************/
@@ -7904,7 +7915,7 @@ module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong><span style=\"f
 module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u897F\u6C49</strong></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u5143\u524D202\u5E74-\u516C\u51438\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u79E6\u672B\u5929\u4E0B\u63ED\u7AFF\u800C\u8D77\uFF0C\u7ECF\u8FC7\u695A\u6C49\u4E4B\u4E89\uFF0C\u5218\u90A6\u51FB\u8D25\u9879\u7FBD\uFF0C\u516C\u5143\u524D202\u5E74\u6C49\u9AD8\u7956\u5218\u90A6\u5728\u5C71\u4E1C\u5B9A\u9676\u79F0\u5E1D\uFF0C\u56FD\u53F7\u6C49\uFF0C\u6682\u90FD\u6D1B\u9633\uFF0C\u4E09\u4E2A\u6708\u540E\u5B9A\u90FD\u957F\u5B89\u3002\u5171\u5386\u5341\u4E8C\u5E1D \uFF0C\u4EAB\u56FD\u4E8C\u767E\u4E00\u5341\u5E74\uFF0C\u53C8\u79F0\u4E3A\u897F\u6C49\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E6%B1%89%E6%AD%A6%E5%B8%9D%E4%BA%94%E9%93%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u897F\u6C49\u6C49\u6B66\u5E1D\u4E94\u94E2</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E94\u94E2\u662F\u4E00\u79CD\u4E2D\u56FD\u53E4\u94DC\u5E01\uFF0C\u94B1\u91CD\u4E94\u94E2\uFF0C\u4E0A\u6709\u201C\u4E94\u94E2\u201D\u4E8C\u5B57\uFF0C\u6545\u540D\u3002\u521D\u94F8\u4E8E\u897F\u6C49\u6C49\u6B66\u5E1D\u5143\u72E9\u4E94\u5E74\uFF08\u516C\u5143\u524D118\u5E74\uFF09\uFF0C\u4E1C\u6C49\u3001\u8700\u6C49\u3001\u9B4F\u3001\u664B\u3001\u5357\u9F50\u3001\u6881\u3001\u9648\u3001\u5317\u9B4F\u548C\u968B\u90FD\u6709\u94F8\u9020\uFF0C\u91CD\u91CF\u5F62\u5236\u5927\u5C0F\u4E0D\u4E00\u3002\u5510\u671D\u6B66\u5FB7\u56DB\u5E74\uFF08\u516C\u5143621\u5E74\uFF09\u5E9F\u6B62\u3002\u4F46\u65E7\u4E94\u94E2\u4ECD\u7136\u5728\u6C11\u95F4\u6D41\u901A\u3002\u4E94\u94E2\u8DE8\u5EA6\u5927\u3001\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6570\u91CF\u6700\u591A\u3001\u6D41\u901A\u65F6\u95F4\u6700\u4E45\u7684\u94B1\u5E01\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u897F\u6C49\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF7615\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E5D\u7AE0\u7B97\u672F\u300B\u5377\u516D\u3001\u4E03<br/></span>\n</p>";
 
 /***/ }),
-/* 28 */
+/* 29 */
 /*!**********************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/yuan.js ***!
   \**********************************************************************/
@@ -7914,7 +7925,6 @@ module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u897F\u6C49
 module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u5143\u671D</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431271\u5E74-1368\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u9996\u6B21\u7531\u5C11\u6570\u6C11\u65CF\u5EFA\u7ACB\u7684\u5927\u4E00\u7EDF\u738B\u671D\uFF0C\u7EDF\u6CBB\u8005\u4E3A\u8499\u53E4\u5B5B\u513F\u53EA\u65A4\u6C0F\u3002\u5B9A\u90FD\u5927\u90FD\uFF08\u4ECA\u5317\u4EAC\uFF09\uFF0C\u4F20\u4E94\u4E16\u5341\u4E00\u5E1D\uFF0C\u4ECE1206\u5E74\u6210\u5409\u601D\u6C57\u5EFA\u7ACB\u8499\u53E4\u653F\u6743\u59CB\u4E3A162\u5E74\uFF0C\u4ECE\u5FFD\u5FC5\u70C8\u5B9A\u56FD\u53F7\u5143\u5F00\u59CB\u5386\u65F698\u5E74\u3002\u5143\u671D\u9000\u51FA\u4E2D\u539F\u540E\u7684\u5317\u5143\u653F\u6743\u4E00\u76F4\u6301\u7EED\u52301402\u5E74\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u5B9D\u949E\u3001\u4E2D\u7EDF\u949E</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u6B63\u9762</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E-%E5%8F%8D%E9%9D%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u53CD\u9762</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u4E3A\u4E86\u52A0\u5F3A\u5BF9\u7ECF\u6D4E\u7684\u7EDF\u5236\uFF0C\u4EE5\u4F7F\u7528\u7EB8\u5E01\u4E3A\u4E3B\uFF0C\u94F8\u9020\u94B1\u5E01\u6BD4\u5176\u4ED6\u671D\u4EE3\u4E3A\u5C11\u3002\u4ECE\u5143\u4E16\u7956\u5FFD\u5FC5\u70C8\u5F00\u59CB\uFF0C\u53D1\u884C\u8FC7\u201C\u4E2D\u7EDF\u949E\u201D\u3001\u201C\u81F3\u5143\u949E\u201D\u548C\u201C\u81F3\u6B63\u949E\u201D\uFF0C\u8FD9\u4E9B\u5747\u4EE5\u5F53\u65F6\u7684\u5E74\u53F7\uFF08\u4E2D\u7EDF\u3001\u81F3\u5143\u3001\u81F3\u6B63\uFF09\u6765\u547D\u540D\uFF0C\u5176\u4E2D\u5E01\u503C\u6700\u7A33\u5B9A\u7684\u662F\u4E2D\u7EDF\u949E\uFF0C\u800C\u6D41\u901A\u65F6\u95F4\u6700\u957F\u7684\u662F\u81F3\u5143\u949E\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9EC4\u91D1\u4E00\u4E24\u4EF710\u4E24\u767D\u94F6\uFF0C\u6765\u6E90\uFF1A\u636E\u300A\u5143\u53F2\xB7\u98DF\u8D27\u5FD7\u300B\u8F7D\u91D1\u6BCF\u4E24\u6362\u81F3\u5143\u94F6\u949E10\u4E24\u3001\u94F61\u4E24\u6298\u6210\u3002<br/></span>\n</p>";
 
 /***/ }),
-/* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
@@ -7929,7 +7939,8 @@ module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u5143\u671D
 /* 41 */,
 /* 42 */,
 /* 43 */,
-/* 44 */
+/* 44 */,
+/* 45 */
 /*!*********************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/MpHtmlParser.js ***!
   \*********************************************************************************************/
@@ -7943,9 +7954,9 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           author：JinYufeng
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           update：2020/04/13
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */
-var cfg = __webpack_require__(/*! ./config.js */ 45),
+var cfg = __webpack_require__(/*! ./config.js */ 46),
 blankChar = cfg.blankChar,
-CssHandler = __webpack_require__(/*! ./CssHandler.js */ 46),_wx$getSystemInfoSync =
+CssHandler = __webpack_require__(/*! ./CssHandler.js */ 47),_wx$getSystemInfoSync =
 
 
 
@@ -8515,7 +8526,7 @@ var MpHtmlParser = /*#__PURE__*/function () {"use strict";
 module.exports = MpHtmlParser;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /*!***************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/config.js ***!
   \***************************************************************************************/
@@ -8604,7 +8615,7 @@ function makeMap(str) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /*!*******************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/CssHandler.js ***!
   \*******************************************************************************************/
@@ -8618,7 +8629,7 @@ function _classCallCheck(instance, Constructor) {if (!(instance instanceof Const
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           author：JinYufeng
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           update：2020/03/15
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         */
-var cfg = __webpack_require__(/*! ./config.js */ 45);var
+var cfg = __webpack_require__(/*! ./config.js */ 46);var
 CssHandler = /*#__PURE__*/function () {"use strict";
   function CssHandler(tagStyle) {var _this = this;_classCallCheck(this, CssHandler);_defineProperty(this, "getStyle",
 
@@ -8714,7 +8725,6 @@ CssParser = /*#__PURE__*/function () {"use strict";
     } }]);return CssParser;}();
 
 /***/ }),
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -8744,7 +8754,8 @@ CssParser = /*#__PURE__*/function () {"use strict";
 /* 74 */,
 /* 75 */,
 /* 76 */,
-/* 77 */
+/* 77 */,
+/* 78 */
 /*!********************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/uni-icons/icons.js ***!
   \********************************************************************************/

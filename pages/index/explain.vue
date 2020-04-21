@@ -11,13 +11,7 @@
 				<text>底层工人、百姓勉强维持温饱的月入（银两、文钱、布帛、银元）= 现如今底层工人、百姓勉强维持温饱的月入（人民币）</text>
 			</uni-collapse-item>
 			<uni-collapse-item title="各朝代月收入对照表" open>
-				<image class="table-img" src="../../static/img/table.png" mode="widthFix"></image>
-				<text class="remask">
-					ps: 王朝末期或战乱时，货币起伏波动较大，所以在选用朝代基础价格时，会选用朝代中较为稳定的时期。
-					引用资料：
-					王蕾：《二十世纪以来中国物价史研究述评》
-					黄冕堂：《中国历代物价问题考述》(齐鲁书社，2008)
-				</text>
+				<jyf-parser ref="table" use-cache></jyf-parser>
 			</uni-collapse-item>
 			<uni-collapse-item title="算法出处" open>
 				<jyf-parser ref="article" use-cache></jyf-parser>
@@ -35,6 +29,7 @@
 	import uniCollapseItem from '@/components/uni-collapse-item/uni-collapse-item.vue'
 	import parser from "@/components/jyf-parser/jyf-parser";
 	const doziHtml = require('../../static/json/douzi.js');
+	const tableHtml = require('../../static/json/table.js');
 	export default {
 		components: {
 			uniCollapse,
@@ -43,26 +38,18 @@
 		},
 		data() {
 			return {
-				currencyList: [],
-				strings: ''
 			}
 		},
 		onLoad() {
-			this.getCurrencyList();
 			this.$refs.article.setContent(doziHtml);
+			this.$refs.table.setContent(tableHtml);
 		},
 		methods: {
-			// 获取货币列表
-			getCurrencyList() {},
 		}
 	}
 </script>
 
 <style lang="scss" scoped>
-	
-	.table-img {
-		width: 100%;
-	}
 
 	.container ::v-deep .uni-collapse {
 		color: #353535;
@@ -71,17 +58,26 @@
 		width: 90%;
 		margin: 0 auto;
 		margin-top: -30px;
+
 		.uni-collapse-cell {
-			background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
+			background: #fff;
 			color: #fff;
 			border-radius: 12px;
 			box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
 			margin-bottom: 20px;
 			border: none;
 		}
+		
+		.uni-collapse-cell--open {
+			.uni-collapse-cell__title {
+				border-bottom-left-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+		}
 
 		.uni-collapse-cell__title {
 			border-radius: 12px;
+			background-image: linear-gradient(-20deg, #fc6076 0%, #ff9a44 100%);
 			font-weight: 600;
 		}
 
@@ -99,7 +95,6 @@
 
 		.uni-collapse-cell__wrapper {
 			padding: 20rpx 40rpx;
-			background: #fff;
 			color: #353535;
 			border-bottom-left-radius: 12px;
 			border-bottom-right-radius: 12px;
