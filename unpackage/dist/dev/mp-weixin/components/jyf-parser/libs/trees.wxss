@@ -285,15 +285,9 @@
 	display: inline-block;
 	text-indent: 0;
 }
-
-
 :host {
 	display: inline;
 }
-
-
-
-
 .interlayer {
 	-webkit-align-content: inherit;
 	        align-content: inherit;
@@ -313,8 +307,6 @@
 	width: 100%;
 	white-space: inherit;
 }
-
-
 ._b,
 ._strong {
 	font-weight: bold;
@@ -415,10 +407,6 @@
 	font-size: smaller;
 	vertical-align: super;
 }
-
-
-
-
 .__bdo,
 .__bdi,
 .__ruby,
@@ -426,8 +414,6 @@
 ._entity {
 	display: inline-block;
 }
-
-
 ._video {
 	background-color: black;
 	display: inline-block;

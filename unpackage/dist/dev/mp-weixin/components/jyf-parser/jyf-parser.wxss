@@ -15,8 +15,6 @@
 		opacity: 1;
 }
 }
-
-
 :host {
 	display: block;
 	overflow: scroll;

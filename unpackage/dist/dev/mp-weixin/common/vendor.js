@@ -1,6 +1,6 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],[
-/* 0 */,
-/* 1 */
+(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+
+/***/ 1:
 /*!************************************************************!*\
   !*** ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js ***!
   \************************************************************/
@@ -245,12 +245,16 @@ var SYNC_API_RE =
 
 var CONTEXT_API_RE = /^create|Manager$/;
 
+// Context例外情况
+var CONTEXT_API_RE_EXC = ['createBLEConnection'];
+
+// 同步例外情况
 var ASYNC_API = ['createBLEConnection'];
 
 var CALLBACK_API_RE = /^on|^off/;
 
 function isContextApi(name) {
-  return CONTEXT_API_RE.test(name);
+  return CONTEXT_API_RE.test(name) && CONTEXT_API_RE_EXC.indexOf(name) === -1;
 }
 function isSyncApi(name) {
   return SYNC_API_RE.test(name) && ASYNC_API.indexOf(name) === -1;
@@ -354,14 +358,12 @@ var interceptors = {
   promiseInterceptor: promiseInterceptor };
 
 
-
-
 var baseApi = /*#__PURE__*/Object.freeze({
   __proto__: null,
   upx2px: upx2px,
-  interceptors: interceptors,
   addInterceptor: addInterceptor,
-  removeInterceptor: removeInterceptor });
+  removeInterceptor: removeInterceptor,
+  interceptors: interceptors });
 
 
 var previewImage = {
@@ -604,8 +606,6 @@ var eventApi = /*#__PURE__*/Object.freeze({
   $emit: $emit });
 
 
-
-
 var api = /*#__PURE__*/Object.freeze({
   __proto__: null });
 
@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -792,14 +792,14 @@ function createObserver(name) {
 }
 
 function initBehaviors(vueOptions, initBehavior) {
-  var vueBehaviors = vueOptions['behaviors'];
-  var vueExtends = vueOptions['extends'];
-  var vueMixins = vueOptions['mixins'];
+  var vueBehaviors = vueOptions.behaviors;
+  var vueExtends = vueOptions.extends;
+  var vueMixins = vueOptions.mixins;
 
-  var vueProps = vueOptions['props'];
+  var vueProps = vueOptions.props;
 
   if (!vueProps) {
-    vueOptions['props'] = vueProps = [];
+    vueOptions.props = vueProps = [];
   }
 
   var behaviors = [];
@@ -811,11 +811,11 @@ function initBehaviors(vueOptions, initBehavior) {
           vueProps.push('name');
           vueProps.push('value');
         } else {
-          vueProps['name'] = {
+          vueProps.name = {
             type: String,
             default: '' };
 
-          vueProps['value'] = {
+          vueProps.value = {
             type: [String, Number, Boolean, Array, Object, Date],
             default: '' };
 
@@ -884,7 +884,7 @@ function initProperties(props) {var isBehavior = arguments.length > 1 && argumen
     Object.keys(props).forEach(function (key) {
       var opts = props[key];
       if (isPlainObject(opts)) {// title:{type:String,default:''}
-        var value = opts['default'];
+        var value = opts.default;
         if (isFn(value)) {
           value = value();
         }
@@ -921,6 +921,11 @@ function wrapper$1(event) {
 
   if (!hasOwn(event, 'detail')) {
     event.detail = {};
+  }
+
+  if (hasOwn(event, 'markerId')) {
+    event.detail = typeof event.detail === 'object' ? event.detail : {};
+    event.detail.markerId = event.markerId;
   }
 
   if (isPlainObject(event.detail)) {
@@ -1075,11 +1080,11 @@ function handleEvent(event) {var _this = this;
   // [['tap',[['handle',[1,2,a]],['handle1',[1,2,a]]]]]
   var dataset = (event.currentTarget || event.target).dataset;
   if (!dataset) {
-    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
+    return console.warn('事件信息不存在');
   }
   var eventOpts = dataset.eventOpts || dataset['event-opts']; // 支付宝 web-view 组件 dataset 非驼峰
   if (!eventOpts) {
-    return console.warn("\u4E8B\u4EF6\u4FE1\u606F\u4E0D\u5B58\u5728");
+    return console.warn('事件信息不存在');
   }
 
   // [['handle',[1,2,a]],['handle1',[1,2,a]]]
@@ -1338,8 +1343,8 @@ function parseBaseComponent(vueComponentOptions)
 
   {
     // 微信 multipleSlots 部分情况有 bug，导致内容顺序错乱 如 u-list，提供覆盖选项
-    if (vueOptions['mp-weixin'] && vueOptions['mp-weixin']['options']) {
-      Object.assign(options, vueOptions['mp-weixin']['options']);
+    if (vueOptions['mp-weixin'] && vueOptions['mp-weixin'].options) {
+      Object.assign(options, vueOptions['mp-weixin'].options);
     }
   }
 
@@ -1554,7 +1559,203 @@ var uni$1 = uni;var _default =
 uni$1;exports.default = _default;
 
 /***/ }),
-/* 2 */
+
+/***/ 10:
+/*!**********************************************************************************************************!*\
+  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+function normalizeComponent (
+  scriptExports,
+  render,
+  staticRenderFns,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier, /* server only */
+  shadowMode, /* vue-cli only */
+  components, // fixed by xxxxxx auto components
+  renderjs // fixed by xxxxxx renderjs
+) {
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // fixed by xxxxxx auto components
+  if (components) {
+    if (!options.components) {
+      options.components = {}
+    }
+    var hasOwn = Object.prototype.hasOwnProperty
+    for (var name in components) {
+      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
+        options.components[name] = components[name]
+      }
+    }
+  }
+  // fixed by xxxxxx renderjs
+  if (renderjs) {
+    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
+      this[renderjs.__module] = this
+    });
+    (options.mixins || (options.mixins = [])).push(renderjs)
+  }
+
+  // render functions
+  if (render) {
+    options.render = render
+    options.staticRenderFns = staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = 'data-v-' + scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = shadowMode
+      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
+      : injectStyles
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      var originalRender = options.render
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return originalRender(h, context)
+      }
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    }
+  }
+
+  return {
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+
+/***/ 17:
+/*!********************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/CurrencyList.json ***!
+  \********************************************************************************/
+/*! exports provided: data, default */
+/***/ (function(module) {
+
+module.exports = {"data":[{"label":"中国","value":"china","note":"人民币(元)","children":[{"label":"2019","value":1}]},{"label":"民国","value":"minguo","note":"银元(元)","children":[{"label":"民国七年","value":1325.3},{"label":"民国二十二年","value":157.14},{"label":"民国二十五年","value":164.77},{"label":"民国二十六年","value":180.68},{"label":"民国二十七年","value":178.93},{"label":"民国二十八年","value":128.73},{"label":"民国二十九年","value":63.22}]},{"label":"清","value":"qing","note":"白银(两)","children":[{"label":"乾隆二年","value":1654.14}]},{"label":"明","value":"ming","note":"铜钱(文)","children":[{"label":"万历三十六年","value":2.4}]},{"label":"元","value":"yuan","note":"中统钞(贯)","children":[{"label":"至顺元年","value":110}]},{"label":"南宋","value":"nansong","note":"会子(文)","children":[{"label":"靖康二年","value":2.2}]},{"label":"北宋","value":"beisong","note":"铜钱(文)","children":[{"label":"英宗时期","value":0.58}]},{"label":"唐","value":"tang","note":"铜钱(文)","children":[{"label":"盛唐时期","value":2.03}]},{"label":"东汉","value":"donghan","note":"五铢钱(文)","children":[{"label":"汉光武帝","value":2.2}]},{"label":"西汉","value":"xihan","note":"五铢钱(文)","children":[{"label":"汉武帝","value":1.1}]}]};
+
+/***/ }),
+
+/***/ 18:
+/*!********************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json sync ^\.\/.*\.js$ ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./beisong.js": 19,
+	"./donghan.js": 20,
+	"./douzi.js": 21,
+	"./ming.js": 22,
+	"./minguo.js": 23,
+	"./nansong.js": 24,
+	"./qing.js": 25,
+	"./table.js": 26,
+	"./tang.js": 27,
+	"./xihan.js": 28,
+	"./yuan.js": 29
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) { // check for number or string
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return id;
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 18;
+
+/***/ }),
+
+/***/ 19:
+/*!*************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/beisong.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <strong><span style=\"font-size: 18px;\">\u5317\u5B8B</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u5143960\u5E74-1127\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5317\u5B8B\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u7EE7\u4E94\u4EE3\u5341\u56FD\u4E4B\u540E\u7684\u671D\u4EE3\uFF0C\u4F20\u4E5D\u4F4D\u7687\u5E1D\uFF0C\u4EAB\u56FD167\u5E74\u3002\u5F00\u56FD\u7687\u5E1D\u5B8B\u592A\u7956\u8D75\u5321\u80E4\uFF0C\u5B9A\u90FD\u4E1C\u4EAC\u5F00\u5C01\u5E9C\uFF08\u6CB3\u5357\u5F00\u5C01\uFF09</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u9EC4\u91D1\u3001\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg\" width=\"250\"/>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%9D%96%E5%BA%B7%E6%AC%BE%E5%AE%98%E5%88%B6%E5%8D%81%E4%B8%A4%E9%87%91%E9%94%AD.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u9756\u5EB7\u6B3E\u5B98\u5236\u5341\u4E24\u91D1\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5B8B\u4EE3\u5546\u4E1A\u7E41\u76DB\uFF0C\u901A\u884C\u7684\u8D27\u5E01\u6709\u94DC\u94B1\u3001\u767D\u94F6\u4E0E\u9EC4\u91D1\u3002\u9EC4\u91D1\u662F\u7528\u4EE5\u4FDD\u503C\u3001\u8DE8\u6D32\u8D38\u6613\u7684\u6700\u4F73\u9996\u9009\uFF0C\u767D\u94F6\u662F\u4F5C\u4E3A\u4E2D\u8FDC\u8DDD\u79BB\u4EA4\u6613\u901A\u8D27\uFF0C\u94DC\u94B1\u5219\u662F\u4F5C\u4E3A\u96F6\u94B1\u4E8E\u5728\u5730\u5E02\u96C6\u3001\u505A\u5C0F\u989D\u4EA4\u6613\u4F7F\u7528\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u5317\u5B8B\u771F\u5B97\u5927\u4E2D\u7965\u7B26\u516B\u5E74\uFF0C\u6C74\u4EAC\uFF0C\u9EC4\u91D11\u4E24\u4EF76.3\u4E24\u767D\u94F6\u300110000\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.5<br/></span>\n</p>";
+
+/***/ }),
+
+/***/ 2:
 /*!******************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/mp-vue/dist/mp.runtime.esm.js ***!
   \******************************************************************************************/
@@ -6525,10 +6726,10 @@ function initMixin (Vue) {
     initEvents(vm);
     initRender(vm);
     callHook(vm, 'beforeCreate');
-    vm.mpHost !== 'mp-toutiao' && initInjections(vm); // resolve injections before data/props  
+    !vm._$fallback && initInjections(vm); // resolve injections before data/props  
     initState(vm);
-    vm.mpHost !== 'mp-toutiao' && initProvide(vm); // resolve provide after data/props
-    vm.mpHost !== 'mp-toutiao' && callHook(vm, 'created');      
+    !vm._$fallback && initProvide(vm); // resolve provide after data/props
+    !vm._$fallback && callHook(vm, 'created');      
 
     /* istanbul ignore if */
     if ( true && config.performance && mark) {
@@ -7086,7 +7287,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -7107,14 +7308,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -7190,7 +7391,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -7244,7 +7445,7 @@ function mountComponent$1(
     }
   }
   
-  vm.mpHost !== 'mp-toutiao' && callHook(vm, 'beforeMount');
+  !vm._$fallback && callHook(vm, 'beforeMount');
 
   var updateComponent = function () {
     vm._update(vm._render(), hydrating);
@@ -7583,7 +7784,118 @@ internalMixin(Vue);
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../../webpack/buildin/global.js */ 3)))
 
 /***/ }),
-/* 3 */
+
+/***/ 20:
+/*!*************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/donghan.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u4E1C\u6C49</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u514325\u5E74-220\u5E74</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E4%B8%9C%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u65B0\u671D\u672B\u5E74\u7206\u53D1\u7EFF\u6797\u8D64\u7709\u8D77\u4E49\uFF0C\u6C49\u5149\u6B66\u5E1D\u5218\u79C0\u8D81\u52BF\u800C\u8D77\u3002\u516C\u514325\u5E74\uFF0C\u5218\u79C0\u79F0\u5E1D\uFF0C\u5B9A\u90FD\u96D2\u9633\uFF08\u4ECA\u6CB3\u5357\u6D1B\u9633\uFF09\uFF0C\u5EF6\u7EED\u201C\u6C49\u201D\u7684\u56FD\u53F7\uFF0C\u53F2\u79F0\u5149\u6B66\u4E2D\u5174\u3002\u4F20\u516B\u4E16\u5171\u5341\u56DB\u5E1D\uFF0C\u4EAB\u56FD\u4E00\u767E\u4E5D\u5341\u4E94\u5E74\uFF0C\u4E0E\u897F\u6C49\u7EDF\u79F0\u6C49\u671D\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E9%87%91%E4%BA%94%E9%93%A2%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u6C49\u91D1\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E94\u94E2\u662F\u4E00\u79CD\u4E2D\u56FD\u53E4\u94DC\u5E01\uFF0C\u94B1\u91CD\u4E94\u94E2\uFF0C\u4E0A\u6709\u201C\u4E94\u94E2\u201D\u4E8C\u5B57\uFF0C\u6545\u540D\u3002\u521D\u94F8\u4E8E\u897F\u6C49\u6C49\u6B66\u5E1D\u5143\u72E9\u4E94\u5E74\uFF08\u516C\u5143\u524D118\u5E74\uFF09\uFF0C\u4E1C\u6C49\u3001\u8700\u6C49\u3001\u9B4F\u3001\u664B\u3001\u5357\u9F50\u3001\u6881\u3001\u9648\u3001\u5317\u9B4F\u548C\u968B\u90FD\u6709\u94F8\u9020\uFF0C\u91CD\u91CF\u5F62\u5236\u5927\u5C0F\u4E0D\u4E00\u3002\u5510\u671D\u6B66\u5FB7\u56DB\u5E74\uFF08\u516C\u5143621\u5E74\uFF09\u5E9F\u6B62\u3002\u4F46\u65E7\u4E94\u94E2\u4ECD\u7136\u5728\u6C11\u95F4\u6D41\u901A\u3002\u4E94\u94E2\u8DE8\u5EA6\u5927\u3001\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6570\u91CF\u6700\u591A\u3001\u6D41\u901A\u65F6\u95F4\u6700\u4E45\u7684\u94B1\u5E01\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9B4F\u664B\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF76250\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u5B59\u5B50\u7B97\u7ECF\u300B\u5377\u4E0B<br/></span>\n</p>";
+
+/***/ }),
+
+/***/ 21:
+/*!***********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/douzi.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong style=\"font-size: 20px;\">\u53E4\u4EE3\u4E00\u4E24\u94F6\u5B50\u5230\u5E95\u5408\u591A\u5C11\u4EBA\u6C11\u5E01\uFF1F</strong><br/>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    \u4F5C\u8005\uFF1A\u8C46\u5B50\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"margin-top: 0px; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u7C7B\u95EE\u9898\u5728\u5F88\u591A\u5730\u65B9\u770B\u5230\u591A\u6B21\uFF0C\u95EE\u9898\u4E0B\u591A\u6570\u56DE\u7B54\uFF0C\u8981\u4E48\u6298\u5408\u7C73\u4EF7\uFF0C\u8981\u4E48\u6298\u5408\u8D2D\u4E70\u529B\uFF0C\u8981\u4E48\u5C31\u7EA0\u7ED3\u9965\u8352\u5E74\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u4E4B\u524D\u53C8\u6709\u95EE\u6C11\u56FD\u65F6\u671F\u4E00\u4E2A\u5927\u6D0B\u5927\u6982\u7B49\u4E8E\u73B0\u5728\u7684\u591A\u5C11\u94B1\uFF0C\u5E95\u4E0B\u7684\u56DE\u7B54\u4E5F\u662F\u6E05\u4E00\u8272\u7684\u6821\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u80B2\u90E8\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u53BF\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u804C\u5DE5\u591A\u5C11\u94B1\u3002\u6211\u8BF4\u8FC7\uFF0C\u7528\u52A8\u8361\u4E0D\u5B9A\u7684\u7C73\u4EF7\u6765\u8861\u91CF\u94F6\u5B50\u7684\u4EF7\u503C\uFF0C\u6700\u540E\u5F97\u51FA\u7684\u7ED3\u8BBA\u662F\u8352\u8C2C\u7684\uFF0C\u4F60\u66F4\u4E0D\u80FD\u4EE5\u53E4\u4EE3\u8D2D\u7F6E\u623F\u4EA7\u3001\u7530\u5730\u7684\u82B1\u9500\u6765\u5BF9\u6BD4\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u53EF\u8131\u79BB\u7FA4\u4F17\uFF0C\u53EA\u53C2\u7167\u4E0A\u5C42\u6536\u5165\u6765\u5B9A\u593A\uFF0C\u5426\u5219\u7ED3\u8BBA\u4E00\u5B9A\u6781\u5176\u8352\u8C2C\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8981\u8BF4\u4E00\u4E24\u94F6\u5B50\u3001\u4E00\u4E2A\u94F6\u5143\uFF0C\u5408\u73B0\u5728\u591A\u5C11\u94B1\uFF0C\u6709\u4E2A\u975E\u5E38\u7B80\u5355\u7C97\u66B4\uFF0C\u4F46\u662F\u975E\u5E38\u51C6\u786E\u3001\u975E\u5E38\u6709\u6548\u7684\u65B9\u5F0F\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u94F6\u4E24\u3001\u6587\u94B1\u3001\u5E03\u5E1B\u3001\u94F6\u5143\uFF09=\u73B0\u5982\u4ECA\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u4EBA\u6C11\u5E01\uFF09</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u6E05\u534E\u5916\u6559\u72C4\u767B\u8FC8\u8C03\u67E5\u4E86\u5317\u4EAC\u6700\u666E\u901A\u5C45\u6C11\u7684\u6536\u5165\u3002\u5176\u4E2D\uFF0C1918\u5E74\uFF0C\u5317\u4EAC\u5C45\u6C11\u6700\u5E95\u5C42\u7684\u6536\u5165\u662F1.66\u94F6\u5143/\u6708\uFF0C\u5373\u6BCF\u4E2A\u6708\u624D\u5F97\u4E00\u5757\u516D\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6700\u666E\u901A\u6700\u5E95\u5C42\u7684\u5458\u5DE5\uFF0C\u6709\u4F4F\u5904\uFF0C\u4F46\u751F\u6D3B\u5341\u5206\u8270\u96BE\uFF0C\u6708\u5165\u4E00\u5757\u516D\u89D2\uFF0C\u53731.6\u5143\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6BB5\u516C\u9986\u4E2D\u7684\u4F63\u4EBA\u3001\u5728\u5DE5\u5730\u5E72\u6D3B\u7684\u5DE5\u4EBA\u3001\u996D\u5E97\u7684\u4F19\u8BA1\uFF0C\u6708\u5165\u7EA6\u54082\u4E2A\u5927\u6D0B\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u90A3\u4E48\uFF0C\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u53EF\u4EE5\u5F97\u51FA\u7ED3\u8BBA\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u6C11\u56FD\u521D\u5E74\uFF0C2\u4E2A\u5927\u6D0B\u7EA6\u7B49\u4E8E\u73B0\u5982\u4ECA\u76843000\u5143\uFF0C\u53731\u4E2A\u5927\u6D0B\u7B49\u4E8E\u73B0\u5728\u76841500\u5143\u3002</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u65E2\u4E0D\u662F\u7C73\u4EF7\u6298\u5408\u51FA\u6765\u7684300\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u662F\u8089\u4EF7\u6298\u5408\u51FA\u6765\u7684800\u5143\u4EBA\u6C11\u5E01\u3002\u56E0\u4E3A\u4ECE\u4E0A\u4E16\u7EAA\u672B\u671F\u5F00\u59CB\uFF0C\u519C\u4E1A\u8FDB\u5165\u673A\u68B0\u5316\uFF0C\u53C8\u62E5\u6709\u5316\u80A5\u7B49\u8D44\u6599\uFF0C\u4EF7\u503C\u53EF\u79F0\u4F4E\u5EC9\uFF0C\u4EA9\u4EA7\u5341\u500D\u4E8E\u53E4\u4EE3\uFF0C\u53C8\u4E0D\u4F3C\u53E4\u4EE3\u7C73\u4EF7\u817E\u8E0A\u3002\u5404\u79CD\u8089\u79BD\u3001\u8089\u732A\u517B\u6B96\uFF0C\u5728\u53E4\u4EE3\u4E5F\u4E0D\u80FD\u4E0E\u73B0\u5982\u4ECA\u7684\u62E5\u6709\u91CF\u5BF9\u6BD4\u3002\u5176\u4ED6\u8BF8\u5982\u80FD\u4E70\u9A74\u4F46\u4E70\u4E0D\u8D77\u7CAE\uFF0C\u80FD\u76D6\u5C4B\u4F46\u5403\u4E0D\u8D77\u8089\u7684\u4E8B\uFF0C\u5B9E\u5728\u592A\u591A\uFF0C\u4E0D\u4E00\u4E00\u5217\u4E3E\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u56E0\u6B64\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\uFF08\u90A3\u5565\u4EBA\u53E3\uFF09\u7684\u6536\u5165\u624D\u662F\u9760\u8C31\u7684\uFF0C\u4E5F\u80FD\u56DE\u5934\u8FC7\u6765\u68C0\u6D4B\u5F53\u65F6\u67D0\u6837\u4E1C\u897F\u7684\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u7528\u5177\u4F53\u7684\u67D0\u6837\u4E1C\u897F\u53BB\u68C0\u6D4B\u5E95\u5C42\u6708\u5165\u3002\u4E8E\u662F\uFF0C\u4F60\u56DE\u5934\u518D\u53BB\u68C0\u6D4B\uFF0C\u53D1\u73B0\u5728\u6C11\u56FD\u521D\u671F\uFF0C2\u4E2A\u5927\u6D0B\u80FD\u7F6E\u529E\u4E00\u684C\u4E0A\u7B49\u5A5A\u5BB4\u3002\u800C\u73B0\u5982\u4ECA\uFF0C\u666E\u901A\u5A5A\u5BB4\u9152\u5E2D\u4E00\u4E24\u5343\uFF0C\u9AD8\u7EA7\u5A5A\u5BB4\u4E00\u684C3000\u5DE6\u53F3\u3002\u518D\u9A8C\u6C11\u56FD\u521D\u5E74\uFF0C800\u94F6\u5143\u4E70\u5317\u4EAC\u4E00\u5957\u623F\uFF0C\u5219\u54082017\u5E74\u7684\u4EBA\u6C11\u5E01120\u4E07\uFF0C\u5E76\u4E0D\u4FBF\u5B9C\uFF0C\u4F46\u548C\u73B0\u5982\u4ECA\u7684\u623F\u4EF7\u76F8\u6BD4\uFF0C\u771F\u662F\u4FBF\u5B9C\u5230\u59E5\u59E5\u5BB6\u4E86\u3002\u7531\u6B64\u63A8\u800C\u5E7F\u4E4B\uFF0C\u8D27\u5E01\u672A\u66FE\u52A8\u8361\u8FC7\u76841925\u5E74\u4E4B\u524D\u7684\u6C11\u56FD\uFF0C1\u5757\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1930\u5E74\u76848\u4E2A\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1980\u5E74\u768415\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1990\u5E74\u768450\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2000\u5E74\u7684350\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2010\u5E74\u7684900\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2017\u5E74\u76841500\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \uFF08\u5168\u90E8\u6839\u636E\u5E95\u5C42\u5458\u5DE5\u6E29\u9971\u5DE5\u8D44\u6362\u7B97\uFF09\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6709\u4EBA\u95EE\uFF0C\u4E09\u56DB\u5341\u5E74\u6765\uFF0C\u6211\u56FD\u901A\u8D27\u81A8\u80C0\u4E86\u591A\u5C11\u500D\u3002\u7B54\u6848\u5F88\u660E\u663E\u4E86\uFF0C\u662F100\u500D\u30021980\u5E74\u7684\u4E00\u5757\u94B1\uFF0C\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u4E00\u767E\u5757\u94B1\u3002\u8FD9\u4ECE\u4FA7\u9762\u8BC1\u660E\u4E86\u8D5A\u4E86\u94B1\u5B58\u94F6\u884C\u5230\u5E95\u8D2C\u4E0D\u8D2C\u503C\uFF0C\u56FD\u5BB6\u5370\u53D1\u8D27\u5E01\uFF0C\u5230\u5E95\u5BF9\u4F60\u4EE5\u524D\u5B58\u7684\u94B1\uFF0C\u7A00\u91CA\u5230\u4F55\u79CD\u7A0B\u5EA6\uFF1F\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u90FD\u662F\u6839\u636E\u6700\u5E95\u5C42\u7684\u5DE5\u4EBA\u3001\u53BF\u6C11\u7684\u6708\u5165\u800C\u7B97\u51FA\u6765\u7684\uFF0C\u800C\u6708\u5165\u662F\u5F53\u65F6\u6C11\u4EF7\u7684\u76F4\u63A5\u53CD\u5E94\u3002\u5230\u73B0\u5728\uFF0C\u5E95\u5C42\u5DE5\u4EBA\u3001\u5FAD\u5F79\u3001\u4EC6\u4ECE\u3001\u670D\u52A1\u5458\uFF0C\u4E5F\u5360\u636E\u4EBA\u53E3\u7684\u7EDD\u5927\u591A\u6570\u3002\u7531\u6B64\uFF0C\u6211\u4EEC\u8FD8\u53EF\u4EE5\u770B\u53E4\u4EE3\u4EFB\u4F55\u65F6\u671F\u7684\u901A\u884C\u8D27\u5E01\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u591A\u5C11\u4EBA\u6C11\u5E01\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6211\u66FE\u5199\u8FC7\u4E00\u7BC7\u56DE\u7B54\uFF0C\u4E13\u95E8\u5C31\u662F\u5BF9\u6BD4\u94F6\u4E24\u4E0E\u4EBA\u6C11\u5E01\uFF0C\u8B6C\u5982\u6E05\u4EE3\u67D0\u4E9B\u65F6\u671F\uFF0C\u53BF\u6C11\u5C0F\u5DE5\uFF0C\u6708\u94B1\u4E00\u4E24\u56DB\u94B1\uFF0C\u53C8\u6709\u624D\u5F97\u516B\u94B1\u7684\uFF0C\u800C\u4EAC\u57CE\u3001\u4E3B\u8981\u57CE\u5E02\u4EC6\u5F79\u3001\u6742\u5DE5\u3001\u670D\u52A1\u4EBA\u5458\uFF0C\u6708\u94B1\u4E8C\u4E24\u3002\u300A\u7EA2\u697C\u68A6\u300B\u91CC\u5F97\u529B\u4E2B\u9B1F\uFF0C\u4E5F\u662F\u8FD9\u4E2A\u6536\u5165\u3002\u53EF\u4EE5\u770B\u51FA\uFF0C\u660E\u6E05\u65F6\u671F\u7684\u4E00\u4E24\u94F6\u5B50\uFF0C\u5927\u7565\u7B49\u4E8E\u73B0\u5982\u4ECA\u591A\u6570\u5E95\u5C42\u4EBA\u6C11\u534A\u6708\u7684\u6536\u5165\u3002<span style=\"font-weight: 600;\">\u53E4\u4EBA\u6708\u5165\u4E8C\u4E24\u94F6\u5B50\uFF0C\u7B49\u4E8E1980\u5E74\u768430\u5757\u94B1\uFF0C2000\u5E74\u7684700\u5757\u94B1\uFF0C2017\u5E74\u76843000\u5757\u94B1\u3002</span>\u800C\u6C11\u95F4\u5E38\u7528\u6587\u94B1\u7ED3\u7B97\uFF0C\u4E00\u5343\u6587\u6298\u5408\u4E00\u4E24\u94F6\u5B50\uFF0C\u540E\u6587\u94B1\u8D2C\u503C\uFF0C\u4E00\u4E24\u94F6\u5B50\u5151\u4E00\u5343\u4E03\u516B\u767E\u6587\u90FD\u6709\uFF0C\u6C11\u95F4\u5DE5\u4F5C\u4EBA\u7FA4\u6536\u5165\u4E5F\u4E0A\u6DA8\uFF0C\u4F46\u5374\u662F\u771F\u7684\u4E0A\u6DA8\u5417\uFF1F\u4F9D\u7136\u8981\u6839\u636E\u5E95\u5C42\u6708\u5165\u6765\u786E\u5B9A\u7269\u4EF7\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u6839\u636E\u67D0\u79CD\u4E1C\u897F\u4EF7\u683C\u6765\u786E\u5B9A\u6536\u5165\u591A\u5C11\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF0C\u5EB7\u7199\u5E74\u95F4\uFF0C\u8089\u4EF7\u7EF4\u6301\u5728\u4E09\u5206\u94B1\uFF0C\u5373\u4E00\u65A4\uFF08590\u514B\uFF090.03\u4E24\u767D\u94F6\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\u6708\u5165\u6362\u7B97\uFF0C\u8FD9\u5C31\u662F\u4E00\u65A4\u732A\u808938\u5757\u94B1\uFF0C\u73B0\u5728\u624D\u5341\u6765\u5757\uFF0C\u800C\u66F4\u5E95\u5C42\u7684\u6751\u6C11\uFF0C\u6708\u5165\u7B49\u4E8E\u73B0\u5982\u4ECA\u76841200\u5757\u5DE6\u53F3\u3002\u4F60\u77AC\u95F4\u5C31\u80FD\u660E\u767D\u53E4\u4EBA\u4E00\u5E74\u5230\u5934\u5403\u56DE\u8089\u591A\u4E0D\u5BB9\u6613\uFF0C\u4E3A\u5565\u90FD\u820D\u4E0D\u5F97\u4E70\u8089\u3002\u800C\u5207\u5207\u4E0D\u53EF\u6839\u636E\u4E00\u65A4\u732A\u8089\u4E09\u5206\u94F6\u94B1\u6765\u6362\u7B97\u6210\u73B0\u5728\u7684\u8089\u4EF7\uFF0C\u518D\u63A8\u51FA\u5F53\u65F6\u4EBA\u7684\u6536\u5165\u6C34\u5E73\u6298\u5408\u73B0\u5982\u4ECA\u591A\u5C11\u4EBA\u6C11\u5E01\uFF0C\u8FD9\u662F\u975E\u5E38\u8352\u8C2C\u7684\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u76D0\u5728\u53E4\u4EE3\u5236\u4F5C\u3001\u8FD0\u8F93\u90FD\u6BD4\u73B0\u5728\u8D39\u52B2\uFF0C\u6BCF\u65A4\u4E94\u5206\u94B1\uFF0C\u4E5F\u5C31\u662F0.05\u4E24\uFF0C\u54082017\u5E74\u768475\u5757\u94B1\u3002\u8FD9\u79CD\u72B6\u51B5\u4E00\u76F4\u6301\u7EED\u5230\u6C11\u56FD\u521D\u5E74\uFF0C\u8FD9\u65F6\u518D\u770B\u300A\u9ED4\u5DDD\u6EC7\u65C5\u884C\u8BB0\u300B\uFF0C\u4F60\u5C31\u80FD\u660E\u767D\u4E3A\u5565\u5404\u5730\u8D2B\u82E6\u767E\u59D3\u6839\u672C\u5C31\u5403\u4E0D\u4E0A\u76D0\uFF0C\u6700\u591A\u53EA\u662F\u6CBE\u7740\u4E00\u70B9\u70B9\u5927\u76D0\u7C92\u5C1D\u4E00\u4E9B\u6ECB\u5473\u7684\u539F\u56E0\u4E86\u3002\u800C\u4F60\uFF0C\u7EDD\u4E0D\u53EF\u6839\u636E\u5F53\u65F6\u7684\u98DF\u76D0\u4EF7\u683C\uFF0C\u53CD\u63A8\u51FA\u5151\u7387\u3002\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u5E95\u5C42\u4E61\u91CE\u767E\u59D3\uFF0C\u65E5\u5165\u4E00\u767E\u6587\uFF0C\u6708\u5165\u4E09\u5343\u6587\uFF083\u8D2F\uFF09\uFF0C\u7B49\u4E8E2000\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E00\u6587\u5408\u73B0\u5728\u7684\u516D\u3001\u4E03\u6BDB\u94B1\uFF0C\u4E5F\u662F\u5982\u6B64\u63A8\u5BFC\u3002\u4E0A\u5C42\u5B98\u5458\u4E09\u5206\u4E4B\u4E00\u53D1\u94B1\uFF0C\u4E09\u5206\u4E4B\u4E8C\u53D1\u4E1C\u897F\uFF0C\u4E5F\u662F\u65E0\u5948\u4E4B\u4E3E\u3002\u5317\u5B8B\u5F85\u9047\u4E2D\u7B49\u7684\u5F53\u5175\u7684\uFF0C\u5E73\u5747\u4E00\u5929\u80FD\u62FF130\u6587\uFF0C\u5230\u5357\u5B8B\u4E00\u5929\u80FD\u62FF500\u591A\u6587\uFF0C\u4E0D\u662F\u5DE5\u8D44\u6DA8\u4E86\uFF0C\u662F\u94B1\u6BDB\u4E86\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u57CE\u91CC\u5C0F\u5403\uFF0C\u6BCF\u4EFD15\u6587\uFF0C\u4E5F\u5C31\u662F\u73B0\u5728\u768415\u5757\u94B1\u5DE6\u53F3\uFF0C\u8FD9\u662F\u9E21\u6742\u6C64\u7684\u4EF7\u683C\u3002\u800C\u852C\u83DC\u9020\u9F51\uFF0C\u6BCF\u789710\u6587\u3002\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <img src=\"https://pic2.zhimg.com/80/v2-b1fff09d1be1bba3f518acbcb807b4bd_720w.jpg\" class=\"content_image lazy\"/>\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u603B\u4E4B\uFF0C\u57FA\u4E8E\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u8054\u7CFB\u73B0\u5982\u4ECA\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u6765\u8BA4\u77E5\u53E4\u4EE3\uFF0C\u751A\u81F3\u8FD1\u4EE3\u7CAE\u98DF\u3001\u8089\u7C7B\u3001\u5403\u7A7F\u3001\u4F4F\u5BBF\u3001\u623F\u4EA7\u3001\u5A5A\u4E27\u3001\u96C7\u4F63\u7B49\u6240\u6709\u4EBA\u4EEC\u6240\u9700\u8D2D\u4E70\u3001\u51FA\u5356\u7269\u54C1\u7684\u4EF7\u683C\uFF0C\u624D\u662F\u6700\u5408\u7406\u7684\u3002\u5982\u6B64\u8BA1\u7B97\uFF0C\u5219\u8352\u5E74\u7CAE\u98DF\u4EF7\u683C\u7684\u817E\u8E0A\u3001\u6602\u8D35\uFF0C\u5219\u7ACB\u5373\u663E\u73B0\u3002\u767E\u59D3\u4E00\u5E74\u5230\u5934\u820D\u4E0D\u5F97\u5403\u4E00\u56DE\u8089\u7684\u5FC3\u6001\uFF0C\u4E5F\u80FD\u7ACB\u5373\u4F53\u4F1A\u5230\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"color: #888;\">\u6CE8\uFF1A\u7B97\u6CD5\u5F15\u7528\u81EA\u77E5\u4E4E\u7528\u6237 @\u8C46\u5B50\uFF0C\u94FE\u63A5\u5730\u5740\uFF1Ahttps://zhuanlan.zhihu.com/p/32089267</span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 22:
+/*!**********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/ming.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u660E\u671D</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431368\u5E74-1644\u5E74</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/>\n</p>\n<p>\n    <br/>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u660E\u671D\u5386\u7ECF\u5341\u4E8C\u4E16\u3001\u5341\u516D\u4F4D\u7687\u5E1D\uFF0C\u56FD\u795A\u4E8C\u767E\u4E03\u5341\u516D\u5E74\u3002\u5F00\u56FD\u7687\u5E1D\u4E3A\u660E\u592A\u7956\u6731\u5143\u748B\uFF0C\u521D\u671F\u5EFA\u90FD\u5357\u4EAC\uFF0C\u660E\u6210\u7956\u6731\u68E3\u65F6\u671F\u5B9A\u90FD\u5317\u4EAC\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E5%98%89%E9%9D%96%E4%B8%89%E5%8D%81%E5%85%AD%E5%B9%B4%E5%86%85%E6%88%B7%E9%83%A8%E6%8B%BE%E4%B8%A4%E9%87%91%E9%94%AD.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u5609\u9756\u4E09\u5341\u516D\u5E74\u5185\u6237\u90E8\u5341\u4E24\u91D1\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E4%B8%87%E5%8E%86%E4%BA%94%E5%8D%81%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u4E07\u5386\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E4%B8%87%E5%8E%86%E9%80%9A%E5%AE%9D2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u4E07\u5386\u901A\u5B9D</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u660E\u4EE3\u4EE5\u767D\u94F6\u4F5C\u4E3A\u6CD5\u5B9A\u7684\u6D41\u901A\u8D27\u5E01\uFF0C\u4E00\u822C\u4EA4\u6613\u5927\u6570\u7528\u94F6\uFF0C\u5C0F\u6570\u7528\u94B1\uFF0C\u767D\u94F6\u548C\u94DC\u94B1\u7EC4\u6210\u4E86\u8D27\u5E01\u4E3B\u4F53\u3002\u56E0\u907F\u8BB3\u7687\u5E1D\u6731\u5143\u748B\u4E4B&quot;\u5143&quot;\u5B57\uFF0C\u660E\u4EE3\u6240\u6709\u94B1\u5E01\u7EDF\u79F0\u901A\u5B9D\uFF0C\u5FCC\u7528\u5143\u5B9D\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u4E07\u5386\u4E2D\u540E\u671F\uFF0C\u9EC4\u91D1\u4E00\u4E24\u4EF77-8\u4E24\u767D\u94F6\u3001700-800\u6587\uFF0C\u6765\u6E90\uFF1A\u300A\u660E\u795E\u5B97\u5B9E\u5F55\u300B\u5377\u4E00\u4E03\u4E09\uFF1B\u65E5\u77E5\u5F55\u5377\u4E00\u4E00\u300A\u9EC4\u91D1\u300B<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 23:
+/*!************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/minguo.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 20px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\">\u4E2D\u534E\u6C11\u56FD</span></strong></span><span style=\"font-size: 18px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u516C\u51431912\u5E74-1949\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em; text-align: center;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">1911\u5E74\u8F9B\u4EA5\u9769\u547D\u7206\u53D1\u540E\uFF0C\u9769\u547D\u515A\u5728\u5357\u4EAC\u5EFA\u7ACB\u4E34\u65F6\u653F\u5E9C\uFF0C\u5404\u7701\u4EE3\u8868\u63A8\u4E3E\u5B59\u4E2D\u5C71\u4E3A\u4E34\u65F6\u5927\u603B\u7EDF\u30021912\u5E74\u5143\u6708\u6C11\u56FD\u6B63\u5F0F\u5EFA\u7ACB\uFF0C \u8881\u4E16\u51EF\u4E3A\u9996\u4EFB\u6C11\u56FD\u5927\u603B\u7EDF\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E4%BA%94%E8%89%B2%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u4E94\u8272\u65D71912-1928</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E9%9D%92%E5%A4%A9%E7%99%BD%E6%97%A5%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u9752\u5929\u767D\u65E5\u65D71929-1949</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u94F6\u5143</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD8%E5%B9%B4%E9%93%B6%E5%85%83.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD8\u5E74\u94F6\u5143</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E5%8D%81%E4%B8%A4%E9%BB%84%E9%87%91-%E5%A4%A7%E9%BB%84%E9%B1%BC.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD\u5341\u4E24\u9EC4\u91D1-\u5927\u9EC4\u9C7C</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E4%B8%80%E4%B8%A4%E9%BB%84%E9%87%91-%E5%B0%8F%E9%BB%84%E9%B1%BC.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD\u4E00\u4E24\u9EC4\u91D1-\u5C0F\u9EC4\u9C7C</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u5317\u6D0B\u653F\u5E9C\u4E8E1914\u5E74\u63A8\u51FA\u300A\u56FD\u5E01\u6761\u4F8B\u300B\uFF0C\u786E\u7ACB\u94F6\u672C\u4F4D\u8D27\u5E01\u5236\u5EA6\uFF0C\u5B9A\u56FD\u5E01\u201C\u58F9\u5706\u201D\u91CD\u5E93\u5E73\u4E03\u94B1\u4E8C\u5206\uFF0C\u542B\u7EAF\u94F6\u516B\u6210\u4E5D\uFF0C\u5373\u516D\u94B1\u56DB\u5206\uFF0C\uFF0823.9024808\u514B\uFF09\uFF0C\u7EA6\u7B49\u540C\u4E8E\u94F6\u5706\u58F9\u679A\uFF0C\u53C8\u5B9A\u5341\u5206\u4E4B\u4E00\u5143\u4E3A\u4E00\u89D2\uFF0C\u5341\u5206\u4E4B\u4E00\u89D2\u4E3A\u4E00\u5206\u3002\u56FD\u5E01\u7684\u58F9\u5706\u88AB\u94F8\u6210\u516B\u6210\u4E5D\u94F6\u3001\u4E00\u6210\u4E00\u94DC\u7684\u786C\u5E01\uFF0C\u4E0A\u6709\u8881\u4E16\u51EF\u5934\u50CF\uFF0C\u4FD7\u79F0\u201C\u8881\u5927\u5934\u201D\uFF1B\u5E76\u63A8\u51FA\u4EE5\u94F6\u94F8\u9020\u7684\u8F85\u5E01\u3002\u8881\u5927\u5934\u51FA\u73B0\u540E\uFF0C\u9010\u6E10\u53D6\u4EE3\u201C\u9F99\u6D0B\u201D\u3001\u201C\u9E70\u6D0B\u201D\u7B49\u65E7\u6709\u5916\u56FD\u94F6\u5706\uFF0C\u5728\u5168\u4E2D\u56FD\u6D41\u901A\u3002\u5341\u4E2A\u201C\u8881\u5927\u5934\u201D\u539A\u4E00\u5BF8\uFF0C\u662F\u4E3A\u201C\u5934\u5BF8\u201D\u4E4B\u8BED\u6E90\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u6C11\u56FD\u4E03\u5E74\u4E8C\u6708\uFF0C\u9EC4\u91D1\u5341\u4E24\u4EF7429\u5143\uFF08\u94F6\u5143\uFF09\u3002\u6765\u6E90\uFF1A\u300A\u6C11\u56FD\u7ECF\u6D4E\u53F2\u300Bp.517<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 24:
+/*!*************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/nansong.js ***!
+  \*************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u5357\u5B8B</strong></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431127\u5E74-1276\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431127\u5E74\uFF0C\u9756\u5EB7\u4E4B\u53D8\u540E\uFF0C\u5B8B\u9AD8\u5B97\u8D75\u6784\u5B9A\u90FD\u4E8E\u5357\u4EAC\u5E94\u5929\u5E9C\uFF08\u4ECA\u6CB3\u5357\u5546\u4E18\uFF09\u5EFA\u5E99\u79F0\u5E1D\uFF0C\u56FD\u53F7\u4ECD\u4E3A\u5B8B\uFF0C\u53F2\u79F0\u5357\u5B8B\u3002\u516C\u51431138\u5E74\uFF0C\u5B8B\u5BA4\u8FC1\u90FD\u4E34\u5B89\u5E9C\uFF08\u4ECA\u6D59\u6C5F\u676D\u5DDE\uFF09\u3002\u5171\u4F20\u4E94\u4E16\u4E5D\u5E1D\uFF0C\u4EAB\u56FD\u4E00\u767E\u56DB\u5341\u4E5D\u5E74\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4EA4\u5B50\u3001\u4F1A\u5B50</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E4%BC%9A%E5%AD%90.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5357\u5B8B\u4F1A\u5B50</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E4%BA%A4%E5%AD%90.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5357\u5B8B\u4EA4\u5B50<br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5357\u5B8B\u65F6\u671F\uFF0C\u7EB8\u5E01\u5927\u91CF\u6D41\u901A\uFF0C\u9010\u6E10\u4EE3\u66FF\u94DC\u94B1\u6210\u4E3A\u4E3B\u8981\u4EA4\u6362\u624B\u6BB5\u3002\u5357\u5B8B\u7684\u7EB8\u5E01\u5206\u4E3A\u201C\u4EA4\u5B50\u201D\u548C\u201C\u4F1A\u5B50\u201D\u3002\u4EA4\u5B50\u4E3B\u8981\u5728\u56DB\u5DDD\u5730\u533A\u4F7F\u7528\uFF0C\u4F1A\u5B50\u5219\u5206\u4E3A\u201C\u4E1C\u5357\u4F1A\u5B50\u201D\u3001\u201C\u4E24\u6DEE\u4F1A\u5B50\u201D\u548C\u201C\u6E56\u5317\u4F1A\u5B50\u201D\u4E09\u79CD\u3002\u4E0D\u8FC7\uFF0C\u5357\u5B8B\u540E\u671F\u56E0\u4E3A\u5927\u91CF\u53D1\u884C\u7EB8\u5E01\uFF0C\u9020\u6210\u8D27\u5E01\u8D2C\u503C\uFF0C\u7269\u4EF7\u98DE\u6DA8\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9756\u5EB7\u4E8C\u5E74\uFF0C\u6C74\u4EAC\uFF0C\u9EC4\u91D11\u4E24\u4EF712.8\u4E24\u767D\u94F6\u300132000\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.6<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 25:
+/*!**********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/qing.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u6E05\u671D</strong></span><span style=\"font-size: 18px;\"></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431636\u5E74-1912\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <br/>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6700\u540E\u4E00\u4E2A\u5C01\u5EFA\u738B\u671D\uFF0C\u5171\u4F20\u5341\u4E8C\u5E1D&nbsp; \uFF0C\u7EDF\u6CBB\u8005\u4E3A\u6EE1\u6D32\u7231\u65B0\u89C9\u7F57\u6C0F\u3002\u4ECE\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u8D77\uFF0C\u603B\u8BA1296\u5E74\u3002\u4ECE\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u6E05\u8D77\uFF0C\u56FD\u795A276\u5E74\u3002\u4ECE\u6E05\u5175\u5165\u5173\uFF0C\u5EFA\u7ACB\u5168\u56FD\u6027\u653F\u6743\u7B97\u8D77\u4E3A268\u5E74\u30021616\u5E74\uFF0C\u5EFA\u5DDE\u5973\u771F\u9996\u9886\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u3002 1636\u5E74\uFF0C\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u5927\u6E05\uFF0C\u5B9A\u90FD\u5317\u4EAC\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9B%BD%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u5927\u6E05\u56FD\u65D7\u9EC4\u5E95\u84DD\u9F99\u620F\u7EA2\u73E0\u56FE1889-1912</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E5%85%89%E7%BB%AA%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg\" width=\"250\"/>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u5149\u7EEA\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%9B%B4%E9%9A%B6%E5%8D%81%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4EE3\u76F4\u96B6\u5341\u4E24</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E4%BA%94%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E94\u4E24<br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%A2%8E%E9%93%B6.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u788E\u94F6</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%B9%BE%E9%9A%86%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E7E\u9686\u901A\u5B9D</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u8D27\u5E01\u5927\u4F53\u4E0A\u91C7\u767D\u94F6\u4E0E\u94DC\u94B1\u5E76\u7528\u7684\u94F6\u94DC\u53CC\u672C\u4F4D\u5236\uFF0C\u5927\u6570\u7528\u94F6\uFF0C\u5C0F\u6570\u7528\u94B1\uFF0C\u4F46\u94F6\u7684\u5730\u4F4D\u66F4\u89C1\u91CD\u8981\u3002\u5176\u5F62\u5F0F\u5927\u4F53\u53EF\u5206\u4E3A\u56DB\u79CD\uFF1A\u7B2C\u4E00\u662F\u5143\u5B9D\uFF0C\u901A\u79F0\u5B9D\u94F6\uFF0C\u56E0\u5176\u4E3A\u9A6C\u8E44\u5F62\uFF0C\u4E5F\u79F0\u9A6C\u8E44\u94F6\uFF0C\u5176\u91CD\u4E94\u5341\u4E24\uFF1B\u7B2C\u4E8C\u79CD\u53EB\u4E2D\u952D\u6216\u5C0F\u5143\u5B9D\uFF0C\u591A\u9524\u5F62\uFF0C\u4E5F\u6709\u9A6C\u8E44\u5F62\uFF0C\u91CD\u7EA6\u5341\u4E24\uFF1B\u7B2C\u4E09\u79CD\u662F\u5C0F\u951E\u3001\u951E\u5B50\u6216\u79F0\u5C0F\u952D\uFF0C\u591A\u4E3A\u9992\u5934\u72B6\uFF0C\u91CD\u4E00\u3001\u4E8C\u4E24\u5230\u4E09\u3001\u4E94\u4E24\uFF1B\u7B2C\u56DB\u79CD\u662F\u788E\u94F6\uFF0C\u5373\u6563\u788E\u7684\u94F6\u5B50\uFF0C\u91CD\u91CF\u4E0D\u5230\u4E00\u4E24\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u4E7E\u9686\u4E8C\u5E74\uFF0C\u4EAC\u57CE\uFF0C\u767D\u94F6\u4E00\u4E24\u4EF7800\u6587\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.12<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
+
+/***/ }),
+
+/***/ 26:
+/*!***********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/table.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"text-align: center;\">\n    <strong><span style=\"font-size: 16px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/table.jpg\"/></span></strong>\n</p>\n<p>\n    <strong><span style=\"font-size: 16px;\">PS\uFF1A</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 16px;\">\u738B\u671D\u672B\u671F\u6216\u6218\u4E71\u65F6\uFF0C\u8D27\u5E01\u8D77\u4F0F\u6CE2\u52A8\u8F83\u5927\uFF0C\u6240\u4EE5\u5728\u9009\u7528\u671D\u4EE3\u57FA\u7840\u4EF7\u683C\u65F6\uFF0C\u4F1A\u9009\u7528\u671D\u4EE3\u4E2D\u8F83\u4E3A\u7A33\u5B9A\u7684\u65F6\u671F\u3002</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u5F15\u7528\u8D44\u6599\uFF1A</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u738B\u857E\uFF1A\u300A\u4E8C\u5341\u4E16\u7EAA\u4EE5\u6765\u4E2D\u56FD\u7269\u4EF7\u53F2\u7814\u7A76\u8FF0\u8BC4\u300B</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u9EC4\u5195\u5802\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300B(\u9F50\u9C81\u4E66\u793E\uFF0C2008)</span>\n</p>";
+
+/***/ }),
+
+/***/ 27:
+/*!**********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/tang.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong><span style=\"font-size: 18px;\">\u5510\u671D</span></strong>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u516C\u5143618\u5E74-907\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u671D\u662F\u7EE7\u968B\u671D\u4E4B\u540E\u7684\u5927\u4E00\u7EDF\u4E2D\u539F\u738B\u671D\uFF0C\u5171\u5386\u4E8C\u5341\u4E00\u5E1D\uFF0C\u4EAB\u56FD\u4E8C\u767E\u516B\u5341\u4E5D\u5E74\u3002617\u5E74\u5510\u9AD8\u7956\u674E\u6E0A\u4E8E\u664B\u9633\u8D77\u5175\uFF0C\u6B21\u5E74\u79F0\u5E1D\u5EFA\u7ACB\u5510\u671D\uFF0C\u4EE5\u957F\u5B89\u4E3A\u4EAC\u5E08\u3002</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u94DC\u94B1\u3001\u5E1B</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E5%BC%80%E5%85%83%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5510\u5F00\u5143\u901A\u5B9D</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u6B66\u5FB7\u56DB\u5E74\uFF08621\u5E74\uFF09\u4E03\u6708\uFF0C\u201C\u5E9F\u4E94\u94E2\u94B1\uFF0C\u884C\u5F00\u5143\u901A\u5B9D\u94B1\uFF0C\u5F84\u516B\u5206\uFF0C\u91CD\u4E8C\u94E2\u56DB\u7D6B\uFF0C\u79EF\u5341\u6587\u91CD\u4E00\u4E24\uFF0C\u4E00\u5343\u6587\u91CD\u516D\u65A4\u56DB\u4E24\u201D\uFF0C\u786E\u7ACB\u56FD\u5BB6\u94F8\u5E01\u7684\u6CD5\u5E01\u5730\u4F4D\u3002\u4E0E\u6B64\u540C\u65F6\uFF0C\u53C8\u7EE7\u627F\u9B4F\u664B\u5357\u5317\u671D\u65F6\u671F\u4EE5\u7EE2\u5E1B\u4E3A\u8D27\u5E01\u7684\u4F20\u7EDF\uFF0C\u5B9E\u884C\u201C\u94B1\u5E1B\u517C\u884C\u201D\u7684\u8D27\u5E01\u5236\u5EA6\u2014\u2014\u94B1\u5373\u94DC\u94B1\uFF0C\u5E1B\u5219\u662F\u4E1D\u7EC7\u54C1\u7684\u603B\u79F0\uFF0C\u5305\u62EC\u9526\u3001\u7EE3\u3001\u7EEB\u3001\u7F57\u3001\u7EE2\u3001\u7D41\u3001\u7EEE\u3001\u7F23\u3001\u4337\u7B49\uFF0C\u5B9E\u9645\u4E0A\u662F\u4E00\u79CD\u4EE5\u5B9E\u7269\u8D27\u5E01\u548C\u91D1\u5C5E\u8D27\u5E01\u517C\u800C\u884C\u4E4B\u7684\u591A\u5143\u7684\u8D27\u5E01\u5236\u5EA6\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u968B\u5510\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF76250\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u590F\u4FAF\u9633\u7B97\u7ECF\u300B\u5377\u4E0B<br/></span>\n</p>";
+
+/***/ }),
+
+/***/ 28:
+/*!***********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/xihan.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u897F\u6C49</strong></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u5143\u524D202\u5E74-\u516C\u51438\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u79E6\u672B\u5929\u4E0B\u63ED\u7AFF\u800C\u8D77\uFF0C\u7ECF\u8FC7\u695A\u6C49\u4E4B\u4E89\uFF0C\u5218\u90A6\u51FB\u8D25\u9879\u7FBD\uFF0C\u516C\u5143\u524D202\u5E74\u6C49\u9AD8\u7956\u5218\u90A6\u5728\u5C71\u4E1C\u5B9A\u9676\u79F0\u5E1D\uFF0C\u56FD\u53F7\u6C49\uFF0C\u6682\u90FD\u6D1B\u9633\uFF0C\u4E09\u4E2A\u6708\u540E\u5B9A\u90FD\u957F\u5B89\u3002\u5171\u5386\u5341\u4E8C\u5E1D \uFF0C\u4EAB\u56FD\u4E8C\u767E\u4E00\u5341\u5E74\uFF0C\u53C8\u79F0\u4E3A\u897F\u6C49\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E6%B1%89%E6%AD%A6%E5%B8%9D%E4%BA%94%E9%93%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u897F\u6C49\u6C49\u6B66\u5E1D\u4E94\u94E2</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E94\u94E2\u662F\u4E00\u79CD\u4E2D\u56FD\u53E4\u94DC\u5E01\uFF0C\u94B1\u91CD\u4E94\u94E2\uFF0C\u4E0A\u6709\u201C\u4E94\u94E2\u201D\u4E8C\u5B57\uFF0C\u6545\u540D\u3002\u521D\u94F8\u4E8E\u897F\u6C49\u6C49\u6B66\u5E1D\u5143\u72E9\u4E94\u5E74\uFF08\u516C\u5143\u524D118\u5E74\uFF09\uFF0C\u4E1C\u6C49\u3001\u8700\u6C49\u3001\u9B4F\u3001\u664B\u3001\u5357\u9F50\u3001\u6881\u3001\u9648\u3001\u5317\u9B4F\u548C\u968B\u90FD\u6709\u94F8\u9020\uFF0C\u91CD\u91CF\u5F62\u5236\u5927\u5C0F\u4E0D\u4E00\u3002\u5510\u671D\u6B66\u5FB7\u56DB\u5E74\uFF08\u516C\u5143621\u5E74\uFF09\u5E9F\u6B62\u3002\u4F46\u65E7\u4E94\u94E2\u4ECD\u7136\u5728\u6C11\u95F4\u6D41\u901A\u3002\u4E94\u94E2\u8DE8\u5EA6\u5927\u3001\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6570\u91CF\u6700\u591A\u3001\u6D41\u901A\u65F6\u95F4\u6700\u4E45\u7684\u94B1\u5E01\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u897F\u6C49\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF7615\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E5D\u7AE0\u7B97\u672F\u300B\u5377\u516D\u3001\u4E03<br/></span>\n</p>";
+
+/***/ }),
+
+/***/ 29:
+/*!**********************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/yuan.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u5143\u671D</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431271\u5E74-1368\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u9996\u6B21\u7531\u5C11\u6570\u6C11\u65CF\u5EFA\u7ACB\u7684\u5927\u4E00\u7EDF\u738B\u671D\uFF0C\u7EDF\u6CBB\u8005\u4E3A\u8499\u53E4\u5B5B\u513F\u53EA\u65A4\u6C0F\u3002\u5B9A\u90FD\u5927\u90FD\uFF08\u4ECA\u5317\u4EAC\uFF09\uFF0C\u4F20\u4E94\u4E16\u5341\u4E00\u5E1D\uFF0C\u4ECE1206\u5E74\u6210\u5409\u601D\u6C57\u5EFA\u7ACB\u8499\u53E4\u653F\u6743\u59CB\u4E3A162\u5E74\uFF0C\u4ECE\u5FFD\u5FC5\u70C8\u5B9A\u56FD\u53F7\u5143\u5F00\u59CB\u5386\u65F698\u5E74\u3002\u5143\u671D\u9000\u51FA\u4E2D\u539F\u540E\u7684\u5317\u5143\u653F\u6743\u4E00\u76F4\u6301\u7EED\u52301402\u5E74\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u5B9D\u949E\u3001\u4E2D\u7EDF\u949E</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u6B63\u9762</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E-%E5%8F%8D%E9%9D%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u53CD\u9762</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u4E3A\u4E86\u52A0\u5F3A\u5BF9\u7ECF\u6D4E\u7684\u7EDF\u5236\uFF0C\u4EE5\u4F7F\u7528\u7EB8\u5E01\u4E3A\u4E3B\uFF0C\u94F8\u9020\u94B1\u5E01\u6BD4\u5176\u4ED6\u671D\u4EE3\u4E3A\u5C11\u3002\u4ECE\u5143\u4E16\u7956\u5FFD\u5FC5\u70C8\u5F00\u59CB\uFF0C\u53D1\u884C\u8FC7\u201C\u4E2D\u7EDF\u949E\u201D\u3001\u201C\u81F3\u5143\u949E\u201D\u548C\u201C\u81F3\u6B63\u949E\u201D\uFF0C\u8FD9\u4E9B\u5747\u4EE5\u5F53\u65F6\u7684\u5E74\u53F7\uFF08\u4E2D\u7EDF\u3001\u81F3\u5143\u3001\u81F3\u6B63\uFF09\u6765\u547D\u540D\uFF0C\u5176\u4E2D\u5E01\u503C\u6700\u7A33\u5B9A\u7684\u662F\u4E2D\u7EDF\u949E\uFF0C\u800C\u6D41\u901A\u65F6\u95F4\u6700\u957F\u7684\u662F\u81F3\u5143\u949E\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9EC4\u91D1\u4E00\u4E24\u4EF710\u4E24\u767D\u94F6\uFF0C\u6765\u6E90\uFF1A\u636E\u300A\u5143\u53F2\xB7\u98DF\u8D27\u5FD7\u300B\u8F7D\u91D1\u6BCF\u4E24\u6362\u81F3\u5143\u94F6\u949E10\u4E24\u3001\u94F61\u4E24\u6298\u6210\u3002<br/></span>\n</p>";
+
+/***/ }),
+
+/***/ 3:
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
   \***********************************/
@@ -7613,7 +7925,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
+
+/***/ 4:
 /*!*************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/pages.json ***!
   \*************************************************************/
@@ -7623,324 +7936,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
-/*!**********************************************************************************************************!*\
-  !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
-  \**********************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return normalizeComponent; });
-/* globals __VUE_SSR_CONTEXT__ */
-
-// IMPORTANT: Do NOT use ES2015 features in this file (except for modules).
-// This module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle.
-
-function normalizeComponent (
-  scriptExports,
-  render,
-  staticRenderFns,
-  functionalTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier, /* server only */
-  shadowMode, /* vue-cli only */
-  components, // fixed by xxxxxx auto components
-  renderjs // fixed by xxxxxx renderjs
-) {
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // fixed by xxxxxx auto components
-  if (components) {
-    if (!options.components) {
-      options.components = {}
-    }
-    var hasOwn = Object.prototype.hasOwnProperty
-    for (var name in components) {
-      if (hasOwn.call(components, name) && !hasOwn.call(options.components, name)) {
-        options.components[name] = components[name]
-      }
-    }
-  }
-  // fixed by xxxxxx renderjs
-  if (renderjs) {
-    (renderjs.beforeCreate || (renderjs.beforeCreate = [])).unshift(function() {
-      this[renderjs.__module] = this
-    });
-    (options.mixins || (options.mixins = [])).push(renderjs)
-  }
-
-  // render functions
-  if (render) {
-    options.render = render
-    options.staticRenderFns = staticRenderFns
-    options._compiled = true
-  }
-
-  // functional template
-  if (functionalTemplate) {
-    options.functional = true
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = 'data-v-' + scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = shadowMode
-      ? function () { injectStyles.call(this, this.$root.$options.shadowRoot) }
-      : injectStyles
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // for template-only hot-reload because in that case the render fn doesn't
-      // go through the normalizer
-      options._injectStyles = hook
-      // register for functioal component in vue file
-      var originalRender = options.render
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return originalRender(h, context)
-      }
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    }
-  }
-
-  return {
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */
-/*!********************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/CurrencyList.json ***!
-  \********************************************************************************/
-/*! exports provided: data, default */
-/***/ (function(module) {
-
-module.exports = {"data":[{"name":"中国","htmlsrc":"china","epoch":"2019","note":"人民币(元)","scale":1},{"name":"民国","htmlsrc":"minguo","epoch":"民国七年","note":"银元(元)","scale":1325.3},{"name":"清","htmlsrc":"qing","epoch":"乾隆二年","note":"白银(两)","scale":1654.14},{"name":"明","htmlsrc":"ming","epoch":"万历三十六年","note":"铜钱(文)","scale":2.4},{"name":"元","htmlsrc":"yuan","epoch":"至顺元年","note":"中统钞(贯)","scale":110},{"name":"南宋","htmlsrc":"nansong","epoch":"靖康二年","note":"会子(文)","scale":2.2},{"name":"北宋","htmlsrc":"beisong","epoch":"英宗时期","note":"铜钱(文)","scale":0.58},{"name":"唐","htmlsrc":"tang","epoch":"盛唐时期","note":"铜钱(文)","scale":2.03},{"name":"东汉","htmlsrc":"donghan","epoch":"汉光武帝","note":"五铢钱(文)","scale":2.2},{"name":"西汉","htmlsrc":"xihan","epoch":"汉武帝","note":"五铢钱(文)","scale":1.1}]};
-
-/***/ }),
-/* 18 */
-/*!********************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json sync ^\.\/.*\.js$ ***!
-  \********************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./beisong.js": 19,
-	"./donghan.js": 20,
-	"./douzi.js": 21,
-	"./ming.js": 22,
-	"./minguo.js": 23,
-	"./nansong.js": 24,
-	"./qing.js": 25,
-	"./table.js": 26,
-	"./tang.js": 27,
-	"./xihan.js": 28,
-	"./yuan.js": 29
-};
-
-
-function webpackContext(req) {
-	var id = webpackContextResolve(req);
-	return __webpack_require__(id);
-}
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) { // check for number or string
-		var e = new Error("Cannot find module '" + req + "'");
-		e.code = 'MODULE_NOT_FOUND';
-		throw e;
-	}
-	return id;
-}
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 18;
-
-/***/ }),
-/* 19 */
-/*!*************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/beisong.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <strong><span style=\"font-size: 18px;\">\u5317\u5B8B</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u5143960\u5E74-1127\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5317\u5B8B\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u7EE7\u4E94\u4EE3\u5341\u56FD\u4E4B\u540E\u7684\u671D\u4EE3\uFF0C\u4F20\u4E5D\u4F4D\u7687\u5E1D\uFF0C\u4EAB\u56FD167\u5E74\u3002\u5F00\u56FD\u7687\u5E1D\u5B8B\u592A\u7956\u8D75\u5321\u80E4\uFF0C\u5B9A\u90FD\u4E1C\u4EAC\u5F00\u5C01\u5E9C\uFF08\u6CB3\u5357\u5F00\u5C01\uFF09</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u9EC4\u91D1\u3001\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg\" width=\"250\"/>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%9D%96%E5%BA%B7%E6%AC%BE%E5%AE%98%E5%88%B6%E5%8D%81%E4%B8%A4%E9%87%91%E9%94%AD.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u9756\u5EB7\u6B3E\u5B98\u5236\u5341\u4E24\u91D1\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5317\u5B8B\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5B8B\u4EE3\u5546\u4E1A\u7E41\u76DB\uFF0C\u901A\u884C\u7684\u8D27\u5E01\u6709\u94DC\u94B1\u3001\u767D\u94F6\u4E0E\u9EC4\u91D1\u3002\u9EC4\u91D1\u662F\u7528\u4EE5\u4FDD\u503C\u3001\u8DE8\u6D32\u8D38\u6613\u7684\u6700\u4F73\u9996\u9009\uFF0C\u767D\u94F6\u662F\u4F5C\u4E3A\u4E2D\u8FDC\u8DDD\u79BB\u4EA4\u6613\u901A\u8D27\uFF0C\u94DC\u94B1\u5219\u662F\u4F5C\u4E3A\u96F6\u94B1\u4E8E\u5728\u5730\u5E02\u96C6\u3001\u505A\u5C0F\u989D\u4EA4\u6613\u4F7F\u7528\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u5317\u5B8B\u771F\u5B97\u5927\u4E2D\u7965\u7B26\u516B\u5E74\uFF0C\u6C74\u4EAC\uFF0C\u9EC4\u91D11\u4E24\u4EF76.3\u4E24\u767D\u94F6\u300110000\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.5<br/></span>\n</p>";
-
-/***/ }),
-/* 20 */
-/*!*************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/donghan.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u4E1C\u6C49</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u514325\u5E74-220\u5E74</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E4%B8%9C%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u65B0\u671D\u672B\u5E74\u7206\u53D1\u7EFF\u6797\u8D64\u7709\u8D77\u4E49\uFF0C\u6C49\u5149\u6B66\u5E1D\u5218\u79C0\u8D81\u52BF\u800C\u8D77\u3002\u516C\u514325\u5E74\uFF0C\u5218\u79C0\u79F0\u5E1D\uFF0C\u5B9A\u90FD\u96D2\u9633\uFF08\u4ECA\u6CB3\u5357\u6D1B\u9633\uFF09\uFF0C\u5EF6\u7EED\u201C\u6C49\u201D\u7684\u56FD\u53F7\uFF0C\u53F2\u79F0\u5149\u6B66\u4E2D\u5174\u3002\u4F20\u516B\u4E16\u5171\u5341\u56DB\u5E1D\uFF0C\u4EAB\u56FD\u4E00\u767E\u4E5D\u5341\u4E94\u5E74\uFF0C\u4E0E\u897F\u6C49\u7EDF\u79F0\u6C49\u671D\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E9%87%91%E4%BA%94%E9%93%A2%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u6C49\u91D1\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E94\u94E2\u662F\u4E00\u79CD\u4E2D\u56FD\u53E4\u94DC\u5E01\uFF0C\u94B1\u91CD\u4E94\u94E2\uFF0C\u4E0A\u6709\u201C\u4E94\u94E2\u201D\u4E8C\u5B57\uFF0C\u6545\u540D\u3002\u521D\u94F8\u4E8E\u897F\u6C49\u6C49\u6B66\u5E1D\u5143\u72E9\u4E94\u5E74\uFF08\u516C\u5143\u524D118\u5E74\uFF09\uFF0C\u4E1C\u6C49\u3001\u8700\u6C49\u3001\u9B4F\u3001\u664B\u3001\u5357\u9F50\u3001\u6881\u3001\u9648\u3001\u5317\u9B4F\u548C\u968B\u90FD\u6709\u94F8\u9020\uFF0C\u91CD\u91CF\u5F62\u5236\u5927\u5C0F\u4E0D\u4E00\u3002\u5510\u671D\u6B66\u5FB7\u56DB\u5E74\uFF08\u516C\u5143621\u5E74\uFF09\u5E9F\u6B62\u3002\u4F46\u65E7\u4E94\u94E2\u4ECD\u7136\u5728\u6C11\u95F4\u6D41\u901A\u3002\u4E94\u94E2\u8DE8\u5EA6\u5927\u3001\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6570\u91CF\u6700\u591A\u3001\u6D41\u901A\u65F6\u95F4\u6700\u4E45\u7684\u94B1\u5E01\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9B4F\u664B\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF76250\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u5B59\u5B50\u7B97\u7ECF\u300B\u5377\u4E0B<br/></span>\n</p>";
-
-/***/ }),
-/* 21 */
-/*!***********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/douzi.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong style=\"font-size: 20px;\">\u53E4\u4EE3\u4E00\u4E24\u94F6\u5B50\u5230\u5E95\u5408\u591A\u5C11\u4EBA\u6C11\u5E01\uFF1F</strong><br/>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    \u4F5C\u8005\uFF1A\u8C46\u5B50\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"margin-top: 0px; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u7C7B\u95EE\u9898\u5728\u5F88\u591A\u5730\u65B9\u770B\u5230\u591A\u6B21\uFF0C\u95EE\u9898\u4E0B\u591A\u6570\u56DE\u7B54\uFF0C\u8981\u4E48\u6298\u5408\u7C73\u4EF7\uFF0C\u8981\u4E48\u6298\u5408\u8D2D\u4E70\u529B\uFF0C\u8981\u4E48\u5C31\u7EA0\u7ED3\u9965\u8352\u5E74\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u4E4B\u524D\u53C8\u6709\u95EE\u6C11\u56FD\u65F6\u671F\u4E00\u4E2A\u5927\u6D0B\u5927\u6982\u7B49\u4E8E\u73B0\u5728\u7684\u591A\u5C11\u94B1\uFF0C\u5E95\u4E0B\u7684\u56DE\u7B54\u4E5F\u662F\u6E05\u4E00\u8272\u7684\u6821\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u80B2\u90E8\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u53BF\u957F\u9886\u591A\u5C11\u94B1\uFF0C\u6559\u804C\u5DE5\u591A\u5C11\u94B1\u3002\u6211\u8BF4\u8FC7\uFF0C\u7528\u52A8\u8361\u4E0D\u5B9A\u7684\u7C73\u4EF7\u6765\u8861\u91CF\u94F6\u5B50\u7684\u4EF7\u503C\uFF0C\u6700\u540E\u5F97\u51FA\u7684\u7ED3\u8BBA\u662F\u8352\u8C2C\u7684\uFF0C\u4F60\u66F4\u4E0D\u80FD\u4EE5\u53E4\u4EE3\u8D2D\u7F6E\u623F\u4EA7\u3001\u7530\u5730\u7684\u82B1\u9500\u6765\u5BF9\u6BD4\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u53EF\u8131\u79BB\u7FA4\u4F17\uFF0C\u53EA\u53C2\u7167\u4E0A\u5C42\u6536\u5165\u6765\u5B9A\u593A\uFF0C\u5426\u5219\u7ED3\u8BBA\u4E00\u5B9A\u6781\u5176\u8352\u8C2C\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8981\u8BF4\u4E00\u4E24\u94F6\u5B50\u3001\u4E00\u4E2A\u94F6\u5143\uFF0C\u5408\u73B0\u5728\u591A\u5C11\u94B1\uFF0C\u6709\u4E2A\u975E\u5E38\u7B80\u5355\u7C97\u66B4\uFF0C\u4F46\u662F\u975E\u5E38\u51C6\u786E\u3001\u975E\u5E38\u6709\u6548\u7684\u65B9\u5F0F\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u94F6\u4E24\u3001\u6587\u94B1\u3001\u5E03\u5E1B\u3001\u94F6\u5143\uFF09=\u73B0\u5982\u4ECA\u5E95\u5C42\u5DE5\u4EBA\u3001\u767E\u59D3\u52C9\u5F3A\u7EF4\u6301\u6E29\u9971\u7684\u6708\u5165\uFF08\u4EBA\u6C11\u5E01\uFF09</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u6E05\u534E\u5916\u6559\u72C4\u767B\u8FC8\u8C03\u67E5\u4E86\u5317\u4EAC\u6700\u666E\u901A\u5C45\u6C11\u7684\u6536\u5165\u3002\u5176\u4E2D\uFF0C1918\u5E74\uFF0C\u5317\u4EAC\u5C45\u6C11\u6700\u5E95\u5C42\u7684\u6536\u5165\u662F1.66\u94F6\u5143/\u6708\uFF0C\u5373\u6BCF\u4E2A\u6708\u624D\u5F97\u4E00\u5757\u516D\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6700\u666E\u901A\u6700\u5E95\u5C42\u7684\u5458\u5DE5\uFF0C\u6709\u4F4F\u5904\uFF0C\u4F46\u751F\u6D3B\u5341\u5206\u8270\u96BE\uFF0C\u6708\u5165\u4E00\u5757\u516D\u89D2\uFF0C\u53731.6\u5143\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6C11\u56FD\u521D\u5E74\uFF0C\u5317\u4EAC\u6BB5\u516C\u9986\u4E2D\u7684\u4F63\u4EBA\u3001\u5728\u5DE5\u5730\u5E72\u6D3B\u7684\u5DE5\u4EBA\u3001\u996D\u5E97\u7684\u4F19\u8BA1\uFF0C\u6708\u5165\u7EA6\u54082\u4E2A\u5927\u6D0B\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u90A3\u4E48\uFF0C\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u53EF\u4EE5\u5F97\u51FA\u7ED3\u8BBA\uFF1A\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"font-weight: 600;\">\u6C11\u56FD\u521D\u5E74\uFF0C2\u4E2A\u5927\u6D0B\u7EA6\u7B49\u4E8E\u73B0\u5982\u4ECA\u76843000\u5143\uFF0C\u53731\u4E2A\u5927\u6D0B\u7B49\u4E8E\u73B0\u5728\u76841500\u5143\u3002</span>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u65E2\u4E0D\u662F\u7C73\u4EF7\u6298\u5408\u51FA\u6765\u7684300\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E5F\u4E0D\u662F\u8089\u4EF7\u6298\u5408\u51FA\u6765\u7684800\u5143\u4EBA\u6C11\u5E01\u3002\u56E0\u4E3A\u4ECE\u4E0A\u4E16\u7EAA\u672B\u671F\u5F00\u59CB\uFF0C\u519C\u4E1A\u8FDB\u5165\u673A\u68B0\u5316\uFF0C\u53C8\u62E5\u6709\u5316\u80A5\u7B49\u8D44\u6599\uFF0C\u4EF7\u503C\u53EF\u79F0\u4F4E\u5EC9\uFF0C\u4EA9\u4EA7\u5341\u500D\u4E8E\u53E4\u4EE3\uFF0C\u53C8\u4E0D\u4F3C\u53E4\u4EE3\u7C73\u4EF7\u817E\u8E0A\u3002\u5404\u79CD\u8089\u79BD\u3001\u8089\u732A\u517B\u6B96\uFF0C\u5728\u53E4\u4EE3\u4E5F\u4E0D\u80FD\u4E0E\u73B0\u5982\u4ECA\u7684\u62E5\u6709\u91CF\u5BF9\u6BD4\u3002\u5176\u4ED6\u8BF8\u5982\u80FD\u4E70\u9A74\u4F46\u4E70\u4E0D\u8D77\u7CAE\uFF0C\u80FD\u76D6\u5C4B\u4F46\u5403\u4E0D\u8D77\u8089\u7684\u4E8B\uFF0C\u5B9E\u5728\u592A\u591A\uFF0C\u4E0D\u4E00\u4E00\u5217\u4E3E\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u56E0\u6B64\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\uFF08\u90A3\u5565\u4EBA\u53E3\uFF09\u7684\u6536\u5165\u624D\u662F\u9760\u8C31\u7684\uFF0C\u4E5F\u80FD\u56DE\u5934\u8FC7\u6765\u68C0\u6D4B\u5F53\u65F6\u67D0\u6837\u4E1C\u897F\u7684\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u7528\u5177\u4F53\u7684\u67D0\u6837\u4E1C\u897F\u53BB\u68C0\u6D4B\u5E95\u5C42\u6708\u5165\u3002\u4E8E\u662F\uFF0C\u4F60\u56DE\u5934\u518D\u53BB\u68C0\u6D4B\uFF0C\u53D1\u73B0\u5728\u6C11\u56FD\u521D\u671F\uFF0C2\u4E2A\u5927\u6D0B\u80FD\u7F6E\u529E\u4E00\u684C\u4E0A\u7B49\u5A5A\u5BB4\u3002\u800C\u73B0\u5982\u4ECA\uFF0C\u666E\u901A\u5A5A\u5BB4\u9152\u5E2D\u4E00\u4E24\u5343\uFF0C\u9AD8\u7EA7\u5A5A\u5BB4\u4E00\u684C3000\u5DE6\u53F3\u3002\u518D\u9A8C\u6C11\u56FD\u521D\u5E74\uFF0C800\u94F6\u5143\u4E70\u5317\u4EAC\u4E00\u5957\u623F\uFF0C\u5219\u54082017\u5E74\u7684\u4EBA\u6C11\u5E01120\u4E07\uFF0C\u5E76\u4E0D\u4FBF\u5B9C\uFF0C\u4F46\u548C\u73B0\u5982\u4ECA\u7684\u623F\u4EF7\u76F8\u6BD4\uFF0C\u771F\u662F\u4FBF\u5B9C\u5230\u59E5\u59E5\u5BB6\u4E86\u3002\u7531\u6B64\u63A8\u800C\u5E7F\u4E4B\uFF0C\u8D27\u5E01\u672A\u66FE\u52A8\u8361\u8FC7\u76841925\u5E74\u4E4B\u524D\u7684\u6C11\u56FD\uFF0C1\u5757\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1930\u5E74\u76848\u4E2A\u5927\u6D0B\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1980\u5E74\u768415\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =1990\u5E74\u768450\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2000\u5E74\u7684350\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2010\u5E74\u7684900\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    =2017\u5E74\u76841500\u5143\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \uFF08\u5168\u90E8\u6839\u636E\u5E95\u5C42\u5458\u5DE5\u6E29\u9971\u5DE5\u8D44\u6362\u7B97\uFF09\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6709\u4EBA\u95EE\uFF0C\u4E09\u56DB\u5341\u5E74\u6765\uFF0C\u6211\u56FD\u901A\u8D27\u81A8\u80C0\u4E86\u591A\u5C11\u500D\u3002\u7B54\u6848\u5F88\u660E\u663E\u4E86\uFF0C\u662F100\u500D\u30021980\u5E74\u7684\u4E00\u5757\u94B1\uFF0C\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u4E00\u767E\u5757\u94B1\u3002\u8FD9\u4ECE\u4FA7\u9762\u8BC1\u660E\u4E86\u8D5A\u4E86\u94B1\u5B58\u94F6\u884C\u5230\u5E95\u8D2C\u4E0D\u8D2C\u503C\uFF0C\u56FD\u5BB6\u5370\u53D1\u8D27\u5E01\uFF0C\u5230\u5E95\u5BF9\u4F60\u4EE5\u524D\u5B58\u7684\u94B1\uFF0C\u7A00\u91CA\u5230\u4F55\u79CD\u7A0B\u5EA6\uFF1F\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8FD9\u90FD\u662F\u6839\u636E\u6700\u5E95\u5C42\u7684\u5DE5\u4EBA\u3001\u53BF\u6C11\u7684\u6708\u5165\u800C\u7B97\u51FA\u6765\u7684\uFF0C\u800C\u6708\u5165\u662F\u5F53\u65F6\u6C11\u4EF7\u7684\u76F4\u63A5\u53CD\u5E94\u3002\u5230\u73B0\u5728\uFF0C\u5E95\u5C42\u5DE5\u4EBA\u3001\u5FAD\u5F79\u3001\u4EC6\u4ECE\u3001\u670D\u52A1\u5458\uFF0C\u4E5F\u5360\u636E\u4EBA\u53E3\u7684\u7EDD\u5927\u591A\u6570\u3002\u7531\u6B64\uFF0C\u6211\u4EEC\u8FD8\u53EF\u4EE5\u770B\u53E4\u4EE3\u4EFB\u4F55\u65F6\u671F\u7684\u901A\u884C\u8D27\u5E01\u7B49\u4E8E\u73B0\u5982\u4ECA\u7684\u591A\u5C11\u4EBA\u6C11\u5E01\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u6211\u66FE\u5199\u8FC7\u4E00\u7BC7\u56DE\u7B54\uFF0C\u4E13\u95E8\u5C31\u662F\u5BF9\u6BD4\u94F6\u4E24\u4E0E\u4EBA\u6C11\u5E01\uFF0C\u8B6C\u5982\u6E05\u4EE3\u67D0\u4E9B\u65F6\u671F\uFF0C\u53BF\u6C11\u5C0F\u5DE5\uFF0C\u6708\u94B1\u4E00\u4E24\u56DB\u94B1\uFF0C\u53C8\u6709\u624D\u5F97\u516B\u94B1\u7684\uFF0C\u800C\u4EAC\u57CE\u3001\u4E3B\u8981\u57CE\u5E02\u4EC6\u5F79\u3001\u6742\u5DE5\u3001\u670D\u52A1\u4EBA\u5458\uFF0C\u6708\u94B1\u4E8C\u4E24\u3002\u300A\u7EA2\u697C\u68A6\u300B\u91CC\u5F97\u529B\u4E2B\u9B1F\uFF0C\u4E5F\u662F\u8FD9\u4E2A\u6536\u5165\u3002\u53EF\u4EE5\u770B\u51FA\uFF0C\u660E\u6E05\u65F6\u671F\u7684\u4E00\u4E24\u94F6\u5B50\uFF0C\u5927\u7565\u7B49\u4E8E\u73B0\u5982\u4ECA\u591A\u6570\u5E95\u5C42\u4EBA\u6C11\u534A\u6708\u7684\u6536\u5165\u3002<span style=\"font-weight: 600;\">\u53E4\u4EBA\u6708\u5165\u4E8C\u4E24\u94F6\u5B50\uFF0C\u7B49\u4E8E1980\u5E74\u768430\u5757\u94B1\uFF0C2000\u5E74\u7684700\u5757\u94B1\uFF0C2017\u5E74\u76843000\u5757\u94B1\u3002</span>\u800C\u6C11\u95F4\u5E38\u7528\u6587\u94B1\u7ED3\u7B97\uFF0C\u4E00\u5343\u6587\u6298\u5408\u4E00\u4E24\u94F6\u5B50\uFF0C\u540E\u6587\u94B1\u8D2C\u503C\uFF0C\u4E00\u4E24\u94F6\u5B50\u5151\u4E00\u5343\u4E03\u516B\u767E\u6587\u90FD\u6709\uFF0C\u6C11\u95F4\u5DE5\u4F5C\u4EBA\u7FA4\u6536\u5165\u4E5F\u4E0A\u6DA8\uFF0C\u4F46\u5374\u662F\u771F\u7684\u4E0A\u6DA8\u5417\uFF1F\u4F9D\u7136\u8981\u6839\u636E\u5E95\u5C42\u6708\u5165\u6765\u786E\u5B9A\u7269\u4EF7\u8D35\u8D31\uFF0C\u800C\u4E0D\u662F\u6839\u636E\u67D0\u79CD\u4E1C\u897F\u4EF7\u683C\u6765\u786E\u5B9A\u6536\u5165\u591A\u5C11\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u8B6C\u5982\uFF0C\u5EB7\u7199\u5E74\u95F4\uFF0C\u8089\u4EF7\u7EF4\u6301\u5728\u4E09\u5206\u94B1\uFF0C\u5373\u4E00\u65A4\uFF08590\u514B\uFF090.03\u4E24\u767D\u94F6\uFF0C\u6839\u636E\u5E95\u5C42\u4EBA\u6C11\u6708\u5165\u6362\u7B97\uFF0C\u8FD9\u5C31\u662F\u4E00\u65A4\u732A\u808938\u5757\u94B1\uFF0C\u73B0\u5728\u624D\u5341\u6765\u5757\uFF0C\u800C\u66F4\u5E95\u5C42\u7684\u6751\u6C11\uFF0C\u6708\u5165\u7B49\u4E8E\u73B0\u5982\u4ECA\u76841200\u5757\u5DE6\u53F3\u3002\u4F60\u77AC\u95F4\u5C31\u80FD\u660E\u767D\u53E4\u4EBA\u4E00\u5E74\u5230\u5934\u5403\u56DE\u8089\u591A\u4E0D\u5BB9\u6613\uFF0C\u4E3A\u5565\u90FD\u820D\u4E0D\u5F97\u4E70\u8089\u3002\u800C\u5207\u5207\u4E0D\u53EF\u6839\u636E\u4E00\u65A4\u732A\u8089\u4E09\u5206\u94F6\u94B1\u6765\u6362\u7B97\u6210\u73B0\u5728\u7684\u8089\u4EF7\uFF0C\u518D\u63A8\u51FA\u5F53\u65F6\u4EBA\u7684\u6536\u5165\u6C34\u5E73\u6298\u5408\u73B0\u5982\u4ECA\u591A\u5C11\u4EBA\u6C11\u5E01\uFF0C\u8FD9\u662F\u975E\u5E38\u8352\u8C2C\u7684\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u76D0\u5728\u53E4\u4EE3\u5236\u4F5C\u3001\u8FD0\u8F93\u90FD\u6BD4\u73B0\u5728\u8D39\u52B2\uFF0C\u6BCF\u65A4\u4E94\u5206\u94B1\uFF0C\u4E5F\u5C31\u662F0.05\u4E24\uFF0C\u54082017\u5E74\u768475\u5757\u94B1\u3002\u8FD9\u79CD\u72B6\u51B5\u4E00\u76F4\u6301\u7EED\u5230\u6C11\u56FD\u521D\u5E74\uFF0C\u8FD9\u65F6\u518D\u770B\u300A\u9ED4\u5DDD\u6EC7\u65C5\u884C\u8BB0\u300B\uFF0C\u4F60\u5C31\u80FD\u660E\u767D\u4E3A\u5565\u5404\u5730\u8D2B\u82E6\u767E\u59D3\u6839\u672C\u5C31\u5403\u4E0D\u4E0A\u76D0\uFF0C\u6700\u591A\u53EA\u662F\u6CBE\u7740\u4E00\u70B9\u70B9\u5927\u76D0\u7C92\u5C1D\u4E00\u4E9B\u6ECB\u5473\u7684\u539F\u56E0\u4E86\u3002\u800C\u4F60\uFF0C\u7EDD\u4E0D\u53EF\u6839\u636E\u5F53\u65F6\u7684\u98DF\u76D0\u4EF7\u683C\uFF0C\u53CD\u63A8\u51FA\u5151\u7387\u3002\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u5E95\u5C42\u4E61\u91CE\u767E\u59D3\uFF0C\u65E5\u5165\u4E00\u767E\u6587\uFF0C\u6708\u5165\u4E09\u5343\u6587\uFF083\u8D2F\uFF09\uFF0C\u7B49\u4E8E2000\u5143\u4EBA\u6C11\u5E01\uFF0C\u4E00\u6587\u5408\u73B0\u5728\u7684\u516D\u3001\u4E03\u6BDB\u94B1\uFF0C\u4E5F\u662F\u5982\u6B64\u63A8\u5BFC\u3002\u4E0A\u5C42\u5B98\u5458\u4E09\u5206\u4E4B\u4E00\u53D1\u94B1\uFF0C\u4E09\u5206\u4E4B\u4E8C\u53D1\u4E1C\u897F\uFF0C\u4E5F\u662F\u65E0\u5948\u4E4B\u4E3E\u3002\u5317\u5B8B\u5F85\u9047\u4E2D\u7B49\u7684\u5F53\u5175\u7684\uFF0C\u5E73\u5747\u4E00\u5929\u80FD\u62FF130\u6587\uFF0C\u5230\u5357\u5B8B\u4E00\u5929\u80FD\u62FF500\u591A\u6587\uFF0C\u4E0D\u662F\u5DE5\u8D44\u6DA8\u4E86\uFF0C\u662F\u94B1\u6BDB\u4E86\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 1.4em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u5317\u5B8B\u57CE\u91CC\u5C0F\u5403\uFF0C\u6BCF\u4EFD15\u6587\uFF0C\u4E5F\u5C31\u662F\u73B0\u5728\u768415\u5757\u94B1\u5DE6\u53F3\uFF0C\u8FD9\u662F\u9E21\u6742\u6C64\u7684\u4EF7\u683C\u3002\u800C\u852C\u83DC\u9020\u9F51\uFF0C\u6BCF\u789710\u6587\u3002\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <img src=\"https://pic2.zhimg.com/80/v2-b1fff09d1be1bba3f518acbcb807b4bd_720w.jpg\" class=\"content_image lazy\"/>\n</p>\n<p class=\"ztext-empty-paragraph\" style=\"margin-top: -0.8em; margin-bottom: -0.8em; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255);\">\n    <br/>\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    \u603B\u4E4B\uFF0C\u57FA\u4E8E\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u8054\u7CFB\u73B0\u5982\u4ECA\u5E95\u5C42\u4EBA\u6C11\u65E5\u5165\u6216\u6708\u5165\uFF0C\u6765\u8BA4\u77E5\u53E4\u4EE3\uFF0C\u751A\u81F3\u8FD1\u4EE3\u7CAE\u98DF\u3001\u8089\u7C7B\u3001\u5403\u7A7F\u3001\u4F4F\u5BBF\u3001\u623F\u4EA7\u3001\u5A5A\u4E27\u3001\u96C7\u4F63\u7B49\u6240\u6709\u4EBA\u4EEC\u6240\u9700\u8D2D\u4E70\u3001\u51FA\u5356\u7269\u54C1\u7684\u4EF7\u683C\uFF0C\u624D\u662F\u6700\u5408\u7406\u7684\u3002\u5982\u6B64\u8BA1\u7B97\uFF0C\u5219\u8352\u5E74\u7CAE\u98DF\u4EF7\u683C\u7684\u817E\u8E0A\u3001\u6602\u8D35\uFF0C\u5219\u7ACB\u5373\u663E\u73B0\u3002\u767E\u59D3\u4E00\u5E74\u5230\u5934\u820D\u4E0D\u5F97\u5403\u4E00\u56DE\u8089\u7684\u5FC3\u6001\uFF0C\u4E5F\u80FD\u7ACB\u5373\u4F53\u4F1A\u5230\u3002\n</p>\n<p style=\"margin-top: 1.4em; margin-bottom: 0px; color: rgb(26, 26, 26); font-family: -apple-system, BlinkMacSystemFont, &quot;Helvetica Neue&quot;, &quot;PingFang SC&quot;, &quot;Microsoft YaHei&quot;, &quot;Source Han Sans SC&quot;, &quot;Noto Sans CJK SC&quot;, &quot;WenQuanYi Micro Hei&quot;, sans-serif; font-size: medium; white-space: normal; background-color: rgb(255, 255, 255); line-height: 1.5em;\">\n    <span style=\"color: #888;\">\u6CE8\uFF1A\u7B97\u6CD5\u5F15\u7528\u81EA\u77E5\u4E4E\u7528\u6237 @\u8C46\u5B50\uFF0C\u94FE\u63A5\u5730\u5740\uFF1Ahttps://zhuanlan.zhihu.com/p/32089267</span>\n</p>\n<p>\n    <br/>\n</p>";
-
-/***/ }),
-/* 22 */
-/*!**********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/ming.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u660E\u671D</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431368\u5E74-1644\u5E74</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/>\n</p>\n<p>\n    <br/>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u660E\u671D\u5386\u7ECF\u5341\u4E8C\u4E16\u3001\u5341\u516D\u4F4D\u7687\u5E1D\uFF0C\u56FD\u795A\u4E8C\u767E\u4E03\u5341\u516D\u5E74\u3002\u5F00\u56FD\u7687\u5E1D\u4E3A\u660E\u592A\u7956\u6731\u5143\u748B\uFF0C\u521D\u671F\u5EFA\u90FD\u5357\u4EAC\uFF0C\u660E\u6210\u7956\u6731\u68E3\u65F6\u671F\u5B9A\u90FD\u5317\u4EAC\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E5%98%89%E9%9D%96%E4%B8%89%E5%8D%81%E5%85%AD%E5%B9%B4%E5%86%85%E6%88%B7%E9%83%A8%E6%8B%BE%E4%B8%A4%E9%87%91%E9%94%AD.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u5609\u9756\u4E09\u5341\u516D\u5E74\u5185\u6237\u90E8\u5341\u4E24\u91D1\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E4%B8%87%E5%8E%86%E4%BA%94%E5%8D%81%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u4E07\u5386\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%98%8E%E4%B8%87%E5%8E%86%E9%80%9A%E5%AE%9D2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u660E\u4E07\u5386\u901A\u5B9D</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u660E\u4EE3\u4EE5\u767D\u94F6\u4F5C\u4E3A\u6CD5\u5B9A\u7684\u6D41\u901A\u8D27\u5E01\uFF0C\u4E00\u822C\u4EA4\u6613\u5927\u6570\u7528\u94F6\uFF0C\u5C0F\u6570\u7528\u94B1\uFF0C\u767D\u94F6\u548C\u94DC\u94B1\u7EC4\u6210\u4E86\u8D27\u5E01\u4E3B\u4F53\u3002\u56E0\u907F\u8BB3\u7687\u5E1D\u6731\u5143\u748B\u4E4B&quot;\u5143&quot;\u5B57\uFF0C\u660E\u4EE3\u6240\u6709\u94B1\u5E01\u7EDF\u79F0\u901A\u5B9D\uFF0C\u5FCC\u7528\u5143\u5B9D\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u4E07\u5386\u4E2D\u540E\u671F\uFF0C\u9EC4\u91D1\u4E00\u4E24\u4EF77-8\u4E24\u767D\u94F6\u3001700-800\u6587\uFF0C\u6765\u6E90\uFF1A\u300A\u660E\u795E\u5B97\u5B9E\u5F55\u300B\u5377\u4E00\u4E03\u4E09\uFF1B\u65E5\u77E5\u5F55\u5377\u4E00\u4E00\u300A\u9EC4\u91D1\u300B<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
-
-/***/ }),
-/* 23 */
-/*!************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/minguo.js ***!
-  \************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 20px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\">\u4E2D\u534E\u6C11\u56FD</span></strong></span><span style=\"font-size: 18px;\"><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong><strong><span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;;\"></span></strong></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u516C\u51431912\u5E74-1949\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em; text-align: center;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">1911\u5E74\u8F9B\u4EA5\u9769\u547D\u7206\u53D1\u540E\uFF0C\u9769\u547D\u515A\u5728\u5357\u4EAC\u5EFA\u7ACB\u4E34\u65F6\u653F\u5E9C\uFF0C\u5404\u7701\u4EE3\u8868\u63A8\u4E3E\u5B59\u4E2D\u5C71\u4E3A\u4E34\u65F6\u5927\u603B\u7EDF\u30021912\u5E74\u5143\u6708\u6C11\u56FD\u6B63\u5F0F\u5EFA\u7ACB\uFF0C \u8881\u4E16\u51EF\u4E3A\u9996\u4EFB\u6C11\u56FD\u5927\u603B\u7EDF\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E4%BA%94%E8%89%B2%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u4E94\u8272\u65D71912-1928</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E9%9D%92%E5%A4%A9%E7%99%BD%E6%97%A5%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; color: rgb(165, 165, 165); font-size: 18px;\">\u4E2D\u534E\u6C11\u56FD\u56FD\u65D7\u9752\u5929\u767D\u65E5\u65D71929-1949</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u94F6\u5143</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD8%E5%B9%B4%E9%93%B6%E5%85%83.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD8\u5E74\u94F6\u5143</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E5%8D%81%E4%B8%A4%E9%BB%84%E9%87%91-%E5%A4%A7%E9%BB%84%E9%B1%BC.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD\u5341\u4E24\u9EC4\u91D1-\u5927\u9EC4\u9C7C</span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B0%91%E5%9B%BD%E4%B8%80%E4%B8%A4%E9%BB%84%E9%87%91-%E5%B0%8F%E9%BB%84%E9%B1%BC.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6C11\u56FD\u4E00\u4E24\u9EC4\u91D1-\u5C0F\u9EC4\u9C7C</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u5317\u6D0B\u653F\u5E9C\u4E8E1914\u5E74\u63A8\u51FA\u300A\u56FD\u5E01\u6761\u4F8B\u300B\uFF0C\u786E\u7ACB\u94F6\u672C\u4F4D\u8D27\u5E01\u5236\u5EA6\uFF0C\u5B9A\u56FD\u5E01\u201C\u58F9\u5706\u201D\u91CD\u5E93\u5E73\u4E03\u94B1\u4E8C\u5206\uFF0C\u542B\u7EAF\u94F6\u516B\u6210\u4E5D\uFF0C\u5373\u516D\u94B1\u56DB\u5206\uFF0C\uFF0823.9024808\u514B\uFF09\uFF0C\u7EA6\u7B49\u540C\u4E8E\u94F6\u5706\u58F9\u679A\uFF0C\u53C8\u5B9A\u5341\u5206\u4E4B\u4E00\u5143\u4E3A\u4E00\u89D2\uFF0C\u5341\u5206\u4E4B\u4E00\u89D2\u4E3A\u4E00\u5206\u3002\u56FD\u5E01\u7684\u58F9\u5706\u88AB\u94F8\u6210\u516B\u6210\u4E5D\u94F6\u3001\u4E00\u6210\u4E00\u94DC\u7684\u786C\u5E01\uFF0C\u4E0A\u6709\u8881\u4E16\u51EF\u5934\u50CF\uFF0C\u4FD7\u79F0\u201C\u8881\u5927\u5934\u201D\uFF1B\u5E76\u63A8\u51FA\u4EE5\u94F6\u94F8\u9020\u7684\u8F85\u5E01\u3002\u8881\u5927\u5934\u51FA\u73B0\u540E\uFF0C\u9010\u6E10\u53D6\u4EE3\u201C\u9F99\u6D0B\u201D\u3001\u201C\u9E70\u6D0B\u201D\u7B49\u65E7\u6709\u5916\u56FD\u94F6\u5706\uFF0C\u5728\u5168\u4E2D\u56FD\u6D41\u901A\u3002\u5341\u4E2A\u201C\u8881\u5927\u5934\u201D\u539A\u4E00\u5BF8\uFF0C\u662F\u4E3A\u201C\u5934\u5BF8\u201D\u4E4B\u8BED\u6E90\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u6C11\u56FD\u4E03\u5E74\u4E8C\u6708\uFF0C\u9EC4\u91D1\u5341\u4E24\u4EF7429\u5143\uFF08\u94F6\u5143\uFF09\u3002\u6765\u6E90\uFF1A\u300A\u6C11\u56FD\u7ECF\u6D4E\u53F2\u300Bp.517<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
-
-/***/ }),
-/* 24 */
-/*!*************************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/nansong.js ***!
-  \*************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u5357\u5B8B</strong></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431127\u5E74-1276\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431127\u5E74\uFF0C\u9756\u5EB7\u4E4B\u53D8\u540E\uFF0C\u5B8B\u9AD8\u5B97\u8D75\u6784\u5B9A\u90FD\u4E8E\u5357\u4EAC\u5E94\u5929\u5E9C\uFF08\u4ECA\u6CB3\u5357\u5546\u4E18\uFF09\u5EFA\u5E99\u79F0\u5E1D\uFF0C\u56FD\u53F7\u4ECD\u4E3A\u5B8B\uFF0C\u53F2\u79F0\u5357\u5B8B\u3002\u516C\u51431138\u5E74\uFF0C\u5B8B\u5BA4\u8FC1\u90FD\u4E34\u5B89\u5E9C\uFF08\u4ECA\u6D59\u6C5F\u676D\u5DDE\uFF09\u3002\u5171\u4F20\u4E94\u4E16\u4E5D\u5E1D\uFF0C\u4EAB\u56FD\u4E00\u767E\u56DB\u5341\u4E5D\u5E74\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4EA4\u5B50\u3001\u4F1A\u5B50</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E4%BC%9A%E5%AD%90.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5357\u5B8B\u4F1A\u5B50</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8D%97%E5%AE%8B%E4%BA%A4%E5%AD%90.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5357\u5B8B\u4EA4\u5B50<br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5357\u5B8B\u65F6\u671F\uFF0C\u7EB8\u5E01\u5927\u91CF\u6D41\u901A\uFF0C\u9010\u6E10\u4EE3\u66FF\u94DC\u94B1\u6210\u4E3A\u4E3B\u8981\u4EA4\u6362\u624B\u6BB5\u3002\u5357\u5B8B\u7684\u7EB8\u5E01\u5206\u4E3A\u201C\u4EA4\u5B50\u201D\u548C\u201C\u4F1A\u5B50\u201D\u3002\u4EA4\u5B50\u4E3B\u8981\u5728\u56DB\u5DDD\u5730\u533A\u4F7F\u7528\uFF0C\u4F1A\u5B50\u5219\u5206\u4E3A\u201C\u4E1C\u5357\u4F1A\u5B50\u201D\u3001\u201C\u4E24\u6DEE\u4F1A\u5B50\u201D\u548C\u201C\u6E56\u5317\u4F1A\u5B50\u201D\u4E09\u79CD\u3002\u4E0D\u8FC7\uFF0C\u5357\u5B8B\u540E\u671F\u56E0\u4E3A\u5927\u91CF\u53D1\u884C\u7EB8\u5E01\uFF0C\u9020\u6210\u8D27\u5E01\u8D2C\u503C\uFF0C\u7269\u4EF7\u98DE\u6DA8\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9756\u5EB7\u4E8C\u5E74\uFF0C\u6C74\u4EAC\uFF0C\u9EC4\u91D11\u4E24\u4EF712.8\u4E24\u767D\u94F6\u300132000\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.6<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
-
-/***/ }),
-/* 25 */
-/*!**********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/qing.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u6E05\u671D</strong></span><span style=\"font-size: 18px;\"></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431636\u5E74-1912\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <br/>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6700\u540E\u4E00\u4E2A\u5C01\u5EFA\u738B\u671D\uFF0C\u5171\u4F20\u5341\u4E8C\u5E1D&nbsp; \uFF0C\u7EDF\u6CBB\u8005\u4E3A\u6EE1\u6D32\u7231\u65B0\u89C9\u7F57\u6C0F\u3002\u4ECE\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u8D77\uFF0C\u603B\u8BA1296\u5E74\u3002\u4ECE\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u6E05\u8D77\uFF0C\u56FD\u795A276\u5E74\u3002\u4ECE\u6E05\u5175\u5165\u5173\uFF0C\u5EFA\u7ACB\u5168\u56FD\u6027\u653F\u6743\u7B97\u8D77\u4E3A268\u5E74\u30021616\u5E74\uFF0C\u5EFA\u5DDE\u5973\u771F\u9996\u9886\u52AA\u5C14\u54C8\u8D64\u5EFA\u7ACB\u540E\u91D1\u3002 1636\u5E74\uFF0C\u7687\u592A\u6781\u6539\u56FD\u53F7\u4E3A\u5927\u6E05\uFF0C\u5B9A\u90FD\u5317\u4EAC\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E6%9C%9D%E5%9B%BD%E6%97%97.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u5927\u6E05\u56FD\u65D7\u9EC4\u5E95\u84DD\u9F99\u620F\u7EA2\u73E0\u56FE1889-1912</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u767D\u94F6\u3001\u94DC\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E5%85%89%E7%BB%AA%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg\" width=\"250\"/>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u5149\u7EEA\u4E94\u5341\u4E24\u94F6\u952D</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%9B%B4%E9%9A%B6%E5%8D%81%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4EE3\u76F4\u96B6\u5341\u4E24</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E4%BA%94%E4%B8%A4.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E94\u4E24<br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%BB%A3%E7%A2%8E%E9%93%B6.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u788E\u94F6</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B8%85%E4%B9%BE%E9%9A%86%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\">\u6E05\u4E7E\u9686\u901A\u5B9D</span>\n</p>\n<p>\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u6E05\u671D\u8D27\u5E01\u5927\u4F53\u4E0A\u91C7\u767D\u94F6\u4E0E\u94DC\u94B1\u5E76\u7528\u7684\u94F6\u94DC\u53CC\u672C\u4F4D\u5236\uFF0C\u5927\u6570\u7528\u94F6\uFF0C\u5C0F\u6570\u7528\u94B1\uFF0C\u4F46\u94F6\u7684\u5730\u4F4D\u66F4\u89C1\u91CD\u8981\u3002\u5176\u5F62\u5F0F\u5927\u4F53\u53EF\u5206\u4E3A\u56DB\u79CD\uFF1A\u7B2C\u4E00\u662F\u5143\u5B9D\uFF0C\u901A\u79F0\u5B9D\u94F6\uFF0C\u56E0\u5176\u4E3A\u9A6C\u8E44\u5F62\uFF0C\u4E5F\u79F0\u9A6C\u8E44\u94F6\uFF0C\u5176\u91CD\u4E94\u5341\u4E24\uFF1B\u7B2C\u4E8C\u79CD\u53EB\u4E2D\u952D\u6216\u5C0F\u5143\u5B9D\uFF0C\u591A\u9524\u5F62\uFF0C\u4E5F\u6709\u9A6C\u8E44\u5F62\uFF0C\u91CD\u7EA6\u5341\u4E24\uFF1B\u7B2C\u4E09\u79CD\u662F\u5C0F\u951E\u3001\u951E\u5B50\u6216\u79F0\u5C0F\u952D\uFF0C\u591A\u4E3A\u9992\u5934\u72B6\uFF0C\u91CD\u4E00\u3001\u4E8C\u4E24\u5230\u4E09\u3001\u4E94\u4E24\uFF1B\u7B2C\u56DB\u79CD\u662F\u788E\u94F6\uFF0C\u5373\u6563\u788E\u7684\u94F6\u5B50\uFF0C\u91CD\u91CF\u4E0D\u5230\u4E00\u4E24\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u4E7E\u9686\u4E8C\u5E74\uFF0C\u4EAC\u57CE\uFF0C\u767D\u94F6\u4E00\u4E24\u4EF7800\u6587\u3002\u6765\u6E90\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300Bp.12<br/></span>\n</p>\n<p>\n    <br/>\n</p>";
-
-/***/ }),
-/* 26 */
-/*!***********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/table.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p style=\"text-align: center;\">\n    <strong><span style=\"font-size: 16px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/table.jpg\"/></span></strong>\n</p>\n<p>\n    <strong><span style=\"font-size: 16px;\">PS\uFF1A</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 16px;\">\u738B\u671D\u672B\u671F\u6216\u6218\u4E71\u65F6\uFF0C\u8D27\u5E01\u8D77\u4F0F\u6CE2\u52A8\u8F83\u5927\uFF0C\u6240\u4EE5\u5728\u9009\u7528\u671D\u4EE3\u57FA\u7840\u4EF7\u683C\u65F6\uFF0C\u4F1A\u9009\u7528\u671D\u4EE3\u4E2D\u8F83\u4E3A\u7A33\u5B9A\u7684\u65F6\u671F\u3002</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u5F15\u7528\u8D44\u6599\uFF1A</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u738B\u857E\uFF1A\u300A\u4E8C\u5341\u4E16\u7EAA\u4EE5\u6765\u4E2D\u56FD\u7269\u4EF7\u53F2\u7814\u7A76\u8FF0\u8BC4\u300B</span>\n</p>\n<p style=\"text-align: left;\">\n    <span style=\"font-size: 16px;\">\u9EC4\u5195\u5802\uFF1A\u300A\u4E2D\u56FD\u5386\u4EE3\u7269\u4EF7\u95EE\u9898\u8003\u8FF0\u300B(\u9F50\u9C81\u4E66\u793E\uFF0C2008)</span>\n</p>";
-
-/***/ }),
-/* 27 */
-/*!**********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/tang.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p style=\"line-height: 1.5em;\">\n    <strong><span style=\"font-size: 18px;\">\u5510\u671D</span></strong>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u516C\u5143618\u5E74-907\u5E74</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u671D\u662F\u7EE7\u968B\u671D\u4E4B\u540E\u7684\u5927\u4E00\u7EDF\u4E2D\u539F\u738B\u671D\uFF0C\u5171\u5386\u4E8C\u5341\u4E00\u5E1D\uFF0C\u4EAB\u56FD\u4E8C\u767E\u516B\u5341\u4E5D\u5E74\u3002617\u5E74\u5510\u9AD8\u7956\u674E\u6E0A\u4E8E\u664B\u9633\u8D77\u5175\uFF0C\u6B21\u5E74\u79F0\u5E1D\u5EFA\u7ACB\u5510\u671D\uFF0C\u4EE5\u957F\u5B89\u4E3A\u4EAC\u5E08\u3002</span>\n</p>\n<p>\n    <br/>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u94DC\u94B1\u3001\u5E1B</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E5%BC%80%E5%85%83%E9%80%9A%E5%AE%9D.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center; line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5510\u5F00\u5143\u901A\u5B9D</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u5510\u6B66\u5FB7\u56DB\u5E74\uFF08621\u5E74\uFF09\u4E03\u6708\uFF0C\u201C\u5E9F\u4E94\u94E2\u94B1\uFF0C\u884C\u5F00\u5143\u901A\u5B9D\u94B1\uFF0C\u5F84\u516B\u5206\uFF0C\u91CD\u4E8C\u94E2\u56DB\u7D6B\uFF0C\u79EF\u5341\u6587\u91CD\u4E00\u4E24\uFF0C\u4E00\u5343\u6587\u91CD\u516D\u65A4\u56DB\u4E24\u201D\uFF0C\u786E\u7ACB\u56FD\u5BB6\u94F8\u5E01\u7684\u6CD5\u5E01\u5730\u4F4D\u3002\u4E0E\u6B64\u540C\u65F6\uFF0C\u53C8\u7EE7\u627F\u9B4F\u664B\u5357\u5317\u671D\u65F6\u671F\u4EE5\u7EE2\u5E1B\u4E3A\u8D27\u5E01\u7684\u4F20\u7EDF\uFF0C\u5B9E\u884C\u201C\u94B1\u5E1B\u517C\u884C\u201D\u7684\u8D27\u5E01\u5236\u5EA6\u2014\u2014\u94B1\u5373\u94DC\u94B1\uFF0C\u5E1B\u5219\u662F\u4E1D\u7EC7\u54C1\u7684\u603B\u79F0\uFF0C\u5305\u62EC\u9526\u3001\u7EE3\u3001\u7EEB\u3001\u7F57\u3001\u7EE2\u3001\u7D41\u3001\u7EEE\u3001\u7F23\u3001\u4337\u7B49\uFF0C\u5B9E\u9645\u4E0A\u662F\u4E00\u79CD\u4EE5\u5B9E\u7269\u8D27\u5E01\u548C\u91D1\u5C5E\u8D27\u5E01\u517C\u800C\u884C\u4E4B\u7684\u591A\u5143\u7684\u8D27\u5E01\u5236\u5EA6\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"line-height: 1.5em;text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u968B\u5510\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF76250\u6587\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u590F\u4FAF\u9633\u7B97\u7ECF\u300B\u5377\u4E0B<br/></span>\n</p>";
-
-/***/ }),
-/* 28 */
-/*!***********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/xihan.js ***!
-  \***********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <span style=\"font-size: 20px;\"><strong>\u897F\u6C49</strong></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u5143\u524D202\u5E74-\u516C\u51438\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u79E6\u672B\u5929\u4E0B\u63ED\u7AFF\u800C\u8D77\uFF0C\u7ECF\u8FC7\u695A\u6C49\u4E4B\u4E89\uFF0C\u5218\u90A6\u51FB\u8D25\u9879\u7FBD\uFF0C\u516C\u5143\u524D202\u5E74\u6C49\u9AD8\u7956\u5218\u90A6\u5728\u5C71\u4E1C\u5B9A\u9676\u79F0\u5E1D\uFF0C\u56FD\u53F7\u6C49\uFF0C\u6682\u90FD\u6D1B\u9633\uFF0C\u4E09\u4E2A\u6708\u540E\u5B9A\u90FD\u957F\u5B89\u3002\u5171\u5386\u5341\u4E8C\u5E1D \uFF0C\u4EAB\u56FD\u4E8C\u767E\u4E00\u5341\u5E74\uFF0C\u53C8\u79F0\u4E3A\u897F\u6C49\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u4E94\u94E2\u94B1</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E6%B1%89%E6%AD%A6%E5%B8%9D%E4%BA%94%E9%93%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u897F\u6C49\u6C49\u6B66\u5E1D\u4E94\u94E2</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E94\u94E2\u662F\u4E00\u79CD\u4E2D\u56FD\u53E4\u94DC\u5E01\uFF0C\u94B1\u91CD\u4E94\u94E2\uFF0C\u4E0A\u6709\u201C\u4E94\u94E2\u201D\u4E8C\u5B57\uFF0C\u6545\u540D\u3002\u521D\u94F8\u4E8E\u897F\u6C49\u6C49\u6B66\u5E1D\u5143\u72E9\u4E94\u5E74\uFF08\u516C\u5143\u524D118\u5E74\uFF09\uFF0C\u4E1C\u6C49\u3001\u8700\u6C49\u3001\u9B4F\u3001\u664B\u3001\u5357\u9F50\u3001\u6881\u3001\u9648\u3001\u5317\u9B4F\u548C\u968B\u90FD\u6709\u94F8\u9020\uFF0C\u91CD\u91CF\u5F62\u5236\u5927\u5C0F\u4E0D\u4E00\u3002\u5510\u671D\u6B66\u5FB7\u56DB\u5E74\uFF08\u516C\u5143621\u5E74\uFF09\u5E9F\u6B62\u3002\u4F46\u65E7\u4E94\u94E2\u4ECD\u7136\u5728\u6C11\u95F4\u6D41\u901A\u3002\u4E94\u94E2\u8DE8\u5EA6\u5927\u3001\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u6570\u91CF\u6700\u591A\u3001\u6D41\u901A\u65F6\u95F4\u6700\u4E45\u7684\u94B1\u5E01\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u897F\u6C49\u65F6\uFF0C\u9EC4\u91D11\u4E24\u4EF7615\u94B1\u3002\u6765\u6E90\uFF1A\u300A\u4E5D\u7AE0\u7B97\u672F\u300B\u5377\u516D\u3001\u4E03<br/></span>\n</p>";
-
-/***/ }),
-/* 29 */
-/*!**********************************************************************!*\
-  !*** E:/xiaohouye/AncientChinaCurrencyConverter/static/json/yuan.js ***!
-  \**********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<p>\n    <strong><span style=\"font-size: 20px;\">\u5143\u671D</span></strong>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u516C\u51431271\u5E74-1368\u5E74</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg\" width=\"250\"/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u662F\u4E2D\u56FD\u5386\u53F2\u4E0A\u9996\u6B21\u7531\u5C11\u6570\u6C11\u65CF\u5EFA\u7ACB\u7684\u5927\u4E00\u7EDF\u738B\u671D\uFF0C\u7EDF\u6CBB\u8005\u4E3A\u8499\u53E4\u5B5B\u513F\u53EA\u65A4\u6C0F\u3002\u5B9A\u90FD\u5927\u90FD\uFF08\u4ECA\u5317\u4EAC\uFF09\uFF0C\u4F20\u4E94\u4E16\u5341\u4E00\u5E1D\uFF0C\u4ECE1206\u5E74\u6210\u5409\u601D\u6C57\u5EFA\u7ACB\u8499\u53E4\u653F\u6743\u59CB\u4E3A162\u5E74\uFF0C\u4ECE\u5FFD\u5FC5\u70C8\u5B9A\u56FD\u53F7\u5143\u5F00\u59CB\u5386\u65F698\u5E74\u3002\u5143\u671D\u9000\u51FA\u4E2D\u539F\u540E\u7684\u5317\u5143\u653F\u6743\u4E00\u76F4\u6301\u7EED\u52301402\u5E74\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E3B\u8981\u6D41\u901A\u8D27\u5E01\uFF1A\u5B9D\u949E\u3001\u4E2D\u7EDF\u949E</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u6B63\u9762</span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%85%83%E6%9C%9D%E4%B8%AD%E7%BB%9F%E5%85%83%E5%AE%9D%E4%BA%A4%E9%92%9E-%E5%8F%8D%E9%9D%A2.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127);\">\u5143\u671D\u4E2D\u7EDF\u5143\u5B9D\u4EA4\u949E-\u53CD\u9762</span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127);\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u5143\u671D\u4E3A\u4E86\u52A0\u5F3A\u5BF9\u7ECF\u6D4E\u7684\u7EDF\u5236\uFF0C\u4EE5\u4F7F\u7528\u7EB8\u5E01\u4E3A\u4E3B\uFF0C\u94F8\u9020\u94B1\u5E01\u6BD4\u5176\u4ED6\u671D\u4EE3\u4E3A\u5C11\u3002\u4ECE\u5143\u4E16\u7956\u5FFD\u5FC5\u70C8\u5F00\u59CB\uFF0C\u53D1\u884C\u8FC7\u201C\u4E2D\u7EDF\u949E\u201D\u3001\u201C\u81F3\u5143\u949E\u201D\u548C\u201C\u81F3\u6B63\u949E\u201D\uFF0C\u8FD9\u4E9B\u5747\u4EE5\u5F53\u65F6\u7684\u5E74\u53F7\uFF08\u4E2D\u7EDF\u3001\u81F3\u5143\u3001\u81F3\u6B63\uFF09\u6765\u547D\u540D\uFF0C\u5176\u4E2D\u5E01\u503C\u6700\u7A33\u5B9A\u7684\u662F\u4E2D\u7EDF\u949E\uFF0C\u800C\u6D41\u901A\u65F6\u95F4\u6700\u957F\u7684\u662F\u81F3\u5143\u949E\u3002</span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"font-size: 18px;\"><img src=\"https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg\" width=\"250\"/></span>\n</p>\n<p style=\"text-align: center;\">\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\">\u4E2D\u56FD\u5386\u4EE3\u94DC\u94B1</span><span style=\"font-size: 18px;\"><br/></span>\n</p>\n<p>\n    <span style=\"color: rgb(127, 127, 127); font-size: 16px;\"><br/></span>\n</p>\n<p>\n    <span style=\"font-size: 18px;\">\u4E00\u679A\u94DC\u5236\u94F8\u5E01\uFF08\u65B9\u5B54\u94B1\uFF09\u4E3A\u4E00\u6587\uFF0C\u4E00\u5343\u6587\u7528\u7EF3\u5B50\u4ECE\u4E2D\u95F4\u7684\u5B54\u91CC\u7A7F\u8D77\u6765\uFF0C\u79F0\u4E3A\u4E00\u8D2F\u6216\u4E00\u540A\u3002\u91D1\u3001\u94F6\u3001\u94B1\uFF08\u6587\uFF09\u95F4\u6BD4\u4EF7\u5404\u671D\u4EE3\u90FD\u6709\u4E0D\u540C\uFF0C\u4F46\u5927\u4F53\u4E0A\u4E3A1\u4E24\u9EC4\u91D1=10\u4E24\u767D\u94F6=10\u8D2F=10000\u6587\u3002</span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"color: rgb(165, 165, 165); font-size: 18px;\"><br/></span>\n</p>\n<p style=\"line-height: 1.5em;\">\n    <span style=\"font-family: \u5FAE\u8F6F\u96C5\u9ED1, &quot;Microsoft YaHei&quot;; font-size: 18px;\">\u6CE8\uFF1A\u9EC4\u91D1\u4E00\u4E24\u4EF710\u4E24\u767D\u94F6\uFF0C\u6765\u6E90\uFF1A\u636E\u300A\u5143\u53F2\xB7\u98DF\u8D27\u5FD7\u300B\u8F7D\u91D1\u6BCF\u4E24\u6362\u81F3\u5143\u94F6\u949E10\u4E24\u3001\u94F61\u4E24\u6298\u6210\u3002<br/></span>\n</p>";
-
-/***/ }),
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */
+/***/ 45:
 /*!*********************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/MpHtmlParser.js ***!
   \*********************************************************************************************/
@@ -8526,7 +8523,8 @@ var MpHtmlParser = /*#__PURE__*/function () {"use strict";
 module.exports = MpHtmlParser;
 
 /***/ }),
-/* 46 */
+
+/***/ 46:
 /*!***************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/config.js ***!
   \***************************************************************************************/
@@ -8615,7 +8613,8 @@ function makeMap(str) {
 }
 
 /***/ }),
-/* 47 */
+
+/***/ 47:
 /*!*******************************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/jyf-parser/libs/CssHandler.js ***!
   \*******************************************************************************************/
@@ -8725,37 +8724,8 @@ CssParser = /*#__PURE__*/function () {"use strict";
     } }]);return CssParser;}();
 
 /***/ }),
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */
+
+/***/ 78:
 /*!********************************************************************************!*\
   !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/uni-icons/icons.js ***!
   \********************************************************************************/
@@ -8859,6 +8829,26 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   'sound': "\uE590",
   'scan': "\uE612" };exports.default = _default;
 
+/***/ }),
+
+/***/ 94:
+/*!********************************************************************************!*\
+  !*** E:/xiaohouye/AncientChinaCurrencyConverter/components/lb-picker/utils.js ***!
+  \********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.isObject = isObject;exports.getIndicatorHeight = getIndicatorHeight;function isObject(val) {
+  return Object.prototype.toString.call(val) === '[object Object]';
+}
+
+function getIndicatorHeight() {
+  return Math.round(uni.getSystemInfoSync().screenWidth / (750 / 100));
+}
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
 /***/ })
-]]);
+
+}]);
 //# sourceMappingURL=../../.sourcemap/mp-weixin/common/vendor.js.map

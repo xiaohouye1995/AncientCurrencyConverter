@@ -16,14 +16,15 @@
 			<view class="panel-cell">
 				<view class="panel-cell-hd">
 					<!-- 之后替换为该朝代流通货币图片 -->
-					<view class="panel-cell-logo">{{currencyList[indexOne].name}}</view>
+					<view class="panel-cell-logo">{{pickerOne.name}}</view>
 				</view>
 				<view class="panel-cell-bd">
-					<picker @change="bindPickerChangeOne" :value="indexOne" range-key="name" :range="currencyList">
-						<text>{{currencyList[indexOne].epoch}}</text>
-						<text class="note">{{currencyList[indexOne].note}}</text>
+					<lb-picker ref="picker1" mode="multiSelector" :list="currencyList" :level="2" @confirm="bindPickerChangeOne"></lb-picker>
+					<view class="" @tap="openPicker('picker1')">
+						<text>{{ pickerOne.epoch}}</text>
+						<text class="note">{{pickerOne.note}}</text>
 						<text class="iconfont icon-cc-chevron-right"></text>
-					</picker>
+					</view>
 				</view>
 				<view class="panel-cell-ft">
 					<input class="uni-input" :class="{minsize:moneyOne.length > 9}" v-model="moneyOne" @input="conversionAmountOne" type="digit" placeholder="0" />
@@ -31,14 +32,15 @@
 			</view>
 			<view class="panel-cell">
 				<view class="panel-cell-hd">
-					<view class="panel-cell-logo">{{currencyList[indexTwo].name}}</view>
+					<view class="panel-cell-logo">{{pickerTwo.name}}</view>
 				</view>
 				<view class="panel-cell-bd">
-					<picker @change="bindPickerChangeTwo" :value="indexTwo" range-key="name" :range="currencyList">
-						<text>{{currencyList[indexTwo].epoch}}</text>
-						<text class="note">{{currencyList[indexTwo].note}}</text>
+					<lb-picker ref="picker2" mode="multiSelector" :list="currencyList" :level="2" @confirm="bindPickerChangeTwo"></lb-picker>
+					<view class="" @tap="openPicker('picker2')">
+						<text>{{ pickerTwo.epoch}}</text>
+						<text class="note">{{pickerTwo.note}}</text>
 						<text class="iconfont icon-cc-chevron-right"></text>
-					</picker>
+					</view>
 				</view>
 				<view class="panel-cell-ft">
 					<input class="uni-input" :class="{minsize:moneyTwo.length > 9}" v-model="moneyTwo" @input="conversionAmountTwo" type="digit" placeholder="0" />
@@ -60,18 +62,30 @@
 <script>
 	import currencyListJson from '../../static/json/CurrencyList.json'
 	import parser from "@/components/jyf-parser/jyf-parser";
+	import LbPicker from '@/components/lb-picker'
 	export default {
 		components: {
-			"jyf-parser": parser
+			"jyf-parser": parser,
+			LbPicker
 		},
 		data() {
 			return {
 				currencyList: [],
-				indexOne: 1,
-				indexTwo: 0,
 				moneyOne: '',
 				moneyTwo: '',
-				show: true
+				show: true,
+				pickerOne: {
+					name: '民国',
+					epoch: '民国七年',
+					note: '银元(元)',
+					scale: 1325.3
+				},
+				pickerTwo: {
+					name: '中国',
+					epoch: '2019',
+					note: '人民币(元)',
+					scale: 1
+				}
 			}
 		},
 		onLoad() {
@@ -85,6 +99,11 @@
 			// 获取货币列表
 			getCurrencyList() {
 				this.currencyList = currencyListJson.data;
+				
+			},
+			// 打开级联选择器一
+			openPicker (name) {
+				this.$refs[name].show();
 			},
 			// 获取货币详情
 			getCurrencydetails(val) {
@@ -100,27 +119,37 @@
 			},
 			// 切换货币
 			bindPickerChangeOne: function(e) {
-				this.indexOne = e.target.value;
+				this.pickerOne = {
+					name: e.item[0].label,
+					epoch: e.item[1].label,			
+					note: e.item[0].note,
+					scale: e.item[1].value
+				}			
 				this.conversionAmountOne();
-				this.getCurrencydetails(this.currencyList[this.indexOne].htmlsrc);
+				this.getCurrencydetails(e.item[0].value);
 			},
 			bindPickerChangeTwo: function(e) {
-				this.indexTwo = e.target.value;
+				this.pickerTwo = {
+					name: e.item[0].label,
+					epoch: e.item[1].label,			
+					note: e.item[0].note,
+					scale: e.item[1].value
+				}
 				this.conversionAmountTwo();
 			},
 			// 换算金额
 			conversionAmountOne: function(event) {
 				let money = event ? event.target.value : +this.moneyOne;
-				let scaleOne = this.currencyList[this.indexOne].scale;
+				let scaleOne = this.pickerOne.scale;
 				let rmb = money * scaleOne;
-				let scaleTwo = this.currencyList[this.indexTwo].scale;
+				let scaleTwo = this.pickerTwo.scale;
 				this.moneyTwo = (rmb / scaleTwo).toFixed(2);
 			},
 			conversionAmountTwo: function(event) {
 				let money = event ? event.target.value : +this.moneyTwo;
-				let scaleTwo = this.currencyList[this.indexTwo].scale;
+				let scaleTwo = this.pickerTwo.scale;
 				let rmb = scaleTwo * money;
-				let scaleOne = this.currencyList[this.indexOne].scale;
+				let scaleOne = this.pickerOne.scale;
 				this.moneyOne = (rmb / scaleOne).toFixed(2);
 			},
 			// 前往算法说明

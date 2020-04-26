@@ -1,72 +1,138 @@
 {
-	"data": [{
-			"name": "中国",
-			"htmlsrc": "china",
-			"epoch": "2019",
+	"data": [
+		{
+			"label": "中国",
+			"value": "china",
 			"note": "人民币(元)",
-			"scale": 1
+			"children": [
+				{
+					"label": "2019",
+					"value": 1
+				}
+			]
 		},
 		{
-			"name": "民国",
-			"htmlsrc": "minguo",
-			"epoch": "民国七年",
+			"label": "民国",
+			"value": "minguo",
 			"note": "银元(元)",
-			"scale": 1325.3
-		}, {
-			"name": "清",
-			"htmlsrc": "qing",
-			"epoch": "乾隆二年",
+			"children": [
+				{
+					"label": "民国七年",
+					"value": 1325.3
+			    },
+				{
+					"label": "民国二十二年",
+					"value": 157.14
+				},
+				{
+					"label": "民国二十五年",
+					"value": 164.77
+				},
+				{
+					"label": "民国二十六年",
+					"value": 180.68
+				},
+				{
+					"label": "民国二十七年",
+					"value": 178.93
+				},
+				{
+					"label": "民国二十八年",
+					"value": 128.73
+				},
+				{
+					"label": "民国二十九年",
+					"value": 63.22
+				}
+			]
+		},
+		{
+			"label": "清",
+			"value": "qing",
 			"note": "白银(两)",
-			"scale": 1654.14
+			"children": [
+				{
+					"label": "乾隆二年",
+					"value": 1654.14
+				}
+			]
 		},
 		{
-			"name": "明",
-			"htmlsrc": "ming",
-			"epoch": "万历三十六年",
+			"label": "明",
+			"value": "ming",
 			"note": "铜钱(文)",
-			"scale": 2.4
+			"children": [
+				{
+					"label": "万历三十六年",
+					"value": 2.4
+				}
+			]
 		},
 		{
-			"name": "元",
-			"htmlsrc": "yuan",
-			"epoch": "至顺元年",
+			"label": "元",
+			"value": "yuan",
 			"note": "中统钞(贯)",
-			"scale": 110
+			"children": [
+				{
+					"label": "至顺元年",
+					"value": 110
+				}
+			]
 		},
 		{
-			"name": "南宋",
-			"htmlsrc": "nansong",
-			"epoch": "靖康二年",
+			"label": "南宋",
+			"value": "nansong",
 			"note": "会子(文)",
-			"scale": 2.2
+			"children": [
+				{
+					"label": "靖康二年",
+					"value": 2.2
+				}
+			]
 		},
 		{
-			"name": "北宋",
-			"htmlsrc": "beisong",
-			"epoch": "英宗时期",
+			"label": "北宋",
+			"value": "beisong",
 			"note": "铜钱(文)",
-			"scale": 0.58
+			"children": [
+				{
+					"label": "英宗时期",
+					"value": 0.58
+				}
+			]
 		},
 		{
-			"name": "唐",
-			"htmlsrc": "tang",
-			"epoch": "盛唐时期",
+			"label": "唐",
+			"value": "tang",
 			"note": "铜钱(文)",
-			"scale": 2.03
+			"children": [
+				{
+					"label": "盛唐时期",
+					"value": 2.03
+				}
+			]
 		},
 		{
-			"name": "东汉",
-			"htmlsrc": "donghan",
-			"epoch": "汉光武帝",
+			"label": "东汉",
+			"value": "donghan",
 			"note": "五铢钱(文)",
-			"scale": 2.2
+			"children": [
+				{
+					"label": "汉光武帝",
+					"value": 2.2
+				}
+			]
 		},
 		{
-			"name": "西汉",
-			"htmlsrc": "xihan",
-			"epoch": "汉武帝",
+			"label": "西汉",
+			"value": "xihan",
 			"note": "五铢钱(文)",
-			"scale": 1.1
+			"children": [
+				{
+					"label": "汉武帝",
+					"value": 1.1
+				}
+			]
 		}
 	]
 }
