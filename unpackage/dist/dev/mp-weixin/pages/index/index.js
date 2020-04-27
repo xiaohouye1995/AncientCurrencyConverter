@@ -257,18 +257,18 @@ var _CurrencyList = _interopRequireDefault(__webpack_require__(/*! ../../static/
 //
 //
 //
-var parser = function parser() {Promise.all(/*! require.ensure | components/jyf-parser/jyf-parser */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/jyf-parser/jyf-parser")]).then((function () {return resolve(__webpack_require__(/*! @/components/jyf-parser/jyf-parser */ 40));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 89));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { "jyf-parser": parser, LbPicker: LbPicker }, data: function data() {return { currencyList: [], moneyOne: '', moneyTwo: '', show: true, pickerOne: { name: '民国', epoch: '民国七年', note: '银元(元)', scale: 1325.3 }, pickerTwo: { name: '中国', epoch: '2019', note: '人民币(元)', scale: 1 } };}, onLoad: function onLoad() {uni.showShareMenu({ withShareTicket: true });this.getCurrencyList();this.getCurrencydetails();}, methods: { // 获取货币列表
+var parser = function parser() {Promise.all(/*! require.ensure | components/jyf-parser/jyf-parser */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/jyf-parser/jyf-parser")]).then((function () {return resolve(__webpack_require__(/*! @/components/jyf-parser/jyf-parser */ 40));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var LbPicker = function LbPicker() {Promise.all(/*! require.ensure | components/lb-picker/index */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/lb-picker/index")]).then((function () {return resolve(__webpack_require__(/*! @/components/lb-picker */ 50));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { components: { "jyf-parser": parser, LbPicker: LbPicker }, data: function data() {return { currencyList: [], moneyOne: '', moneyTwo: '', show: true, pickerOne: { name: '民国', epoch: '民国七年', note: '银元(元)', scale: 1325.3 }, pickerTwo: { name: '中国', epoch: '2019', note: '人民币(元)', scale: 1 } };}, onLoad: function onLoad() {uni.showShareMenu({ withShareTicket: true });this.getCurrencyList();this.getCurrencydetails();}, methods: { // 获取货币列表
     getCurrencyList: function getCurrencyList() {this.currencyList = _CurrencyList.default.data;}, // 打开级联选择器一
     openPicker: function openPicker(name) {this.$refs[name].show();}, // 获取货币详情
     getCurrencydetails: function getCurrencydetails(val) {var name = val || 'minguo';if (name === 'china') {this.show = false;} else {this.show = true;var html = __webpack_require__(18)("./".concat(name, ".js"));this.$refs.article.setContent(html);}}, // 切换货币
-    bindPickerChangeOne: function bindPickerChangeOne(e) {this.pickerOne = { name: e.item[0].label, epoch: e.item[1].label, note: e.item[0].note, scale: e.item[1].value };this.conversionAmountOne();
+    bindPickerChangeOne: function bindPickerChangeOne(e) {this.pickerOne = { name: e.item[0].label, epoch: e.item[1].label, note: e.item[1].note, scale: e.item[1].value };this.conversionAmountOne();
       this.getCurrencydetails(e.item[0].value);
     },
     bindPickerChangeTwo: function bindPickerChangeTwo(e) {
       this.pickerTwo = {
         name: e.item[0].label,
         epoch: e.item[1].label,
-        note: e.item[0].note,
+        note: e.item[1].note,
         scale: e.item[1].value };
 
       this.conversionAmountTwo();

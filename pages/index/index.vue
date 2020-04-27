@@ -122,7 +122,7 @@
 				this.pickerOne = {
 					name: e.item[0].label,
 					epoch: e.item[1].label,			
-					note: e.item[0].note,
+					note: e.item[1].note,
 					scale: e.item[1].value
 				}			
 				this.conversionAmountOne();
@@ -132,7 +132,7 @@
 				this.pickerTwo = {
 					name: e.item[0].label,
 					epoch: e.item[1].label,			
-					note: e.item[0].note,
+					note: e.item[1].note,
 					scale: e.item[1].value
 				}
 				this.conversionAmountTwo();
