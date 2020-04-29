@@ -2,6 +2,7 @@
   "navigationBarTitleText": "",
   "backgroundColor": "#2c2933",
   "usingComponents": {
-    "jyf-parser": "/components/jyf-parser/jyf-parser"
+    "jyf-parser": "/components/jyf-parser/jyf-parser",
+    "lb-picker": "/components/lb-picker/index"
   }
 }
