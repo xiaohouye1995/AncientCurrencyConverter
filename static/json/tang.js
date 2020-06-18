@@ -8,7 +8,7 @@ module.exports = `<p style="line-height: 1.5em;">
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center; line-height: 1.5em;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%94%90%E6%9C%9D%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
 </p>
 <p style="line-height: 1.5em;">
     <span style="font-size: 18px;"><br/></span>
@@ -26,7 +26,7 @@ module.exports = `<p style="line-height: 1.5em;">
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center; line-height: 1.5em;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%94%90%E5%BC%80%E5%85%83%E9%80%9A%E5%AE%9D.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%94%90%E5%BC%80%E5%85%83%E9%80%9A%E5%AE%9D.jpg" width="250"/></span>
 </p>
 <p style="text-align: center; line-height: 1.5em;">
     <span style="color: rgb(127, 127, 127);">唐开元通宝</span>
@@ -41,7 +41,7 @@ module.exports = `<p style="line-height: 1.5em;">
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="line-height: 1.5em;text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
 </p>
 <p style="line-height: 1.5em;text-align: center;">
     <span style="color: rgb(127, 127, 127); font-size: 16px;">中国历代铜钱</span><span style="font-size: 18px;"><br/></span>

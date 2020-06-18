@@ -8,7 +8,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
 </p>
 <p>
     <span style="font-size: 18px;"><br/></span>
@@ -26,7 +26,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E6%B1%89%E6%AD%A6%E5%B8%9D%E4%BA%94%E9%93%A2.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E6%B1%89%E8%A5%BF%E6%B1%89%E6%B1%89%E6%AD%A6%E5%B8%9D%E4%BA%94%E9%93%A2.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127);">西汉汉武帝五铢</span>
@@ -41,7 +41,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127); font-size: 16px;">中国历代铜钱</span><span style="font-size: 18px;"><br/></span>

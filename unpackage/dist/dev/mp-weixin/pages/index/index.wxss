@@ -56,12 +56,10 @@
   font-size: 13pt;
   color: #353535;
   border-radius: 12px;
-  -webkit-box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
-          box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
+  box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
 }
 .panel-title {
   padding: 20rpx;
-  background-image: -webkit-gradient(linear, left top, right top, from(#f9d423), to(#ff4e50));
   background-image: -webkit-linear-gradient(left, #f9d423 0%, #ff4e50 100%);
   background-image: linear-gradient(to right, #f9d423 0%, #ff4e50 100%);
   border-top-left-radius: 12px;
@@ -80,8 +78,7 @@
 }
 .panel-cell {
   padding: 40rpx 20rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

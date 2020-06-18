@@ -8,7 +8,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E5%9C%B0%E5%9B%BE.jpg" width="250"/></span>
 </p>
 <p>
     <span style="font-size: 18px;"><br/></span>
@@ -26,19 +26,19 @@ module.exports = `<p>
     <br/>
 </p>
 <p style="text-align: center;">
-    <img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg" width="250"/>
+    <img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E4%BA%94%E5%8D%81%E4%B8%A4%E9%93%B6%E9%94%AD.jpg" width="250"/>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127);">北宋五十两银锭</span>
 </p>
 <p style="text-align: center;">
-    <span style="color: rgb(127, 127, 127);"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%9D%96%E5%BA%B7%E6%AC%BE%E5%AE%98%E5%88%B6%E5%8D%81%E4%B8%A4%E9%87%91%E9%94%AD.jpg" width="250"/></span>
+    <span style="color: rgb(127, 127, 127);"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%9D%96%E5%BA%B7%E6%AC%BE%E5%AE%98%E5%88%B6%E5%8D%81%E4%B8%A4%E9%87%91%E9%94%AD.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127);">北宋靖康款官制十两金锭</span>
 </p>
 <p style="text-align: center;">
-    <span style="color: rgb(127, 127, 127);"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
+    <span style="color: rgb(127, 127, 127);"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E5%AE%8B%E5%8C%97%E5%AE%8B%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127);">北宋铜钱</span>
@@ -53,7 +53,7 @@ module.exports = `<p>
     <span style="font-size: 18px;"><br/></span>
 </p>
 <p style="text-align: center;">
-    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
+    <span style="font-size: 18px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/%E4%B8%AD%E5%9B%BD%E5%8E%86%E4%BB%A3%E9%93%9C%E9%92%B1.jpg" width="250"/></span>
 </p>
 <p style="text-align: center;">
     <span style="color: rgb(127, 127, 127); font-size: 16px;">中国历代铜钱</span><span style="font-size: 18px;"><br/></span>

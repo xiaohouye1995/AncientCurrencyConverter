@@ -36,8 +36,7 @@
   background: #fff;
   color: #fff;
   border-radius: 12px;
-  -webkit-box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
-          box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
+  box-shadow: 0 4px 9px 0 rgba(109, 107, 107, 0.5);
   margin-bottom: 20px;
   border: none;
 }

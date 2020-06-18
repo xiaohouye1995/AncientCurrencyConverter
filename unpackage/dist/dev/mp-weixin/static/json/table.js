@@ -1,5 +1,5 @@
 module.exports = `<p style="text-align: center;">
-    <strong><span style="font-size: 16px;"><img src="https://ancientcurrencyconverter-1256354221.cos.ap-shanghai.myqcloud.com/img/table.jpg"/></span></strong>
+    <strong><span style="font-size: 16px;"><img src="https://ancientcurrencyconverter-1256354221.file.myqcloud.com/img/table.jpg"/></span></strong>
 </p>
 <p>
     <strong><span style="font-size: 16px;">PS：</span></strong>
